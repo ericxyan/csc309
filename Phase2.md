@@ -59,7 +59,7 @@ The project page will use this module. If the request comes from a publisher, th
 ### Project
 - GET/api/projects
  - Get all projects.
- - Outpu:
+ - Output:
  ````
  {
 	{	
