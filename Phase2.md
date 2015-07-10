@@ -192,7 +192,7 @@ The project page will use this module. If the request comes from a publisher, th
 		...
 	}
  ````
-- PUT/api/comments/<project_id>
+- PUT/api/comments/project_id
  - Add a comment to a project.
 - DELETE/api/comments/<comment_id>
  - Delete a comment of a project.
