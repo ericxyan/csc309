@@ -1,0 +1,15 @@
+Authentation module
+We would use the module express-session from express to preventing users browse un-authorized content. This module, at first, works for the information bar that check the login information. If the login information in correct, it would use the express-session module to keep track of login information so that every modules knows who they are dealing with. As are result, we are able to modify the content of pages dynamically based on users’ premissions.
+
+Main page search module
+The Main page search module is responsible for the display on main page. At first, by default, it would display the top 10 recently added project to view, and the numbers of current ongoing projects, finished pages and number of users. Also, it uses database module to get different pre-defined results that corresponding to pre-defined search buttons on the main page, and display the result on main page. Also, it allows user to search by key words. This also interacts with our database and display the results on the main page.
+
+Panel module
+The panel module provides functionality of upper side panel for all pages. This module takes the session information from authenation module, provide and display the corresponding functionalities that the user now can choose on the panel. 
+
+DataBase module
+We are going to use mongodb with mongoose module in our project. The database saves all informationsabout our website, and provide functionality of all database operations. Whenever the pages need to interact with database, this module should be used.
+The followings are our database schemas:
+User:  { UserID, PassWord, email, ceil, projects(list of project ids), skills(list of skills)}
+Project: { projectID, description, start_time, finish_time, status, { admin, member(list of userID) } }
+Rating: {userID, raterID, stars, comments}
