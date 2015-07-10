@@ -25,10 +25,10 @@ We are using MEAN stack to build this project.
 ## Database Schema
 We are going to use mongodb with mongoose module in our project. The database saves all informationsabout our website, and provide functionality of all database operations. Whenever the pages need to interact with database, this module should be used.
 The followings are our database schemas:
-- `User`:  { UserID, PassWord, email, ceil, projects(list of project ids), skills(list of skills)}
-- `Project`: { projectID, description, start_time, finish_time, status,  admin, member{(list of userID) } }
-- `Rating`: {userID, raterID, stars, comments}
-- `Comment`: {projectId, userId, time, content}
+- `User`:  { UserID, PassWord, Email, Ceil, Projects(list of project ids), Skills(list of skills, Rating(list of ratingID))}
+- `Project`: { ProjectID, Description, Start_time, Finish_time, Status,  Admin, Member{(list of userID) }, Comments(list of commentID) }
+- `Rating`: { RatingID, RaterID, Stars, Comments}
+- `Comment`: {CommentID, ProjectId, UserId, Time, Content}
 
 ## Module Design
 ### Authentation module
@@ -63,12 +63,13 @@ The project page will use this module. If the request comes from a publisher, th
  ````
  {
 	{	
-		"projectID": ,
-		"start_time": ,
-		"finish_time": ,
-		"status": ,
-		"admin": ,
-		"members": [user_id1, user_id2,...]
+		"ProjectID": ,
+		"Start_time": ,
+		"Finish_time": ,
+		"Status": ,
+		"Admin": ,
+		"Members": [user_id1, user_id2,...],
+		"Comments": [comment_id1, comment_id2,...]
 	},
 	{
 	 project2
@@ -86,12 +87,13 @@ The project page will use this module. If the request comes from a publisher, th
  - Output:
  ````
  	{	
- 		"projectID": ,
-		"start_time": ,
-		"finish_time": ,
-		"status": ,
-		"admin": ,
-		"members": [user_id1, user_id2,...]
+ 		"ProjectID": ,
+		"Start_time": ,
+		"Finish_time": ,
+		"Status": ,
+		"Admin": ,
+		"Members": [user_id1, user_id2,...]
+		"Comments": [comment_id1, comment_id2,...]
 	}
 ````
 - PUT/api/projects/<project_id>
@@ -106,20 +108,22 @@ The project page will use this module. If the request comes from a publisher, th
 ````
 	{
 		{
-			"userid": ,
-			"password": ,
-			"email": ,
-			"cell": ,
-			"projects": [project_id_1, project_id_2, ...],
-			"skills": 
+			"Userid": ,
+			"Password": ,
+			"Email": ,
+			"Cell": ,
+			"Projects": [project_id_1, project_id_2, ...],
+			"Skills": 
+			"Rating": [rating_id_1, rating_id_2, ...]
 		},
 		{
-			"userid": ,
-			"password": ,
-			"email": ,
-			"cell": ,
-			"projects": [project_id_1, project_id_2, ...],
-			"skills": 
+			"Userid": ,
+			"Password": ,
+			"Email": ,
+			"Cell": ,
+			"Projects": [project_id_3, project_id_4, ...],
+			"Skills": 
+			"Rating": [rating_id_5, rating_id_6, ...]
 		},
 		...
 
@@ -130,32 +134,33 @@ The project page will use this module. If the request comes from a publisher, th
  - Output:
  ````
 	{
-		"userId": ,
-		"password": ,
-		"email": ,
-		"cell": ,
-		"projects": [project_id_1, project_id_2, ...],
-		"skills": 
+		"Userid": ,
+		"Password": ,
+		"Email": ,
+		"Cell": ,
+		"Projects": [project_id_1, project_id_2, ...],
+		"Skills": 
+		"Rating": [rating_id_1, rating_id_2, ...]
 	}
 ````
 - PUT/api/users/<user_id>
  - Update a single user.
 
 ### Rate
-- GET/api/rates/<user_id>
+- GET/api/rates/<rating_id>
  - Get all rates of a single user.
  - Output:
  ````
 	{
 		{
-			"raterID": ,
-			"stars": ,
-			"comments":  
+			"RaterID": ,
+			"Stars": ,
+			"Comments":  
 		},
 		{
-			"raterID": ,
-			"stars": ,
-			"comments":  
+			"RaterID": ,
+			"Stars": ,
+			"Comments":  
 		},
 		...
 	}
@@ -163,10 +168,10 @@ The project page will use this module. If the request comes from a publisher, th
  ````
 - PUT/api/rates/<user_id>
  - Create a rate to a single user.
-- POST/api/rates/<user_id>
+- POST/api/rates/<rating_id>
  - Update a rate to a single user.
-- DELETE/api/rates/<user_id>
- - Delete a rate ot a single user.
+- DELETE/api/rates/<rating_id>
+ - Delete a rate.
 
 ### Comment
 - GET/api/comments/<project_id>
@@ -175,21 +180,21 @@ The project page will use this module. If the request comes from a publisher, th
  ````
 	{
 		{
-			"userId": ,
-			"time": ,
-			"cotent": 
+			"UserId": ,
+			"Time": ,
+			"Cotent": 
 		},
 		{
-			"userId": ,
-			"time": ,
-			"cotent": 
+			"UserId": ,
+			"Time": ,
+			"Cotent": 
 		},
 		...
 	}
  ````
 - PUT/api/comments/<project_id>
  - Add a comment to a project.
-- DELETE/api/comments/<project_id>&<comment_id>
+- DELETE/api/comments/<comment_id>
  - Delete a comment of a project.
-- POST/api/comments/<project_id>&<comment_id>
+- POST/api/comments/<comment_id>
  - Update a comment of a project.
