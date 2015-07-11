@@ -11,6 +11,15 @@ Zhiyu Kang
 Xiaoyu Yan
 `c4yanxia`
 
+## Features:
+- **User Authentication**: Verifying a user account. 
+- **User Profile**: Each user has a profile including privacy informations, emails, majors, skills, experiences, current projects and rating history.
+- **User Interactions**: A user can post a project and becomes a project initiator. Users can read the description and requirement of projects and submit applications to initiators. Initiators can accept any number of applications to form a group.
+- **Implicit Social Networking**: Users in a same project are automatically considered as friends. They can check each other's information that only friends have the privilege.
+- **Reputation System**: Users can comment a posted project. When a project finished, group members can rate each other and leave comments. Initiators can check applicants' rating level and read their partner comments history.
+- **Search and Recommendation System:** Users can search projects by keywords or other users by account name. When Initiators post a project, platform will recommend users having relevant skills and high rates to the initiator.
+- **Administrative View**: The project administrative view allows initiators to check the applicant list of a project and add or remove group members.
+
 ## Project Structure
 We are using MEAN stack to build this project.
 - ``Design Pattern``: MVC.
@@ -20,7 +29,6 @@ We are using MEAN stack to build this project.
 - ``Node.js``: Server
 - ``Bootstrap``: Style
 - ``Library``: mongoose.js, passport.js
-
 
 ## Database Schema
 We are going to use mongodb with mongoose module in our project. The database saves all informationsabout our website, and provide functionality of all database operations. Whenever the pages need to interact with database, this module should be used.
@@ -54,6 +62,18 @@ The project page will use this module. If the request comes from a publisher, th
 
 ## Page&Interaction Design
 
+### Home Page
+![home.png](./img/Home.png "Home Page")
+
+
+### Profile Page
+![profile.png](./img/Profile.png "Profile Page")
+
+### Project Page
+![project.png](./img/Project.png "Project Page")
+
+### Information Page
+![info.png](./img/Info.png "Infomation Page")
 
 ## REST API Design
 ### Project
@@ -180,11 +200,13 @@ The project page will use this module. If the request comes from a publisher, th
  ````
 	{
 		{
+			"ProjectId": ,
 			"UserId": ,
 			"Time": ,
 			"Cotent": 
 		},
 		{
+			"ProjectId": ,
 			"UserId": ,
 			"Time": ,
 			"Cotent": 
