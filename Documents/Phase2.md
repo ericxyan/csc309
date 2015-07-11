@@ -12,7 +12,7 @@ Xiaoyu Yan
 `c4yanxia`
 
 ## Features:
-- **User Authentication**: Verifying a user account. Login with facebook.
+- **User Authentication**: Verifying a user account. Login with Google account.
 - **User Profile**: Each user has a profile including privacy informations, emails, majors, skills, experiences, current projects and rating history.
 - **User Interactions**: A user can post a project and becomes a project initiator. Users can read the description and requirement of projects and submit applications to initiators. Initiators can accept any number of applications to form a group.
 - **Implicit Social Networking**: Users in a same project are automatically considered as friends. They can check each other's information that only friends have the privilege.
@@ -40,7 +40,7 @@ The followings are our database schemas:
 
 ## Module Design
 ### Authentation module
-We would use the module express-session from express to preventing users browse un-authorized content. This module, at first, works for the information bar that check the login information. If the login information in correct, it would use the express-session module to keep track of login information so that every modules knows who they are dealing with. As are result, we are able to modify the content of pages dynamically based on users’ premissions. Also, in this module, we are going to add the third-party api from Facebook so that users can login with their facebook account. The account would be automatically added to our database.
+We would use the module express-session from express to preventing users browse un-authorized content. This module, at first, works for the information bar that check the login information. If the login information in correct, it would use the express-session module to keep track of login information so that every modules knows who they are dealing with. As are result, we are able to modify the content of pages dynamically based on users’ premissions. Also, in this module, we are going to add the third-party api from Google so that users can login with their Google account. The account would be automatically added to our database.
 
 ### Main page search module
 The Main page search module is responsible for the display on main page. At first, by default, it would display the top 10 recently added project to view, and the numbers of current ongoing projects, finished pages and number of users. Also, it uses database module to get different pre-defined results that corresponding to pre-defined search buttons on the main page, and display the result on main page. Also, it allows user to search by key words. This also interacts with our database and display the results on the main page.
