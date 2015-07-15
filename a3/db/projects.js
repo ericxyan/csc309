@@ -7,7 +7,7 @@ var projectsSchema = new Schema({
 	Start_time: {type: Date},
 	Finish_time: {type: Date},
 	Status: {type: String},
-	Admin: {type: Schema.ObjectId, ref: 'User'}
+	Admin: {type: Schema.ObjectId, ref: 'User'},
 	Member: [{type: Schema.ObjectId, ref: 'User'}],
 	Comments: [{type: Schema.ObjectId, ref: 'Comment'}]
 });
