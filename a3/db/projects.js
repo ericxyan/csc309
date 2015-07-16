@@ -12,4 +12,5 @@ var projectsSchema = new Schema({
 	"Comments": [{type: Schema.ObjectId, ref: 'Comment'}]
 });
 
-mongoose.model('Project', projectsSchema);
+var Project = mongoose.model('Project', projectsSchema);
+module.exports = Project;
