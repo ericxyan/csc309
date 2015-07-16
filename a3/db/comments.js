@@ -1,4 +1,4 @@
-var mongoose = require('./node_modules/mongoose');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var commentsSchema = new Schema({
@@ -8,4 +8,5 @@ var commentsSchema = new Schema({
 	"Content": {type: String}
 });
 
-mongoose.model('Comment', commentsSchema);
+var Comment = mongoose.model('Comment', commentsSchema, "Comment");
+module.exports = Comment;
