@@ -4,18 +4,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var api = require('./routes/api');
 
 var app = express();
 
 //database setup
-var mongoose = require('mongoose');
-mongoose.connect('localhost:3000/a3db');
-fs.readdirSync(__dirname + '/db').forEach(function(filename){
-  if(~filename.indexOf('.js')) require(__dirname + 'db' + filename);
-});
+var mongoose = require('./node_modules/mongoose');
+mongoose.connect('mongodb://localhost:27017/a3db');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -32,6 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/users', users);
+app.use('/api', api);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -53,6 +52,7 @@ if (app.get('env') === 'development') {
     });
   });
 }
+
 
 // production error handler
 // no stacktraces leaked to user
