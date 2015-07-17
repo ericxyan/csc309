@@ -11,8 +11,13 @@ var api = require('./routes/api');
 var app = express();
 
 //database setup
+<<<<<<< HEAD
 var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://csc309:banana@ds047782.mongolab.com:47782/csc309');
+=======
+var mongoose = require('./node_modules/mongoose');
+mongoose.connect('mongodb://localhost:27017/a3db');
+>>>>>>> 083c8af275cc89ab5591449d676f75afb21c6c31
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
