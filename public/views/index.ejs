@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html ng-app="goodteam">
+  <head>
+    <title>Good Team</title>
+    <link rel='stylesheet' href='/views/stylesheets/style.css' />
+	<!-- Bootstrap: Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<!-- Bootstrap: Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+	<!-- UI Bootstrap AngularJS -->
+	<script src="/views/Javascripts/bower_components/angular/angular.min.js"></script>
+	<script src="/views/Javascripts/bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+	<script src="/views/Javascripts/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+	<!-- AngularJS controllers -->
+	<script src="/controllers/ngApp.js"></script>
+  </head>
+  <body>
+  	<!-- Header -->
+  	<header>
+  		<!-- navbar -->
+	  	<nav class="navbar navbar-default">
+			<!-- logo -->
+			<a href="/" class="logo-link">
+				<img src="/views/img/logo.png" alt="logo">
+			</a>
+			<!-- login form-->
+			<form action="" id="signin" class="navbar-form navbar-right" role="form">
+				<!-- Account email -->
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					<input type="email" class="form-control" id="email" name="email" value="" placeholder="Email Address">
+				</div>
+				<!-- Password -->
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+					<input type="password" class="form-control" id="password" name="password" value="" placeholder="Password">
+				</div>
+				<!-- submit button -->
+				<button class="btn btn-primary" type="submit">Login</button>
+			</form>
+	  	</nav>
+	  	<!-- Carousel -->
+	  	<div ng-controller="carousel" class="carousel">
+		  <div>
+		    <carousel interval="slideInterval">
+		      <slide ng-repeat="slide in slides" active="slide.active">
+		        <img ng-src="{{slide.image}}" style="margin:auto;">
+		        <div class="carousel-caption">
+		          <h4>Slide {{$index}}</h4>
+		          <p>{{slide.text}}</p>
+		        </div>
+		      </slide>
+		    </carousel>
+		  </div>
+	  	</div>
+  	</header>
+	<!-- Content -->
+  	<div class="container">
+  		<div class="row content">
+  			<!-- Left zone -->
+  			<div class="col-xs-12 col-md-9 content-left" ng-controller="homeProjectCtrl">
+  				<!-- Projects list -->
+  				<div class="col-xs-12" ng-repeat="project in projects" ng-init="parseInt(project)">
+  					<div class="row">
+	  					<div class="col-xs-12 project-card">
+		  					<div class="project-thumbnail">
+		  					</div>
+		  					<div class="project-card-content">
+			  					<h2>{{project.ProjectName}}</h2>
+			  					<div class="row">
+				  					<span class="col-xs-4 text-muted">Admin: {{project.Admin}}</span>
+				  					<span class="col-xs-4 text-muted text-center">Start from: {{project.Start_time + ' to ' + project.Finish_time}}</span>
+				  					
+				  					<span class="col-xs-4 text-muted text-justify">Status: {{project.Status}}</span>	
+			  					</div>
+			  					<div class="col-xs-12"><progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i>{{project.Status}}/100</i></progressbar></div>
+			  					<p>{{project.Description}}</p>
+			  					<p class="muted">Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p>
+		  					</div>
+
+	  					</div>
+  					</div>
+					<div class="row">
+						<div class="col-xs-12 project-comments" ng-repeat="comment in project.Comments">
+							
+						</div>
+					</div>
+  				</div>
+  			</div>
+  			<!-- Right zone -->
+  			<div class="col-xs-12 col-md-3 content-right">
+				<div class="row" id="search">
+					<!-- Search box -->
+					<div class="col-xs-12 input-group searchBox" ng-controller="homeProjectCtrl">
+                        <input type="text" class="  search-query form-control" placeholder="Search project or user" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button">
+                                <span class=" glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+					</div>
+					<hr />
+					<!-- Filters box -->
+					<div class="col-xs-12 filterBox">		
+					    <button type="button" class="btn btn-sm btn-info" ng-click="cs()">Computer Science</button>
+					    <button type="button" class="btn btn-sm btn-info" ng-click="cs()">Art</button>
+					    <button type="button" class="btn btn-sm btn-info" ng-click="cs()">EE</button>
+					</div>
+				</div>
+  			</div>
+  		</div>
+  	</div>
+  </body>
+</html>
