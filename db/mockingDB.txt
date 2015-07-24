@@ -1,0 +1,123 @@
+//   Users
+{
+        "_id" : ObjectId("55b26992483e267619bef081"),
+        "UserId" : "garykang",
+        "Pwd" : "123123123",
+        "Email" : "dragon_gary@msn.com",
+        "Ceil" : "4168261846",
+        "Projects" : [
+                ObjectId("55b26d88483e267619bef085"),
+                ObjectId("55b2820d67f83c06901366ef"),
+                ObjectId("55b2821f67f83c06901366f0")
+        ],
+        "Skills" : [ ],
+        "Rating" : [ ]
+}
+{
+        "_id" : ObjectId("55b26992483e267619bef082"),
+        "UserId" : "shayu",
+        "Pwd" : "456456456",
+        "Email" : "eric@gmail.com",
+        "Ceil" : "4168888888",
+        "Projects" : [
+                ObjectId("55b2820d67f83c06901366ef"),
+                ObjectId("55b2821f67f83c06901366f0")
+        ],
+        "Skills" : [ ],
+        "Rating" : [
+                ObjectId("55b28ec667f83c06901366f4")
+        ]
+}
+{
+        "_id" : ObjectId("55b26992483e267619bef083"),
+        "UserId" : "aliceliu",
+        "Pwd" : "789789789",
+        "Email" : "alice_ut@163.com",
+        "Ceil" : "6471234567",
+        "Projects" : [
+                ObjectId("55b2821f67f83c06901366f0")
+        ],
+        "Skills" : [ ],
+        "Rating" : [ ]
+}
+
+
+
+// projects
+{
+        "_id" : ObjectId("55b26d88483e267619bef085"),
+        "ProjectName" : "GoodTeam",
+        "Description" : "This is a goddamn good team!",
+        "Start_time" : "Fri Jul 24 2015 16:53:28 GMT+0000 (UTC)",
+        "Finish_time" : null,
+        "Status" : 40,
+        "Admin" : ObjectId("55b26992483e267619bef081"),
+        "Member" : [ ],
+        "Comments" : [ ]
+}
+{
+        "_id" : ObjectId("55b2820d67f83c06901366ef"),
+        "ProjectName" : "BetterTeam",
+        "Description" : "foo",
+        "Start_time" : "Fri Jul 24 2015 18:21:01 GMT+0000 (UTC)",
+        "Finish_time" : null,
+        "Status" : 20,
+        "Admin" : ObjectId("55b26992483e267619bef082"),
+        "Member" : [
+                ObjectId("55b26992483e267619bef081")
+        ],
+        "Comments" : [ ]
+}
+{
+        "_id" : ObjectId("55b2821f67f83c06901366f0"),
+        "ProjectName" : "BestTeam",
+        "Description" : "MY TEAM IS BETTER THAN ALL OTHERS",
+        "Start_time" : "Fri Jul 24 2015 18:21:19 GMT+0000 (UTC)",
+        "Finish_time" : null,
+        "Status" : 99,
+        "Admin" : ObjectId("55b26992483e267619bef081"),
+        "Member" : [
+                ObjectId("55b26992483e267619bef083"),
+                ObjectId("55b26992483e267619bef082")
+        ],
+        "Comments" : [
+                ObjectId("55b2851b67f83c06901366f1"),
+                ObjectId("55b2851b67f83c06901366f2"),
+                ObjectId("55b2851b67f83c06901366f3")
+        ]
+}
+
+
+
+
+
+// comments
+{
+        "_id" : ObjectId("55b2851b67f83c06901366f1"),
+        "UserId" : ObjectId("55b26992483e267619bef082"),
+        "Time" : "Fri Jul 24 2015 18:34:03 GMT+0000 (UTC)",
+        "Content" : "Oh my goddess Alice"
+}
+{
+        "_id" : ObjectId("55b2851b67f83c06901366f2"),
+        "UserId" : ObjectId("55b26992483e267619bef083"),
+        "Time" : "Fri Jul 24 2015 18:34:03 GMT+0000 (UTC)",
+        "Content" : "Oh my goddess Alice"
+}
+{
+        "_id" : ObjectId("55b2851b67f83c06901366f3"),
+        "UserId" : ObjectId("55b26992483e267619bef082"),
+        "Time" : "Fri Jul 24 2015 18:34:03 GMT+0000 (UTC)",
+        "Content" : "Alice let me fly"
+}
+
+
+
+// Rating
+
+{
+        "_id" : ObjectId("55b28ec667f83c06901366f4"),
+        "RaterId" : ObjectId("55b26992483e267619bef081"),
+        "Stars" : 4,
+        "Comments" : "Da tui yu"
+}
