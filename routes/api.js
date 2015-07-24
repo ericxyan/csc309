@@ -60,7 +60,6 @@ router.put('/users/:id', function(req, res, next) {
 Get all projects in a list of json.
 */
 router.get('/projects/', function(req, res, next) {
-    console.log("here!");
     Project.find()
         .exec(function(err, doc){
         if(err){
