@@ -1,34 +1,17 @@
 var app = angular.module('goodteam', ['ui.bootstrap']);
 
-app.controller('homeProjectCtrl', function ($scope) {
+app.controller('homeProjectCtrl', function ($scope, $http) {
   $scope.isCollapsed = false;
-  $scope.projects = 
-[
-  { 
-    "ProjectName": "goodteam",
-    "Description": "123 description",
-    "Start_time": '2015-07-20',
-    "Finish_time": '2015-07-20',
-    "Status": "22",
-    "Admin": "Alic, Eric, Gary"
-  },
-  { 
-    "ProjectName": "goodteam",
-    "Description": "123 description",
-    "Start_time": '2015-07-20',
-    "Finish_time": '2015-07-20',
-    "Status": "51",
-    "Admin": "Alic, Eric, Gary"
-  },
-  { 
-    "ProjectName": "goodteam",
-    "Description": "123 description",
-    "Start_time": '2015-07-20',
-    "Finish_time": '2015-07-20', 2015
-    "Status": "99",
-    "Admin": "Alic, Eric, Gary"
+  
+  // fetch projects data
+  var getProjects = function (){
+    $http.get('/api/projects').success(function(res){
+      $scope.projects = res;
+    });
   }
-];
+  getProjects();
+
+
 
   $scope.parseInt = function(project){
     project.Status = parseInt(project.Status);

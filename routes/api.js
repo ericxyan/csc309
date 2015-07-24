@@ -142,8 +142,27 @@ router.get('/rating/:id', function(req, res, next) {
 
 
 /*
-
+Add new Rating to the specific user, return the promise of this action
 */
+router.post('/rating/:id', function(req, res, next) {
+    new Rating(req.body)
+        .save(function(err, docs){
+        if(err){
+            res.send("err");
+        }
+        User.update(mongoose.Types.ObjectId(req.params.id), {$push: {"Rating": docs._id}},function(err){
+            if(err){
+                res.send("err");}
+            res.send("success");
+            
+        });
+    });
+});
+
+/*
+Delete Rating.
+*/
+
 
 
 module.exports = router;

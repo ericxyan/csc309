@@ -3,6 +3,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+
 .site-nav {
 
 	height: 60px;
@@ -12,7 +13,7 @@ body {
 
 }
 
-.container {
+.content {
 	margin-top: 30px;
 }
 .project-card {

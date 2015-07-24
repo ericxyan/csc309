@@ -14,6 +14,7 @@
 	<script src="/controllers/ngApp.js"></script>
   </head>
   <body>
+  	<div class="container">
   	<!-- Header -->
   	<header>
   		<!-- navbar -->
@@ -38,6 +39,7 @@
 				<button class="btn btn-primary" type="submit">Login</button>
 			</form>
 	  	</nav>
+  	</header>
 	  	<!-- Carousel -->
 	  	<div ng-controller="carousel" class="carousel">
 		  <div>
@@ -52,9 +54,9 @@
 		    </carousel>
 		  </div>
 	  	</div>
-  	</header>
+
 	<!-- Content -->
-  	<div class="container">
+
   		<div class="row content">
   			<!-- Left zone -->
   			<div class="col-xs-12 col-md-9 content-left" ng-controller="homeProjectCtrl">
@@ -65,16 +67,17 @@
 		  					<div class="project-thumbnail">
 		  					</div>
 		  					<div class="project-card-content">
-			  					<h2>{{project.ProjectName}}</h2>
+			  					<h2><a href="/project/{{project._id}}"> {{project.ProjectName}} </a></h2>
 			  					<div class="row">
-				  					<span class="col-xs-4 text-muted">Admin: {{project.Admin}}</span>
-				  					<span class="col-xs-4 text-muted text-center">Start from: {{project.Start_time + ' to ' + project.Finish_time}}</span>
+				  					<div class="col-xs-4 text-muted">Admin: {{project.Admin}}</div>
+				  					<div class="col-xs-4 text-muted text-center">Start from: {{project.Start_time}} {{(project.Finish_time)? (' to ' + project.Finish_time):''}}</div>
 				  					
-				  					<span class="col-xs-4 text-muted text-justify">Status: {{project.Status}}</span>	
+				  					<div class="col-xs-4">
+				  						<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
+				  					</div>
 			  					</div>
-			  					<div class="col-xs-12"><progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i>{{project.Status}}/100</i></progressbar></div>
+			  					<div class="col-xs-12"></div>
 			  					<p>{{project.Description}}</p>
-			  					<p class="muted">Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.</p>
 		  					</div>
 
 	  					</div>
