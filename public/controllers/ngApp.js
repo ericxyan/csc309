@@ -24,7 +24,7 @@ app.controller('homeProjectCtrl', function ($scope) {
     "ProjectName": "goodteam",
     "Description": "123 description",
     "Start_time": '2015-07-20',
-    "Finish_time": '2015-07-20',
+    "Finish_time": '2015-07-20', 2015
     "Status": "99",
     "Admin": "Alic, Eric, Gary"
   }
