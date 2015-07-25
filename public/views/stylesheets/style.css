@@ -1,22 +1,24 @@
 body {
-  padding: 50px;
+
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 
-.site-nav {
-
-	height: 60px;
+.navbar {
+	margin-bottom: 0;
 }
 
-.carousel {
 
-}
-
-.content {
+.content-left {
 	margin-top: 30px;
 }
-.project-card {
+
+.content-right {
+	margin-top: 30px;
+}
+
+.project-card{
+	padding: 10px;
 	border: solid 1px #d9d9de;
 	border-radius: 6px;
 	line-height: 1.5;
