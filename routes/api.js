@@ -116,7 +116,7 @@ router.put('/projects/:id', function(req, res, next) {
  Delete the project with given _id, return the revised version json.
 */
 router.delete('/projects/:id', function(req, res, next) {
-    Project.findByIdAndRemove(mongoose.Types.ObjectId(req.params.id), req.body)
+    Project.findByIdAndRemove(mongoose.Types.ObjectId(req.params.id))
         .exec(function(err){
         if(err){
             res.send("err");
@@ -144,13 +144,13 @@ router.get('/rating/:id', function(req, res, next) {
 /*
 Add new Rating to the specific user, return the promise of this action
 */
-router.post('/rating/:id', function(req, res, next) {
+router.post('/rating/:userId', function(req, res, next) {
     new Rating(req.body)
         .save(function(err, docs){
         if(err){
             res.send("err");
         }
-        User.update(mongoose.Types.ObjectId(req.params.id), {$push: {"Rating": docs._id}},function(err){
+        User.update(mongoose.Types.ObjectId(req.params.userId), {$push: {"Rating": docs._id}},function(err){
             if(err){
                 res.send("err");}
             res.send("success");
@@ -163,6 +163,70 @@ router.post('/rating/:id', function(req, res, next) {
 Delete Rating.
 */
 
+router.delete('/rating/:userid/:ratingId', function(req, res, next) {
+    User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.userid)},{$pull : {"Rating" : mongoose.Types.ObjectId(req.params.ratingId)}}, function(err){
+            if(err){
+                res.send("err");}
+    });
+    Rating.findByIdAndRemove(mongoose.Types.ObjectId(req.params.ratingId))
+        .exec(function(err){
+        if(err){
+            res.send("err");
+        }
+        res.send("success");
+    });
+});
 
 
+
+/* ---------- api for Comments ---------- */
+
+
+/*
+Populate out the project's comments, and return the comments.
+*/
+router.get('/comment/:id', function(req, res, next) {
+    Project.findById(mongoose.Types.ObjectId(req.params.id), function(err, doc){
+        Project.populate(doc, {path: "Comment"}, function(err, doc){
+            res.send(doc.Comments);
+        });
+    });
+});
+
+
+/*
+Add new Comment to the specific project
+*/
+router.post('/comment/:projectId', function(req, res, next) {
+    new Comment(req.body)
+        .save(function(err, docs){
+        if(err){
+            res.send("err");
+        }
+        Project.update(mongoose.Types.ObjectId(req.params.projectId), {$push: {"Comments": docs._id}},function(err){
+            if(err){
+                res.send("err");}
+            res.send("success");
+            
+        });
+    });
+});
+
+/*
+Delete Comment.
+*/
+
+router.delete('/comment/:projectId/:commentId', function(req, res, next) {
+    Project.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.projectId)},{$pull : {"Comments" : mongoose.Types.ObjectId(req.params.commentId)}}, function(err){
+            if(err){
+                res.send("err");}
+    });
+    Comment.findByIdAndRemove(mongoose.Types.ObjectId(req.params.commentId))
+        .exec(function(err){
+        if(err){
+            res.send("err");
+        }
+        res.send("success");
+    });
+});
 module.exports = router;
