@@ -5,11 +5,21 @@ var User = require('../db/user');
 var Project = require('../db/projects');
 var Rating  = require('../db/rating');
 var Comment = require('../db/comments');
+var isAuthenticated = function (req, res, next) {
+    // allows GET without authentication
+    if(req.method === 'GET'){
+        return next();
+    }
+    if(req.isAuthenticated()){
+        return next();
+    }
 
+    // not authenticated 
+    return res.redirect('/');
+}
 
-
+router.use('/projects', isAuthenticated);
 /* ---------- for users ---------- */
-
 
 /*
  Get all users in a list of json
@@ -52,7 +62,32 @@ router.put('/users/:id', function(req, res, next) {
     });
 });
 
+/*
+ Post a new project, return the json of this project from db.
+*/
+router.post('/users', function(req, res, next) {
+    new User(req.body)
+        .save(function(err, docs){
+        if(err){
+            res.send("err");
+        }
+        //res.json(docs);
+        res.send({message:'Created a new user!'});
+    });
+});
 
+/*
+ Delete a user
+ */
+router.delete('/users/:id', function(req, res, next) {
+    User.findByIdAndRemove(mongoose.Types.ObjectId(req.params.id))
+        .exec(function(err){
+        if(err){
+            res.send("err");
+        }
+        res.send("Success: deleted user " + req.params.id);
+    });
+});
 /* ---------- api for projects ---------- */
 
 
@@ -65,7 +100,7 @@ router.get('/projects/', function(req, res, next) {
         if(err){
             res.send("err");
         }
-            res.send(doc)
+            res.send(doc);
         });
 });
 
@@ -93,7 +128,7 @@ router.post('/projects', function(req, res, next) {
         if(err){
             res.send("err");
         }
-        res.json(docs)
+        res.json(docs);
     });
 });
 
