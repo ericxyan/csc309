@@ -1,4 +1,29 @@
-var app = angular.module('goodteam', ['ui.bootstrap']);
+var app = angular.module('goodteam', ['ui.bootstrap', 'ngRoute']);
+
+app.config(function($routeProvider){
+  $routeProvider
+    //the timeline display
+    .when('/', {
+      templateUrl: '/views/home.html',
+      controller: 'homeProjectCtrl'
+    })
+    //the login display
+    .when('/login', {
+      templateUrl: '/views/login.html',
+      controller: 'authController'
+    })
+    //the signup display
+    .when('/register', {
+      templateUrl: '/views/register.html',
+      controller: 'authController'
+    })
+
+    // Project detail page
+    .when('/projects/:projectID', {
+      templateUrl: '/views/projectDetail.html',
+      controller: 'projectDetailCtrl'
+    })
+});
 
 app.controller('homeProjectCtrl', function ($scope, $http) {
   $scope.isCollapsed = false;
@@ -19,7 +44,7 @@ app.controller('homeProjectCtrl', function ($scope, $http) {
 
 });
 
-app.controller('authController', function($scope){
+app.controller('authController', function ($scope){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
 
@@ -32,7 +57,7 @@ app.controller('authController', function($scope){
   };
 });
 
-app.controller('carousel', function($scope) {
+app.controller('carousel', function ($scope) {
   $scope.slideInterval = 3000;
   var slides = $scope.slides = [    {
       image: '/views/img/1.jpg',
@@ -43,3 +68,9 @@ app.controller('carousel', function($scope) {
       text: 'blablabla...'
     }];
 });
+
+app.controller('projectDetailCtrl', function ($scope, $http, $routeParams){
+  $http.get('/api/projects/' + $routeParams.projectID).success(function (data){
+    $scope.project = data;
+  });
+})

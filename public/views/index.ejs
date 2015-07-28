@@ -1,78 +1,39 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<% include header %>
+		<title>Good Team</title>
+		<link rel='stylesheet' href='/views/stylesheets/style.css' />
+		<!-- AngularJS -->
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.13/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.min.js"></script>
+		<!-- Bootstrap: Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<!-- Bootstrap: Optional theme -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
+		<!-- AngularJS controllers -->
+		<script src="/controllers/ngApp.js"></script>
 	</head>
 	<body  ng-app="goodteam">
 		<div class="container">
 			<!-- navbar -->
-			<% include navbar %>
-			<!-- Carousel -->
-			<div class="row">
-				<% include carousel %>
-			</div>
+			<!-- navbar -->
+			<nav class="navbar-fluid navbar-default navbar-fixed-top" >
+				<div class="container">
+					<!-- logo -->
+					<a href="#/" class="navbar-left">
+						<img src="/views/img/logo.png" alt="logo">
+					</a>
+					<!-- Login or Register -->
+					<p class="navbar-right navbar-text"><a href="#/login">Login</a> or <a href="#/register">Register</a></p>
+				</div>
+			</nav>
+
 			<!-- Content -->
-			<div class="row content" ng-controller="homeProjectCtrl">
-				<!-- Left zone -->
-				<div class="col-xs-12 col-md-3 content-left">
-					<div class="row" id="search">
-						<!-- Search box -->
-						<div class="col-xs-12">
-							<div class=" input-group searchBox">
-								<input type="text" class="  search-query form-control" placeholder="Search project or user" />
-								<span class="input-group-btn">
-									<button class="btn btn-primary" type="button">
-									<span class=" glyphicon glyphicon-search"></span>
-									</button>
-								</span>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<!-- Filters box -->
-						<div class="col-xs-12 filterBox">
-							<hr />
-							<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Computer Science</button>
-							<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Art</button>
-							<button type="button" class="btn btn-sm btn-info" ng-click="cs()">EE</button>
-						</div>
-					</div>
-				</div>
-				<!-- Right zone -->
-				<div class="col-xs-12 col-md-9">
-					<div class="content-right">
-						<!-- Projects list -->
-						<div class="row" ng-repeat="project in projects" ng-init="parseInt(project)">
-							<div class="col-xs-12">
-								<div class="row">
-									<div class="col-xs-12">
-										<div class=" project-card">
-											<h2><a href="/project/{{project._id}}"> {{project.ProjectName}} </a></h2>
-											<div class="row">
-												<small class="col-xs-4 text-muted">Admin: {{project.Admin}}</small>
-												<small class="col-xs-4 text-muted text-center">Start from: {{project.Start_time | date:"h:mma 'on' MMM d, y"}} {{(project.Finish_time)? (' to ' + project.Finish_time | date:"h:mma 'on' MMM d, y"):''}}</small>
-												<small class="col-xs-4">
-											<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
-											</small>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<p>{{project.Description}}</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-12 project-comments" ng-repeat="comment in project.Comments">
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+			<div class="row content">
+				<div ng-view></div>
 			</div>
 		</div>
 	</div>
-</div>
 </body>
 </html>
