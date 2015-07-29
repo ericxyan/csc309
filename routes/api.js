@@ -28,7 +28,7 @@ router.get('/users/', function(req, res, next) {
     User.find()
         .exec(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.json(docs);
     });
@@ -42,7 +42,7 @@ router.get('/users/:id/:pwd', function(req, res, next) {
     User.findOne({"UserId":req.params.id, "Pwd":req.params.pwd})
         .exec(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.json(docs);
     });
@@ -56,7 +56,7 @@ router.put('/users/:id', function(req, res, next) {
     User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.id)}, req.body)
         .exec(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.json(docs);
     });
@@ -69,7 +69,7 @@ router.post('/users', function(req, res, next) {
     new User(req.body)
         .save(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         //res.json(docs);
         res.send({message:'Created a new user!'});
@@ -83,7 +83,7 @@ router.delete('/users/:id', function(req, res, next) {
     User.findByIdAndRemove(mongoose.Types.ObjectId(req.params.id))
         .exec(function(err){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.send("Success: deleted user " + req.params.id);
     });
@@ -98,7 +98,7 @@ router.get('/projects/', function(req, res, next) {
     Project.find()
         .exec(function(err, doc){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
             res.send(doc);
         });
@@ -112,7 +112,7 @@ router.get('/projects/:id', function(req, res, next) {
     Project.find({"_id": mongoose.Types.ObjectId(req.params.id)})
         .exec(function(err, doc){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.json(doc);
     });
@@ -126,7 +126,7 @@ router.post('/projects', function(req, res, next) {
     new Project(req.body)
         .save(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.json(docs);
     });
@@ -140,7 +140,7 @@ router.put('/projects/:id', function(req, res, next) {
     Project.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.id)}, req.body)
         .exec(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.json(docs);
     });
@@ -154,7 +154,7 @@ router.delete('/projects/:id', function(req, res, next) {
     Project.findByIdAndRemove(mongoose.Types.ObjectId(req.params.id))
         .exec(function(err){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.send("success");
     });
@@ -169,7 +169,13 @@ Populate out the user's ratings, and return the ratings.
 */
 router.get('/rating/:id', function(req, res, next) {
     User.findById(mongoose.Types.ObjectId(req.params.id), function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
         User.populate(doc, {path: "Rating"}, function(err, doc){
+            if(err){
+            res.status(500).send("Something broke!");
+            }
             res.send(doc.Rating);
         });
     });
@@ -183,11 +189,12 @@ router.post('/rating/:userId', function(req, res, next) {
     new Rating(req.body)
         .save(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         User.update(mongoose.Types.ObjectId(req.params.userId), {$push: {"Rating": docs._id}},function(err){
             if(err){
-                res.send("err");}
+                res.status(500).send("Something broke!");
+            }
             res.send("success");
             
         });
@@ -201,12 +208,13 @@ Delete Rating.
 router.delete('/rating/:userid/:ratingId', function(req, res, next) {
     User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.userid)},{$pull : {"Rating" : mongoose.Types.ObjectId(req.params.ratingId)}}, function(err){
             if(err){
-                res.send("err");}
+                res.status(500).send("Something broke!");
+            }
     });
     Rating.findByIdAndRemove(mongoose.Types.ObjectId(req.params.ratingId))
         .exec(function(err){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.send("success");
     });
@@ -222,7 +230,13 @@ Populate out the project's comments, and return the comments.
 */
 router.get('/comment/:id', function(req, res, next) {
     Project.findById(mongoose.Types.ObjectId(req.params.id), function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
         Project.populate(doc, {path: "Comment"}, function(err, doc){
+            if(err){
+                res.status(500).send("Something broke!");
+            }
             res.send(doc.Comments);
         });
     });
@@ -236,11 +250,12 @@ router.post('/comment/:projectId', function(req, res, next) {
     new Comment(req.body)
         .save(function(err, docs){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         Project.update(mongoose.Types.ObjectId(req.params.projectId), {$push: {"Comments": docs._id}},function(err){
             if(err){
-                res.send("err");}
+                res.status(500).send("Something broke!");
+            }
             res.send("success");
             
         });
@@ -254,12 +269,12 @@ Delete Comment.
 router.delete('/comment/:projectId/:commentId', function(req, res, next) {
     Project.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.projectId)},{$pull : {"Comments" : mongoose.Types.ObjectId(req.params.commentId)}}, function(err){
             if(err){
-                res.send("err");}
+                res.status(500).send("Something broke!");}
     });
     Comment.findByIdAndRemove(mongoose.Types.ObjectId(req.params.commentId))
         .exec(function(err){
         if(err){
-            res.send("err");
+            res.status(500).send("Something broke!");
         }
         res.send("success");
     });
