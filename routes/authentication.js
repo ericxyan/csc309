@@ -3,33 +3,34 @@ var router = express.Router();
 
 module.exports = function(passport){
 
-	// success login
+	//sends successful login state back to angular
 	router.get('/success', function(req, res){
 		res.send({state: 'success', user: req.user ? req.user : null});
 	});
 
-	// failure login
+	//sends failure login state back to angular
 	router.get('/failure', function(req, res){
-		res.send({state: 'failure', user: null, message: "Invalide username or password"});
+		res.send({state: 'failure', user: null, message: "Invalid username or password"});
 	});
 
-	// log in
+	//log in
 	router.post('/login', passport.authenticate('login', {
 		successRedirect: '/auth/success',
 		failureRedirect: '/auth/failure'
 	}));
 
-	// sign up
+	//sign up
 	router.post('/signup', passport.authenticate('signup', {
 		successRedirect: '/auth/success',
 		failureRedirect: '/auth/failure'
 	}));
 
-	// log out
-	router.get('/signout', function(req, res){
+	//log out
+	router.get('/signout', function(req, res) {
 		req.logout();
 		res.redirect('/');
-	})
+	});
 
 	return router;
-}
+
+};
