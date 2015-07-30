@@ -11,7 +11,7 @@ body {
 	margin-top: 30px;
 }
 
-.project-card{
+.card{
 	padding: 10px;
 	border: solid 1px #d9d9de;
 	border-radius: 6px;
@@ -31,8 +31,6 @@ body {
   border: 1px solid rgba(0,0,0,0.1);  
 
   .form-signin-heading,
-
-
 	.form-control {
 	  position: relative;
 	  font-size: 16px;

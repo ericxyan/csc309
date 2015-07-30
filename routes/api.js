@@ -24,8 +24,8 @@ router.use('/projects', isAuthenticated);
 /*
  Get all users in a list of json
 */
-router.get('/users/', function(req, res, next) {
-    User.find()
+router.get('/users/:userid', function(req, res, next) {
+    User.findOne({"UserId":req.params.userid})
         .exec(function(err, docs){
         if(err){
             res.status(500).send("Something broke!");

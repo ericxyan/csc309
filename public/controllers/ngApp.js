@@ -23,6 +23,12 @@ app.config(function($routeProvider){
       templateUrl: '/views/projectDetail.html',
       controller: 'projectDetailCtrl'
     })
+
+    // Profile
+    .when('/user/:userId', {
+      templateUrl: '/views/profile.html',
+      controller: 'InfoCtrl'
+    })
 });
 
 app.controller('homeProjectCtrl', function ($scope, $http) {
@@ -70,7 +76,14 @@ app.controller('carousel', function ($scope) {
 });
 
 app.controller('projectDetailCtrl', function ($scope, $http, $routeParams){
-  $http.get('/api/projects/' + $routeParams.projectID).success(function (data){
-    $scope.project = data;
+  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
+    $scope.project = res[0];
   });
-})
+});
+
+app.controller('InfoCtrl', function ($scope, $http, $routeParams) {
+  $http.get('api/users/' + $routeParams.userId).success(function (res) {
+    $scope.user = res;
+  });
+
+});
