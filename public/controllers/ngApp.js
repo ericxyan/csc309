@@ -29,6 +29,17 @@ app.config(function($routeProvider){
       templateUrl: '/views/profile.html',
       controller: 'InfoCtrl'
     })
+
+    // Project Admin
+    .when('/projects/admin/:projectID', {
+      templateUrl: '/views/projectAdmin.html',
+      controller: 'projectAdmin'
+    })
+
+    .when('/projects/apply/:projectID', {
+      templateUrl: '/views/projectApply.html',
+      controller: 'projectApply'
+    })
 });
 
 app.controller('homeProjectCtrl', function ($scope, $http) {
@@ -87,3 +98,18 @@ app.controller('InfoCtrl', function ($scope, $http, $routeParams) {
   });
 
 });
+
+app.controller('projectAdmin', function ($scope, $http, $routeParams) {
+  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
+    $scope.project = res[0];
+  });
+
+});
+
+app.controller('projectApply', function ($scope, $http, $routeParams) {
+  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
+    $scope.project = res[0];
+  });
+
+  
+})

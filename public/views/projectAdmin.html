@@ -1,0 +1,30 @@
+<div class="row card">
+	<table class="table">
+		<h1>Members application</h1>
+		<thead>
+			<tr>
+				<td>Position</td>
+				<td>Skills</td>
+				<td>Person</td>
+			</tr>
+		</thead>
+		<tbody>
+			<!--you need to update the members object-->
+			<tr ng-repeat="member in members">
+				<td>{{member.Role}}</td>
+				<td>{{member.Skills}}</td>
+				<!--点进去可以看这个用户的资料-->
+				<td>{{member.Username}}</td>
+				<td><button class="btn btn-primary" ng-click="accept(member._id)">Accept</button>
+				</td>
+				<td><button class="btn btn-primary" ng-click="reject(member._id)">Reject</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div class="row">
+	<div class="col-xs-12 col-md-4">
+		<td><button class="btn btn-primary" ng-click="finish()">Project Finished!</button>
+		</div>
+	</div>
