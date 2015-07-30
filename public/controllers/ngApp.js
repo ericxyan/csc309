@@ -45,6 +45,17 @@ app.config(function($routeProvider){
 app.controller('homeProjectCtrl', function ($scope, $http) {
   $scope.isCollapsed = false;
   
+  $scope.search = function (key) {
+    if(key === ""){
+      getProjects();
+    } else {
+      $http.get('/api/projects/name/' + $scope.searchKey)
+      .success(function (data) {
+        $scope.projects = data;
+      });
+    }
+  }; 
+
   // fetch projects data
   var getProjects = function (){
     $http.get('/api/projects').success(function(res){
@@ -52,8 +63,6 @@ app.controller('homeProjectCtrl', function ($scope, $http) {
     });
   }
   getProjects();
-
-
 
   $scope.parseInt = function(project){
     project.Status = parseInt(project.Status);
@@ -110,6 +119,4 @@ app.controller('projectApply', function ($scope, $http, $routeParams) {
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
-
-  
 })

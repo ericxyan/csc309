@@ -118,6 +118,15 @@ router.get('/projects/:id', function(req, res, next) {
     });
 });
 
+router.get('/projects/name/:projectName', function(req, res, next) {
+    Project.find({"ProjectName": req.params.projectName})
+        .exec(function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+        res.json(doc);
+    });
+});
 
 /*
  Post a new project, return the json of this project from db.
