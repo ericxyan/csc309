@@ -5,6 +5,7 @@ var User = require('../db/user');
 var Project = require('../db/projects');
 var Rating  = require('../db/rating');
 var Comment = require('../db/comments');
+
 var isAuthenticated = function (req, res, next) {
     // allows GET without authentication
     if(req.method === 'GET'){
@@ -22,7 +23,7 @@ router.use('/projects', isAuthenticated);
 /* ---------- for users ---------- */
 
 /*
- Get all users in a list of json
+ Get one user
 */
 router.get('/users/:userid', function(req, res, next) {
     User.findOne({"UserId":req.params.userid})
