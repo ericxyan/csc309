@@ -63,7 +63,7 @@ router.put('/users/:id', function(req, res, next) {
 });
 
 /*
- Post a new project, return the json of this project from db.
+ Post a new User, return the json of this project from db.
 */
 router.post('/users', function(req, res, next) {
     new User(req.body)
