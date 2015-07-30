@@ -9,8 +9,8 @@ var users = require('./routes/users');
 var api = require('./routes/api');
 var passport = require('passport');
 var session = require('express-session');
-var authenticate = require('./routes/authentication');
-authenticate(passport);
+var authenticate = require('./routes/authentication')(passport);
+
 
 var app = express();
 
@@ -45,6 +45,9 @@ app.use('/users', users);
 app.use('/api', api);
 app.use('/auth', authenticate);
 
+
+var initPassport = require('./passport-init');
+initPassport(passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
