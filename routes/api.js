@@ -120,7 +120,8 @@ router.get('/projects/:id', function(req, res, next) {
 });
 
 router.get('/projects/name/:projectName', function(req, res, next) {
-    Project.find({"ProjectName": req.params.projectName})
+    var keyWords = "\.*" + req.params.projectName + "\.";
+    Project.find({"ProjectName": new RegExp(keyWords, 'i')})
         .exec(function(err, doc){
         if(err){
             res.status(500).send("Something broke!");
