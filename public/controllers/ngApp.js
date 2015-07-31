@@ -1,4 +1,16 @@
-var app = angular.module('goodteam', ['ui.bootstrap', 'ngRoute']);
+var app = angular.module('goodteam', ['ui.bootstrap', 'ngRoute', 'ngCookies']);
+
+app.run(function($rootScope) {
+  if(!$rootScope.authenticated){
+    $rootScope.authenticated = false;
+    $rootScope.current_user = '';
+  }
+  $rootScope.signout = function(){
+      $http.get('auth/signout');
+      $rootScope.authenticated = false;
+      $rootScope.current_user = '';
+  };
+});
 
 app.config(function($routeProvider){
   $routeProvider
@@ -42,7 +54,16 @@ app.config(function($routeProvider){
     })
 });
 
-app.controller('homeProjectCtrl', function ($scope, $http) {
+app.controller('homeProjectCtrl', function ($scope, $http, $cookieStore) {
+
+  /* ngCookie test */
+  // Put cookie
+  //$cookieStore.put('myFavorite','oatmeal');
+  // Get cookie
+  //$scope.favoriteCookie = $cookieStore.get('myFavorite');
+  // Removing a cookie
+  //$cookieStore.remove('myFavorite');
+
   $scope.isCollapsed = false;
   $scope.search = function (key) {
     if(key === ""){
@@ -69,15 +90,14 @@ app.controller('homeProjectCtrl', function ($scope, $http) {
 
 });
 
-app.controller('authController', function ($scope, $http, $rootScope, $location){
+app.controller('authController', function ($scope, $http, $rootScope, $location, $cookieStore){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
   $scope.login = function(){
     $http.post('/auth/login', $scope.user).success(function(data){
       if(data.state == 'success'){
-        console.log(data.user);
         $rootScope.authenticated = true;
-        $rootScope.current_user = data.user.username;
+        $rootScope.current_user = data.user.UserId;
         $location.path('/');
       }
       else{
