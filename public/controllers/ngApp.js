@@ -1,15 +1,24 @@
 var app = angular.module('goodteam', ['ui.bootstrap', 'ngRoute', 'ngCookies']);
 
-app.run(function($rootScope, $cookieStore) {
-  if(!$cookieStore.get('username')){
-    $rootScope.authenticated = false;
-    $rootScope.current_user = '';
-  }
-  $rootScope.signout = function(){
-      $http.get('auth/signout');
+app.run(function($rootScope, $cookieStore, $http, $route) {
+  $http.get('auth/loggedin').success(function (user){
+    if(user === '0'){
       $rootScope.authenticated = false;
       $rootScope.current_user = '';
-      $cookieStore.remove('username');
+    }
+    else {
+      $rootScope.authenticated = true;
+      $rootScope.current_user = user.UserId;
+    }
+  });
+
+  $rootScope.signout = function(){
+      $http.get('auth/signout').success(function (data){
+          $rootScope.authenticated = false;
+          $rootScope.current_user = '';
+          $route.reload();
+      });
+
   };
 });
 
@@ -18,7 +27,8 @@ app.config(function($routeProvider){
     //the timeline display
     .when('/', {
       templateUrl: '/views/home.html',
-      controller: 'homeProjectCtrl'
+      controller: 'homeProjectCtrl',
+      disableCache: true
     })
     //the login display
     .when('/login', {
@@ -53,6 +63,8 @@ app.config(function($routeProvider){
       templateUrl: '/views/projectApply.html',
       controller: 'projectApply'
     })
+
+    .otherwise('/');
 });
 
 app.controller('homeProjectCtrl', function ($scope, $http, $cookieStore) {
@@ -91,7 +103,7 @@ app.controller('homeProjectCtrl', function ($scope, $http, $cookieStore) {
 
 });
 
-app.controller('authController', function ($scope, $http, $rootScope, $location, $cookieStore){
+app.controller('authController', function ($scope, $http, $location, $route, $rootScope, $location, $cookieStore){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
   $scope.login = function(){
@@ -99,7 +111,6 @@ app.controller('authController', function ($scope, $http, $rootScope, $location,
       if(data.state == 'success'){
         $rootScope.authenticated = true;
         $rootScope.current_user = data.user.UserId;
-        $cookieStore.put('username', data.user.UserId);
         $location.path('/');
       }
       else{

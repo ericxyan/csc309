@@ -40,7 +40,12 @@ module.exports = function(passport){
 	//log out
 	router.get('/signout', function(req, res) {
 		req.logout();
-		res.redirect('/');
+		res.send({state: 'success', user: req.user ? req.user : null});
+	});
+
+	// route to test if the user is logged in or not
+	router.get('/loggedin', function (req, res) {
+		res.send(req.isAuthenticated()? req.user: '0');
 	});
 
 	return router;
