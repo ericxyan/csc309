@@ -120,4 +120,87 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
-});
+})
+
+/*Validation*/
+.controller('MainController', function($scope,$q) {
+
+    $scope.passwordPattern = /(?=^.{5,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+
+    $scope.validEmail = function(email) {
+
+        var deferred = $q.defer(); //promise
+        setTimeout(function() {
+            deferred.resolve([ "nitin.sarma@gmail.com", "nitin@gmail.com" ].indexOf(email) === -1);
+        }, 1000);
+        return deferred.promise;
+    };
+
+})
+/*Validation directives*/
+// validate username
+.directive('validUsername', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, elm, attrs, ctrl) {
+            ctrl.$parsers.unshift(function (viewValue) {
+                // Any way to read the results of a "required" angular validator here?
+                var isBlank = viewValue === ''
+                var invalidChars = !isBlank && !/^[A-z0-9]+$/.test(viewValue)
+                var invalidLen = !isBlank && !invalidChars && (viewValue.length < 5 || viewValue.length > 20)
+                ctrl.$setValidity('isBlank', !isBlank)
+                ctrl.$setValidity('invalidChars', !invalidChars)
+                ctrl.$setValidity('invalidLen', !invalidLen)
+                scope.usernameGood = !isBlank && !invalidChars && !invalidLen
+
+            })
+        }
+    }
+})
+// password match
+.directive("ngEquals", function() {
+        var directive = { };
+
+        directive.restrict = 'A';
+        directive.require = 'ngModel';
+        directive.scope = {
+            original: '=ngEquals'
+        };
+
+        directive.link = function(scope, elm, attrs, ngModel) {
+            ngModel.$parsers.unshift(function(value) {
+                ngModel.$setValidity('equals', scope.original === value);
+                return value;
+            });
+        };
+
+        return directive;
+    })
+.directive("ngFiltered", function() {
+            var directive = { };
+
+            directive.restrict = 'A';
+            directive.require = 'ngModel';
+            directive.scope = {
+                filter: '&ngFiltered'
+            };
+
+            directive.link = function(scope, elm, attrs, ngModel) {
+                ngModel.$parsers.unshift(function(value) {
+                    var result = scope.filter({
+                        $value: value
+                    });
+                    if (typeof result.then === "function") {
+                        result.then(function(result) {
+                            ngModel.$setValidity('filtered', result);
+                        });
+                    } else {
+                        ngModel.$setValidity('filtered', result);
+                    }
+                    return value;
+                });
+            };
+
+            return directive;
+        });
+
