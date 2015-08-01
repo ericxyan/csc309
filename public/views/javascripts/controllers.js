@@ -1,13 +1,23 @@
 angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
+// Home page
 .controller('homeProjectCtrl', function ($scope, $http) {
-  $scope.isCollapsed = false;
+  //$scope.isCollapsed = false;
+  // Search function
   $scope.search = function (key) {
     if(key === ""){
       getProjects();
+      $scope.users = [];
     } else {
+      //search projects
       $http.get('/api/projects/name/' + $scope.searchKey)
       .success(function (data) {
         $scope.projects = data;
+      });
+
+      //search users
+      $http.get('/api/users/name/' + $scope.searchKey)
+      .success(function (data) {
+        $scope.users = data;
       });
     }
   }; 
@@ -18,15 +28,17 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       $scope.projects = res;
     });
   }
+
   getProjects();
 
   $scope.parseInt = function(project){
     project.Status = parseInt(project.Status);
   }
 
-});
+})
 
-app.controller('authController', function ($scope, $rootScope, $http, $location, $route){
+// Login page
+.controller('authController', function ($scope, $rootScope, $http, $location, $route){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
   $scope.login = function(){
@@ -42,6 +54,7 @@ app.controller('authController', function ($scope, $rootScope, $http, $location,
     });
   };
 
+  // register a new user
   $scope.register = function(){
     $http.post('/auth/signup', $scope.user).success(function(data){
       if(data.state == 'success'){
@@ -54,9 +67,10 @@ app.controller('authController', function ($scope, $rootScope, $http, $location,
       }
     });
   };
-});
+})
 
-app.controller('carousel', function ($scope) {
+// carousel controller
+.controller('carousel', function ($scope) {
   $scope.slideInterval = 3000;
   var slides = $scope.slides = [    {
       image: '/views/img/1.jpg',
@@ -66,36 +80,40 @@ app.controller('carousel', function ($scope) {
       image: '/views/img/2.jpg',
       text: 'blablabla...'
     }];
-});
+})
 
-app.controller('projectDetailCtrl', function ($scope, $http, $routeParams){
+// Project detail page
+.controller('projectDetailCtrl', function ($scope, $http, $routeParams){
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
-});
+})
 
-app.controller('InfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
-
+// User info page
+.controller('InfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
+  // Check login status
   $http.get('auth/loggedin').success(function (user){
-    if(user === '0'){
+    if(user === '0'){ //not login
       $location.path('/login');
     }
-    else {
+    else { // logged in
       $http.get('api/users/' + $routeParams.userId).success(function (res) {
         $scope.user = res;
       });
     }
   });
-});
+})
 
-app.controller('projectAdmin', function ($scope, $http, $routeParams) {
+// project admin page
+.controller('projectAdmin', function ($scope, $http, $routeParams) {
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
 
-});
+})
 
-app.controller('projectApply', function ($scope, $http, $routeParams) {
+// Create new project page
+.controller('projectApply', function ($scope, $http, $routeParams) {
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });

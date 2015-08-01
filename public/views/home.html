@@ -1,74 +1,73 @@
-			<!-- Carousel -->
-			<div class="row">
-				<div class="col-xs-12" ng-controller="carousel">
-					<carousel interval="slideInterval">
-					<slide ng-repeat="slide in slides" active="slide.active">
-					<img ng-src="{{slide.image}}" style="margin:auto;">
-					<div class="carousel-caption">
-						<h4>Slide {{$index}}</h4>
-						<p>{{slide.text}}</p>
-					</div>
-					</slide>
-					</carousel>
-				</div>
+<!-- Carousel -->
+<div class="row">
+	<div class="col-xs-12" ng-controller="carousel">
+		<carousel interval="slideInterval">
+		<slide ng-repeat="slide in slides" active="slide.active">
+		<img ng-src="{{slide.image}}" style="margin:auto;">
+		<div class="carousel-caption">
+			<h4>Slide {{$index}}</h4>
+			<p>{{slide.text}}</p>
+		</div>
+		</slide>
+		</carousel>
+	</div>
+</div>
+<!-- Left zone -->
+<div class="col-xs-12 col-md-3 content-left">
+	<div class="row" id="search">
+		<!-- Search box -->
+		<div class="col-xs-12">
+			<div class=" input-group searchBox">
+				<input type="text" ng-model="searchKey" ng-change="search(searchKey)" class="search-query form-control" placeholder="Search project or user" />
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="button" ng-click="search(searchKey)">
+					<span class=" glyphicon glyphicon-search"></span>
+					</button>
+				</span>
 			</div>
-			<div>Session: {{favoriteCookie}}</div>
-				<!-- Left zone -->
-				<div class="col-xs-12 col-md-3 content-left">
-					<div class="row" id="search">
-						<!-- Search box -->
-						<div class="col-xs-12">
-							<div class=" input-group searchBox">
-								<input type="text" ng-model="searchKey" ng-change="search(searchKey)" class="search-query form-control" placeholder="Search project or user" />
-								<span class="input-group-btn">
-									<button class="btn btn-primary" type="button" ng-click="search(searchKey)">
-									<span class=" glyphicon glyphicon-search"></span>
-									</button>
-								</span>
-							</div>
-						</div>
+		</div>
+	</div>
+	<div class="row">
+		<!-- Filters box -->
+		<div class="col-xs-12 filterBox">
+			<hr />
+			<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Computer Science</button>
+			<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Art</button>
+			<button type="button" class="btn btn-sm btn-info" ng-click="cs()">EE</button>
+		</div>
+	</div>
+</div>
+<!-- Right zone -->
+<div class="col-xs-12 col-md-9">
+	<div class="content-right">
+		<!-- Projects list -->
+		<div class="row" ng-repeat="project in projects" ng-init="parseInt(project)">
+			<div class="col-xs-12">
+				<div class="card">
+					<h2><a href="#/projects/{{project._id}}"> {{project.ProjectName}} </a></h2>
+					<div class="row">
+						<small class="col-xs-4 text-muted">Admin: {{project.Admin}}</small>
+						<small class="col-xs-4 text-muted text-center">Start from: {{project.Start_time | date:"h:mma 'on' MMM d, y"}} {{(project.Finish_time)? (' to ' + project.Finish_time | date:"h:mma 'on' MMM d, y"):''}}</small>
+						<small class="col-xs-4">
+							<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
+						</small>
 					</div>
 					<div class="row">
-						<!-- Filters box -->
-						<div class="col-xs-12 filterBox">
-							<hr />
-							<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Computer Science</button>
-							<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Art</button>
-							<button type="button" class="btn btn-sm btn-info" ng-click="cs()">EE</button>
-						</div>
-					</div>
-				</div>
-				<!-- Right zone -->
-				<div class="col-xs-12 col-md-9">
-					<div class="content-right">
-						<!-- Projects list -->
-						<div class="row" ng-repeat="project in projects" ng-init="parseInt(project)">
-							<div class="col-xs-12">
-								<div class="row">
-									<div class="col-xs-12">
-										<div class="card">
-											<h2><a href="#/projects/{{project._id}}"> {{project.ProjectName}} </a></h2>
-											<div class="row">
-												<small class="col-xs-4 text-muted">Admin: {{project.Admin}}</small>
-												<small class="col-xs-4 text-muted text-center">Start from: {{project.Start_time | date:"h:mma 'on' MMM d, y"}} {{(project.Finish_time)? (' to ' + project.Finish_time | date:"h:mma 'on' MMM d, y"):''}}</small>
-												<small class="col-xs-4">
-											<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
-											</small>
-										</div>
-										<div class="row">
-											<div class="col-xs-12">
-												<p>{{project.Description}}</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-12 project-comments" ng-repeat="comment in project.Comments">
-								</div>
-							</div>
+						<div class="col-xs-12">
+							<p>{{project.Description}}</p>
 						</div>
 					</div>
 				</div>
 			</div>
-		
+		</div>
+		<!-- user list -->
+		<div class="users" ng-if="users.length">
+			<h2>User:</h2>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="user in users">
+						<h2><a href="#/users/{{user.UserId}}">{{user.UserId}}</a></h2>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>

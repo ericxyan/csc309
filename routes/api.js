@@ -35,6 +35,20 @@ router.get('/users/:userid', function(req, res, next) {
     });
 });
 
+/*
+Get users by keywords
+ */
+router.get('/users/name/:userid', function(req, res, next) {
+    var keyWords = "\.*" + req.params.userid + "\.";
+    User.find({"UserId": new RegExp(keyWords, 'i')})
+        .exec(function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+        res.json(doc);
+    });
+});
+
 
 /*
  Get users json with given id and pwd, null if no user found.
