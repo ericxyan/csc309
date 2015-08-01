@@ -25,13 +25,13 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
     })
 
     // Profile
-    .when('/user/:userId', {
+    .when('/admin/user/:userId', {
       templateUrl: '/views/profile.html',
       controller: 'InfoCtrl'
     })
 
     // Project Admin
-    .when('/projects/admin/:projectID', {
+    .when('/admin/project/:projectID', {
       templateUrl: '/views/projectAdmin.html',
       controller: 'projectAdmin'
     })
@@ -41,5 +41,7 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
       controller: 'projectApply'
     })
 
-    .otherwise('/');
+    .otherwise({
+      redirectTo: '/'
+    });
 });
