@@ -4,7 +4,8 @@ var Schema = mongoose.Schema;
 var usersSchema = new Schema({
 	"UserId": {type: String},
 	"Pwd": {type: String},
-	"Email": {type: String},
+	"NickName": {type: String},  // add NickName
+	"Email": {type: String}, 
 	"Ceil": {type: String},
 	"Projects": [{type: Schema.ObjectId, ref: 'Project'}],
 	"Skills": [{type: String}],
