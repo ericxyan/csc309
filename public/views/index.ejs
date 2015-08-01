@@ -13,7 +13,9 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.0.js"></script>
 		<!-- AngularJS controllers -->
-		<script src="/controllers/ngApp.js"></script>
+		<script src="/views/javascripts/ngApp.js"></script>
+		<script src="/views/javascripts/controllers.js"></script>
+		<script src="/views/javascripts/config.js"></script>
 	</head>
 	<body  ng-app="goodteam">
 		<div class="container">
@@ -25,9 +27,17 @@
 						<img src="/views/img/logo.png" alt="logo">
 					</a>
 					<!-- Login or Register -->
-					<p class="navbar-right navbar-text" ng-if="!authenticated"><a href="#/login">Login</a> or <a href="#/register">Register</a> or <a href="/auth/google">Sign On with Google</a></p>
+					<p class="navbar-right navbar-text" ng-if="!authenticated">
+						<a href="#/login">Login</a>
+						or 
+						<a href="#/register">Register</a> 
+						or 
+						<a href="/auth/google">Sign On with Google</a>
+						or
+						<button class="btn btn-default" ng-click="open('sm')">Login</button>
+					</p>
 					<p class="navbar-right navbar-text" ng-if="authenticated"><a href="#" ng-click="signout()">Logout</a></p>
-					<p class="navbar-right navbar-text" ng-if="authenticated">Signed in as <a href="">{{current_user}}</a></p>
+					<p class="navbar-right navbar-text" ng-if="authenticated">Signed in as <a href="#/user/{{current_user}}">{{current_user}}</a></p>
 				</div>
 			</nav>
 			<!-- Content -->

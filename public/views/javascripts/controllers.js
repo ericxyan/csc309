@@ -1,73 +1,5 @@
-var app = angular.module('goodteam', ['ui.bootstrap', 'ngRoute', 'ngCookies']);
-
-app.run(function($rootScope, $cookieStore, $http, $route) {
-  $http.get('auth/loggedin').success(function (user){
-    if(user === '0'){
-      $rootScope.authenticated = false;
-      $rootScope.current_user = '';
-    }
-    else {
-      $rootScope.authenticated = true;
-      $rootScope.current_user = user.UserId;
-    }
-  });
-
-  $rootScope.signout = function(){
-      $http.get('auth/signout').success(function (data){
-          $rootScope.authenticated = false;
-          $rootScope.current_user = '';
-          $route.reload();
-      });
-
-  };
-});
-
-app.config(function($routeProvider, $locationProvider, $httpProvider){
-  $routeProvider
-    //the timeline display
-    .when('/', {
-      templateUrl: '/views/home.html',
-      controller: 'homeProjectCtrl',
-      disableCache: true
-    })
-    //the login display
-    .when('/login', {
-      templateUrl: '/views/login.html',
-      controller: 'authController'
-    })
-    //the signup display
-    .when('/register', {
-      templateUrl: '/views/register.html',
-      controller: 'authController'
-    })
-
-    // Project detail page
-    .when('/projects/:projectID', {
-      templateUrl: '/views/projectDetail.html',
-      controller: 'projectDetailCtrl'
-    })
-
-    // Profile
-    .when('/user/:userId', {
-      templateUrl: '/views/profile.html',
-      controller: 'InfoCtrl'
-    })
-
-    // Project Admin
-    .when('/projects/admin/:projectID', {
-      templateUrl: '/views/projectAdmin.html',
-      controller: 'projectAdmin'
-    })
-
-    .when('/projects/apply/:projectID', {
-      templateUrl: '/views/projectApply.html',
-      controller: 'projectApply'
-    })
-
-    .otherwise('/');
-});
-
-app.controller('homeProjectCtrl', function ($scope, $http, $cookieStore) {
+angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
+.controller('homeProjectCtrl', function ($scope, $http) {
   $scope.isCollapsed = false;
   $scope.search = function (key) {
     if(key === ""){
@@ -167,4 +99,4 @@ app.controller('projectApply', function ($scope, $http, $routeParams) {
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
-})
+});
