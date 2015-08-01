@@ -10,19 +10,19 @@ var api = require('./routes/api');
 var passport = require('passport');
 var session = require('express-session');
 var authenticate = require('./routes/authentication')(passport);
-
-
+var initPassport = require('./passport-init');
 var app = express();
 
 //database setup
-
 var mongoose = require('./node_modules/mongoose');
 mongoose.connect('mongodb://csc309:banana@ds047722.mongolab.com:47722/heroku_v51bxlrz');
-
 
 // view engine setup
 app.set('views', path.join(__dirname, '/public/views'));
 app.set('view engine', 'ejs');
+
+// Initialize passport
+initPassport(passport);
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -46,8 +46,6 @@ app.use('/api', api);
 app.use('/auth', authenticate);
 
 
-var initPassport = require('./passport-init');
-initPassport(passport);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

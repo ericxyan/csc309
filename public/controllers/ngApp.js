@@ -1,7 +1,7 @@
 var app = angular.module('goodteam', ['ui.bootstrap', 'ngRoute', 'ngCookies']);
 
-app.run(function($rootScope) {
-  if(!$rootScope.authenticated){
+app.run(function($rootScope, $cookieStore) {
+  if(!$cookieStore.get('username')){
     $rootScope.authenticated = false;
     $rootScope.current_user = '';
   }
@@ -9,6 +9,7 @@ app.run(function($rootScope) {
       $http.get('auth/signout');
       $rootScope.authenticated = false;
       $rootScope.current_user = '';
+      $cookieStore.remove('username');
   };
 });
 
@@ -98,6 +99,7 @@ app.controller('authController', function ($scope, $http, $rootScope, $location,
       if(data.state == 'success'){
         $rootScope.authenticated = true;
         $rootScope.current_user = data.user.UserId;
+        $cookieStore.put('username', data.user.UserId);
         $location.path('/');
       }
       else{
