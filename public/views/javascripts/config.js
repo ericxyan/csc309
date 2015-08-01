@@ -1,40 +1,45 @@
 angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
 .config(function($routeProvider, $locationProvider, $httpProvider){
   $routeProvider
-    //the timeline display
+    // Home page
     .when('/', {
       templateUrl: '/views/home.html',
       controller: 'homeProjectCtrl',
       disableCache: true
     })
-    //the login display
+    // Login page
     .when('/login', {
       templateUrl: '/views/login.html',
       controller: 'authController'
     })
-    //the signup display
+    // Register page
     .when('/register', {
       templateUrl: '/views/register.html',
       controller: 'authController'
     })
-
-    // Project detail page
-    .when('/projects/:projectID', {
-      templateUrl: '/views/projectDetail.html',
-      controller: 'projectDetailCtrl'
+    // User info page
+    .when('/users/:userId', {
+      templateUrl: '/views/userInfo.html',
+      controller: 'userInfoCtrl'
     })
-
-    // Profile
+    // Admin user info page
     .when('/admin/user/:userId', {
-      templateUrl: '/views/profile.html',
-      controller: 'InfoCtrl'
+      templateUrl: '/views/userAdmin.html',
+      controller: 'userAdminCtrl'
     })
-
-    // Project Admin
+    // Project info page
+    .when('/projects/:projectID', {
+      templateUrl: '/views/projectInfo.html',
+      controller: 'projectInfoCtrl'
+    })
+    // Project admin page
     .when('/admin/project/:projectID', {
       templateUrl: '/views/projectAdmin.html',
       controller: 'projectAdmin'
     })
+
+
+
 
     .when('/projects/apply/:projectID', {
       templateUrl: '/views/projectApply.html',

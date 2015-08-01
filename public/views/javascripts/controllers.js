@@ -1,9 +1,9 @@
 angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
-// Home page
+/*Home page*/
 .controller('homeProjectCtrl', function ($scope, $http) {
-  //$scope.isCollapsed = false;
   // Search function
   $scope.search = function (key) {
+    // empty search words
     if(key === ""){
       getProjects();
       $scope.users = [];
@@ -13,7 +13,6 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       .success(function (data) {
         $scope.projects = data;
       });
-
       //search users
       $http.get('/api/users/name/' + $scope.searchKey)
       .success(function (data) {
@@ -31,13 +30,14 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 
   getProjects();
 
+  // parse project.status to int.
   $scope.parseInt = function(project){
     project.Status = parseInt(project.Status);
   }
 
 })
 
-// Login page
+/*Login page*/
 .controller('authController', function ($scope, $rootScope, $http, $location, $route){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
@@ -54,22 +54,17 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
     });
   };
 
-  // register a new user
-  $scope.register = function(){
-    $http.post('/auth/signup', $scope.user).success(function(data){
-      if(data.state == 'success'){
-        $rootScope.authenticated = true;
-        $rootScope.current_user = data.user.username;
-        $location.path('/');
-      }
-      else{
-        $scope.error_message = data.message;
-      }
-    });
+  // Register a new user
+  $scope.register = function(isValid) {
+    // check to make sure the form is completely valid
+    if (isValid) {
+      alert('our form is amazing');
+    }
+
   };
 })
 
-// carousel controller
+/*carousel controller*/
 .controller('carousel', function ($scope) {
   $scope.slideInterval = 3000;
   var slides = $scope.slides = [    {
@@ -82,15 +77,16 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
     }];
 })
 
-// Project detail page
-.controller('projectDetailCtrl', function ($scope, $http, $routeParams){
-  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
-    $scope.project = res[0];
+/*User info page*/
+.controller('userInfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
+  // Get user info
+  $http.get('api/users/' + $routeParams.userId).success(function (res) {
+    $scope.user = res;
   });
 })
 
-// User info page
-.controller('InfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
+/*User admin page*/
+.controller('userAdminCtrl', function ($scope, $http, $routeParams, $route, $location) {
   // Check login status
   $http.get('auth/loggedin').success(function (user){
     if(user === '0'){ //not login
@@ -104,7 +100,14 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   });
 })
 
-// project admin page
+/*Project info page*/
+.controller('projectInfoCtrl', function ($scope, $http, $routeParams){
+  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
+    $scope.project = res[0];
+  });
+})
+
+/*Project admin page*/
 .controller('projectAdmin', function ($scope, $http, $routeParams) {
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
@@ -112,7 +115,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 
 })
 
-// Create new project page
+/*Create new project page*/
 .controller('projectApply', function ($scope, $http, $routeParams) {
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
