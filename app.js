@@ -33,7 +33,10 @@ app.use(cookieParser());
 app.use(session({
     secret:process.env.SESSION_SECRET || 'garyK',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true,
+    cookie: { 
+      maxAge: null 
+    }
 }));
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -44,8 +47,6 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
 app.use('/auth', authenticate);
-
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -22,7 +22,7 @@ app.run(function($rootScope, $cookieStore, $http, $route) {
   };
 });
 
-app.config(function($routeProvider){
+app.config(function($routeProvider, $locationProvider, $httpProvider){
   $routeProvider
     //the timeline display
     .when('/', {
@@ -68,15 +68,6 @@ app.config(function($routeProvider){
 });
 
 app.controller('homeProjectCtrl', function ($scope, $http, $cookieStore) {
-
-  /* ngCookie test */
-  // Put cookie
-  //$cookieStore.put('myFavorite','oatmeal');
-  // Get cookie
-  //$scope.favoriteCookie = $cookieStore.get('myFavorite');
-  // Removing a cookie
-  //$cookieStore.remove('myFavorite');
-
   $scope.isCollapsed = false;
   $scope.search = function (key) {
     if(key === ""){
@@ -103,7 +94,7 @@ app.controller('homeProjectCtrl', function ($scope, $http, $cookieStore) {
 
 });
 
-app.controller('authController', function ($scope, $http, $location, $route, $rootScope, $location, $cookieStore){
+app.controller('authController', function ($scope, $rootScope, $http, $location, $route){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
   $scope.login = function(){
@@ -151,11 +142,18 @@ app.controller('projectDetailCtrl', function ($scope, $http, $routeParams){
   });
 });
 
-app.controller('InfoCtrl', function ($scope, $http, $routeParams) {
-  $http.get('api/users/' + $routeParams.userId).success(function (res) {
-    $scope.user = res;
-  });
+app.controller('InfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
 
+  $http.get('auth/loggedin').success(function (user){
+    if(user === '0'){
+      $location.path('/login');
+    }
+    else {
+      $http.get('api/users/' + $routeParams.userId).success(function (res) {
+        $scope.user = res;
+      });
+    }
+  });
 });
 
 app.controller('projectAdmin', function ($scope, $http, $routeParams) {
