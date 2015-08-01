@@ -28,7 +28,7 @@ module.exports = function(passport){
 	}));
 	// Google login callback
 	router.get('/google/callback', passport.authenticate('google', {
-       successRedirect: '/auth/success',
+       successRedirect: '/',
        failureRedirect: '/auth/failure'
 	}));
 	//sign up
