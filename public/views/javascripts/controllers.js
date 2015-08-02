@@ -72,7 +72,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
           else{
             $scope.error_message = data.message;
           }
-        });
+    });
   };
 })
 
@@ -117,7 +117,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 })
 
 /*User admin page*/
-.controller('userAdminCtrl', function ($scope, $http, $routeParams, $route, $location) {
+.controller('userAdminCtrl', function ($scope, $http, $routeParams, $route, $location, $modal, $log) {
   // Check login status
   $http.get('auth/loggedin').success(function (user){
     if(user === '0'){ //not login
@@ -129,8 +129,52 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       });
     }
   });
-})
+  
+  // update info modal
+  $scope.open = function (size) {
+    var modalInstance = $modal.open({
+      animation: true,
+      templateUrl: '/views/userUpdateModal.html',
+      controller: 'ModalInstanceCtrl',
+      size: size,
+      resolve: {
+        oriInfo: function () {
+          return $scope.user;
+        }
+      }
+    });
 
+    modalInstance.result.then(function (newInfo) {
+      $scope.user = newInfo;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+      
+      //update user info
+      $http.put('/api/users', {user: $scope.user}).success(function(docs){
+        $scope.message = docs;
+      });
+      
+    });
+  };
+
+  $scope.toggleAnimation = function () {
+    $scope.animationsEnabled = !$scope.animationsEnabled;
+  };
+
+})
+/*User admin info page update modal controller*/
+.controller('ModalInstanceCtrl', function ($scope, $modalInstance, oriInfo) {
+
+  $scope.newInfo = angular.copy(oriInfo);
+
+  $scope.ok = function () {
+    $modalInstance.close($scope.newInfo);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+})
 /*Project info page*/
 .controller('projectInfoCtrl', function ($scope, $http, $routeParams){
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){

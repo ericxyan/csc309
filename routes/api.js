@@ -67,12 +67,13 @@ router.get('/users/:id/:pwd', function(req, res, next) {
 /*
  Update user's information with given id.
 */
-router.put('/users/:id', function(req, res, next) {
-    User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.id)}, req.body)
+router.put('/users', function(req, res, next) {
+    User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.body.user._id)}, req.body.user)
         .exec(function(err, docs){
         if(err){
             res.status(500).send("Something broke!");
         }
+        console.log('Update user: ' + docs);
         res.json(docs);
     });
 });
