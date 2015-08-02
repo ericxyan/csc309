@@ -25,6 +25,7 @@
     "express-session": "^1.11.3",
     "jade": "~1.11.0",
     "mongoose": "^4.0.7",
+    "mongoose-deep-populate": "^1.1.0",
     "morgan": "~1.6.1",
     "passport": "^0.2.2",
     "passport-google": "^0.3.0",

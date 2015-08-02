@@ -207,6 +207,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       });
     };
   });
+
   // hover display rate
   $scope.hoveringOver = function(value) {
     $scope.overStar = value;

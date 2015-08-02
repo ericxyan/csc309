@@ -27,10 +27,11 @@ router.use('/projects', isAuthenticated);
 */
 router.get('/users/:userid', function(req, res, next) {
     User.findOne({"UserId":req.params.userid})
+        .populate('Rating')
         .exec(function(err, docs){
-        if(err){
-            res.status(500).send("Something broke!");
-        }
+            if(err){
+                res.status(500).send("Something broke!");
+            }
         res.json(docs);
     });
 });
