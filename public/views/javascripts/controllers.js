@@ -1,5 +1,7 @@
 angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
-/*Home page*/
+//////////////
+//Home page //
+//////////////
 .controller('homeProjectCtrl', function ($scope, $http) {
   // Search function
   $scope.search = function (key) {
@@ -34,10 +36,80 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   $scope.parseInt = function(project){
     project.Status = parseInt(project.Status);
   }
-
 })
 
-/*Register page*/
+////////////////////////
+//Navbar controller/ //
+////////////////////////
+.controller('nvaCtrl', function ($scope, $modal, skills, $log){
+  // Open register modal
+  $scope.open = function (size) {
+    var modalInstance = $modal.open({
+      animation: true,
+      templateUrl: '/views/registerModal.html',
+      controller: 'registerModal',
+      size: size,
+    });
+
+    modalInstance.result.then(function (newUser) {
+      $scope.newUser = newUser;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());      
+    });
+  };
+})
+//////////////////////////////
+//Register modal controller //
+//////////////////////////////
+.controller('registerModal', function ($scope, $http, $location, $rootScope, $modalInstance, skills) {
+  $scope.skills = skills;
+  $scope.error_message = '';
+  $scope.user = {
+    UserId: '',
+    Pwd: '', 
+    NickName: '',
+    Email: '',
+    Ceil: '',
+    Skills: []
+  };
+
+  var check = function(){
+        Object.keys($scope.skills).forEach(function(key){
+      if($scope.skills[key]){
+        $scope.user.Skills.push(key);
+      }
+    });
+  }
+  // Register a new user
+  $scope.ok = function () {
+    $scope.register();
+    $location.path('/')
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+
+  $scope.register = function() {
+    // check selected skills
+    check();
+    
+    // signup
+    $http.post('/auth/signup', {username: $scope.user.UserId, password: $scope.user.Pwd, user: $scope.user}).success(function(data){
+          if(data.state == 'success'){
+            $rootScope.authenticated = true;
+            $rootScope.current_user = data.user.UserId;
+            $modalInstance.close($scope.user);
+          }
+          else{
+            $scope.error_message = data.message;
+          }
+    });
+  };
+})
+//////////////////
+//Register page //
+//////////////////
 .controller('signUpCtrl', function ($scope, $rootScope, $http, $location, $route, skills){
   $scope.skills = skills;
   $scope.error_message = '';
@@ -76,7 +148,9 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   };
 })
 
-/*Login page*/
+///////////////
+//Login page //
+///////////////
 .controller('signInCtrl', function ($scope, $rootScope, $http, $location, $route){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
@@ -95,7 +169,9 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   };
 })
 
-/*carousel controller*/
+////////////////////////
+//carousel controller //
+////////////////////////
 .controller('carousel', function ($scope) {
   $scope.slideInterval = 3000;
   var slides = $scope.slides = [    {
@@ -108,7 +184,9 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
     }];
 })
 
-/*User info page*/
+///////////////////
+//User info page //
+///////////////////
 .controller('userInfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
   // Get user info
   $http.get('api/users/' + $routeParams.userId).success(function (res) {
@@ -116,8 +194,10 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   });
 })
 
-/*User admin page*/
-.controller('userAdminCtrl', function ($scope, $http, $routeParams, $route, $location, $modal, $log) {
+////////////////////
+//User admin page //
+////////////////////
+.controller('userAdminCtrl', function ($scope, $http, $routeParams, $route, $rootScope, $location, $modal, $log) {
   // Check login status
   $http.get('auth/loggedin').success(function (user){
     if(user === '0'){ //not login
@@ -135,7 +215,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
     var modalInstance = $modal.open({
       animation: true,
       templateUrl: '/views/userUpdateModal.html',
-      controller: 'ModalInstanceCtrl',
+      controller: 'userUpdateModal',
       size: size,
       resolve: {
         oriInfo: function () {
@@ -146,43 +226,62 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 
     modalInstance.result.then(function (newInfo) {
       $scope.user = newInfo;
+      $location.path('/admin/user/'+$scope.user.UserId);
+      $rootScope.current_user = $scope.user.UserId;
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
-      
-      //update user info
-      $http.put('/api/users', {user: $scope.user}).success(function(docs){
-        $scope.message = docs;
-      });
-      
     });
   };
 
-  $scope.toggleAnimation = function () {
-    $scope.animationsEnabled = !$scope.animationsEnabled;
+// Rating
+  $scope.rate = 5;
+  $scope.max = 10;
+  $scope.isReadonly = false;
+
+  $scope.hoveringOver = function(value) {
+    $scope.overStar = value;
+    $scope.percent = 100 * (value / $scope.max);
   };
 
 })
-/*User admin info page update modal controller*/
-.controller('ModalInstanceCtrl', function ($scope, $modalInstance, oriInfo) {
-
+/////////////////////////////////////////////////
+//User admin info page update modal controller //
+/////////////////////////////////////////////////
+.controller('userUpdateModal', function ($scope, $http, $modalInstance, oriInfo, skills) {
+  $scope.skills = skills;
   $scope.newInfo = angular.copy(oriInfo);
-
+  var check = function(){
+      $scope.newInfo.Skills = [];
+      Object.keys($scope.skills).forEach(function(key){
+      if($scope.skills[key]){
+        $scope.newInfo.Skills.push(key);
+      }
+    });
+  }
   $scope.ok = function () {
-    $modalInstance.close($scope.newInfo);
+    //update user info
+    check();
+    $http.put('/api/users', {user: $scope.newInfo}).success(function(docs){
+      $modalInstance.close($scope.newInfo);
+    });
   };
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
 })
-/*Project info page*/
+//////////////////////
+//Project info page //
+//////////////////////
 .controller('projectInfoCtrl', function ($scope, $http, $routeParams){
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
 })
 
-/*Project admin page*/
+///////////////////////
+//Project admin page //
+///////////////////////
 .controller('projectAdmin', function ($scope, $http, $routeParams) {
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
@@ -190,7 +289,9 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 
 })
 
-/*Create new project page*/
+////////////////////////////
+//Create new project page //
+////////////////////////////
 .controller('projectApply', function ($scope, $http, $routeParams) {
   $scope.apply=function(){
     var newProject = $scope.project;

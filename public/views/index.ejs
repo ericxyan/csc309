@@ -21,7 +21,7 @@
 	<body  ng-app="goodteam">
 		<div class="container">
 			<!-- navbar -->
-			<nav class="navbar-fluid navbar-default navbar-fixed-top" >
+			<nav class="navbar-fluid navbar-default navbar-fixed-top" ng-controller="nvaCtrl">
 				<div class="container-fluid">
 					<!-- logo -->
 					<a href="#/" class="navbar-left">
@@ -31,7 +31,7 @@
 					<p class="navbar-right navbar-text" ng-if="!authenticated">
 						<a href="#/login">Login</a>
 						or 
-						<a href="#/register">Register</a> 
+						<button class="btn btn-primary" ng-click="open()">Register</button> 
 						or 
 						<a href="/auth/google">Sign in with Google</a>
 					</p>

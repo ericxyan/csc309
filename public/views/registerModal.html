@@ -1,0 +1,44 @@
+<div class="modal-header">
+    <h3 class="modal-title">Sign up</h3>
+</div>
+<div class="modal-body">
+    <form class="form card" ng-submit="register()">
+        <div class="form-group">
+            <label for="UserId">Username</label>
+            <input type="text" class="form-control" id="UserId" name="UserId" ng-model="user.UserId" placeholder="Username"/>
+        </div>
+        <div class="form-group">
+            <label for="NickName">Nick name</label>
+            <input type="text" class="form-control" id="NickName" name="NickName" ng-model="user.NickName" placeholder="Nick name" />
+        </div>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" name="Email" ng-model="user.Email" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="Ceil">Ceil</label>
+            <input type="text" class="form-control" id="Ceil" name="Ceil" ng-model="user.Ceil" placeholder="Ceil phone">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="Pwd" ng-model="user.Pwd"  placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="password2">Repeat Password</label>
+            <input type="password" class="form-control" id="password2" ng-model="Pwd2"  placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="skills">Skills</label>
+            <p>skillBox: {{skillBox}}</p>
+            <div class="checkbox" ng-repeat="(skill,check) in skills">
+                <input type="checkbox" name="skills[skill]" value="skill" ng-model="skills[skill]">{{skill}}<br/>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
+        

@@ -1,75 +1,102 @@
-		<div class="row card"><p> {{user}} </p></div>
-		<div class="row card">
-			<h1>Personal Information</h1>
-			<div class="col-xs-12 col-md-8">
-
-				<!--changeinfo not finished-->
-				<div>
-					<p>Name: <span>{{user.UserId}}</span></p><br>
-					<p>Email: <span>{{user.Email}}</span></p><br>
-					<p>Ceilphone: <span>{{user.Ceil}}</span></p><br>
-					<p>Skills: <span>{{user.Skills}}</span></p><br>
-	      		</div>
-      		</div>
-      		<div class="col-xs-12 col-md-4">
-      			<div class="row">
-      				<p>Message: {{message}}</p>
-      				<!--you need to implement changeProfile and applyNewProject in controller，and also change the display of the two buttons, since they are not visible for public-->
-      				<button id="changeProfile" class="btn btn-info" ng-click="open('lg')">Update my profile</button>
-      				<br>
-      				<br>
-      				<button id="applyNewProject"class="btn btn-info" ng-click="applyNewProject()">Apply for new project</button>
-      		    </div>
-      		</div>
-		</div>
-		<div class="row card">
-			<div>
-				<h1>Projects</h1>
-				<!--you need to set the variable sortedProject in controller-->
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Project</th>
-							<th>Start time</th>
-							<th>Role</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<!--Projec和user要join一下，看role，然后update给project.Role-->
-						<tr ng-repeat="project in sortedProjects">
-							<td>{{project.ProjectName}}<span class="badge">{{project.Status}}</span></td>
-							<td>{{project.Start_time}}</td>
-							<td>{{project.Role}}</td>
-							<!--seeProject needs to be implemented in controller-->
-							<td>
-								<button class="btn btn-info" ng-click="seeProject(project._id)">See more</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="row card">
-			<div>
-				<h1>Rates and Comment</h1>
-				<table class="table">
-					<tbody>
-						<tr>
-							<td><input class="form-control" placeholder="Leave your comment here"ng-model="rating.Comment"></td>
-							<!--打星星的我还没写，等我研究研究-->
-							<td><input class="form-control" placeholder="Leave your rate here"ng-model="rating.Stars"></td>
-							<td><button class="btn btn-primary" ng-click="addRating()">Post</button>
-							</td>
-					    </tr>
-					    <!--you need to update the rates object-->
-					    <tr ng-repeat="rate in rates">
-					    	<td>{{rate.Comment}}</td>
-					    	<td>{{rate.Stars}}</td>
-					    	<td>{{rate.RaterId}}</td>
-					    </tr>
-				    </tbody>
-			    </table>
-			</div>
+<div class="row card"><p> {{user}} </p></div>
+<div class="row card">
+	<h1>Personal Information</h1>
+	<div class="col-xs-12 col-md-8">
+		<div>
+			<form class="form">
+				<div class="form-group">
+					<label class="control-label">Username</label>
+					<p class="form-control-static">{{user.UserId}}</p>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Nick name</label>
+					<p class="form-control-static">{{user.NickName}}</p>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Email</label>
+					<p class="form-control-static">{{user.Email}}</p>
+				</div>
+				<div class="form-group">
+					<label class="control-label">Ceil</label>
+					<p class="form-control-static">{{user.Ceil}}</p>
+				</div>
+		        <div class="form-group">
+		            <label for="skills">Skills</label>
+		            <ul class="checkbox" >
+		                <li ng-repeat="skill in user.Skills">{{skill}}</li>
+		            </ul>
+		        </div>
+			</form>
 		</div>
 	</div>
+	<div class="col-xs-12 col-md-4">
+		<div class="row">
+			<p>Message: {{message}}</p>
+			<!--you need to implement changeProfile and applyNewProject in controller，and also change the display of the two buttons, since they are not visible for public-->
+			<button id="changeProfile" class="btn btn-info" ng-click="open('lg')">Update my profile</button>
+			<br>
+			<br>
+			<button id="applyNewProject"class="btn btn-info" ng-click="applyNewProject()">Apply for new project</button>
+		</div>
+	</div>
+</div>
+<div class="row card">
+	<div>
+		<h1>Projects</h1>
+		<!--you need to set the variable sortedProject in controller-->
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Project</th>
+					<th>Start time</th>
+					<th>Role</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<!--Projec和user要join一下，看role，然后update给project.Role-->
+				<tr ng-repeat="project in sortedProjects">
+					<td>{{project.ProjectName}}<span class="badge">{{project.Status}}</span></td>
+					<td>{{project.Start_time}}</td>
+					<td>{{project.Role}}</td>
+					<!--seeProject needs to be implemented in controller-->
+					<td>
+						<button class="btn btn-info" ng-click="seeProject(project._id)">See more</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="row card">
+	<div>
+		<h1>Rates and Comment</h1>
+		<table class="table">
+			<tbody>
+				<tr>
+					    
+					<td><input type="text" class="form-control" placeholder="Leave your rate here"ng-model="rating.Stars"></td>
+					<td><rating ng-model="rate" max="max" readonly="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" ></rating>
+					    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" >{{overStar || rate}}</span></td>
+					<td><button class="btn btn-primary" ng-click="addRating()">Post</button>
+					</td>
+					<td>
+
+					</td>
+				</tr>
+				<!--you need to update the rates object-->
+				<tr >
+					<td>Comment: {{rate.Comment}}</td>
+					<td>Stars: {{rate.Stars}}</td>
+					<td>Rater: {{rate.RaterId}}</td>
+				</tr>
+				<tr ng-repeat="rate in rates">
+					<td>Comment: {{rate.Comment}}</td>
+					<td>Stars: {{rate.Stars}}</td>
+					<td>Rater: {{rate.RaterId}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</div>

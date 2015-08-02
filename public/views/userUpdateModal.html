@@ -1,22 +1,8 @@
 <div class="modal-header">
-    <h3 class="modal-title">I'm a modal!</h3>
+    <h3 class="modal-title">Update</h3>
 </div>
 <div class="modal-body">
-    <ul>
-        <li ng-repeat="item in items">
-            <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-        </li>
-    </ul>
-    Selected: <b>{{ selected.item }}</b>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
-    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-</div>
-        
-<div>
     <form class="form card" ng-submit="register()">
-        <legend>Sign up</legend>
         <div class="form-group">
             <label for="UserId">Username</label>
             <input type="text" class="form-control" id="UserId" name="UserId" ng-model="newInfo.UserId" placeholder="Username"/>
@@ -36,18 +22,26 @@
         </div>
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="Pwd" ng-model="newInfo.Pwd"  placeholder="Password">
+            <input type="password" class="form-control" id="password" name="Pwd" placeholder="Current Password">
         </div>
         <div class="form-group">
-            <label for="password2">Repeat Password</label>
-            <input type="password" class="form-control" id="password2" ng-model="Pwd2"  placeholder="Password">
+            <label for="newPassword">New Password</label>
+            <input type="password" class="form-control" id="newPassword" ng-model="Pwd"  placeholder="New Password">
+        </div>
+        <div class="form-group">
+            <label for="newPassword2">Repeat New Password</label>
+            <input type="password" class="form-control" id="newPassword2" placeholder="Repeat New Password">
         </div>
         <div class="form-group">
             <label for="skills">Skills</label>
             <div class="checkbox" ng-repeat="(skill,check) in skills">
-                <input type="checkbox" name="skills[skill]" value="skill" ng-model="skills[skill]">{{skill}}<br/>
+                <input type="checkbox" name="skills[skill]" value="skill" ng-model="skills[skill]" checked="newInfo.Skills.indexOf(skill)">{{skill}}<br/>
             </div>
         </div>
-        <button type="submit" class="btn btn-success">Submit</button>
     </form>
 </div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
+        
