@@ -1,0 +1,24 @@
+{
+  "name": "valdr",
+  "version": "1.1.3",
+  "description": "A model centric approach to AngularJS form validation",
+  "main": "valdr.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/netceteragroup/valdr"
+  },
+  "keywords": [
+    "angularjs",
+    "validation",
+    "valdr"
+  ],
+  "author": "Philipp Denzler <philippd@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/netceteragroup/valdr/issues"
+  },
+  "homepage": "https://github.com/netceteragroup/valdr"
+}

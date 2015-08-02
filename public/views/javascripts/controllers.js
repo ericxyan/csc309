@@ -37,10 +37,50 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 
 })
 
+/*Register page*/
+.controller('signUpCtrl', function ($scope, $rootScope, $http, $location, $route, skills){
+  $scope.skills = skills;
+  $scope.error_message = '';
+  $scope.user = {
+    UserId: '',
+    Pwd: '', 
+    NickName: '',
+    Email: '',
+    Ceil: '',
+    Skills: []
+  };
+
+  var check = function(){
+        Object.keys($scope.skills).forEach(function(key){
+      if($scope.skills[key]){
+        $scope.user.Skills.push(key);
+      }
+    });
+  }
+  // Register a new user
+  $scope.register = function() {
+    // check selected skills
+    check();
+    
+    // signup
+    $http.post('/auth/signup', {username: $scope.user.UserId, password: $scope.user.Pwd, user: $scope.user}).success(function(data){
+          if(data.state == 'success'){
+            $rootScope.authenticated = true;
+            $rootScope.current_user = data.user.UserId;
+            $location.path('/');
+          }
+          else{
+            $scope.error_message = data.message;
+          }
+        });
+  };
+})
+
 /*Login page*/
-.controller('authController', function ($scope, $rootScope, $http, $location, $route){
+.controller('signInCtrl', function ($scope, $rootScope, $http, $location, $route){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
+
   $scope.login = function(){
     $http.post('/auth/login', $scope.user).success(function(data){
       if(data.state == 'success'){
@@ -52,15 +92,6 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
         $scope.error_message = data.message;
       }
     });
-  };
-
-  // Register a new user
-  $scope.register = function(isValid) {
-    // check to make sure the form is completely valid
-    if (isValid) {
-      alert('our form is amazing');
-    }
-
   };
 })
 
@@ -117,6 +148,18 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 
 /*Create new project page*/
 .controller('projectApply', function ($scope, $http, $routeParams) {
+  $scope.apply=function(){
+    var newProject = $scope.project;
+    newProject.Start_time= Date();
+    /*more details to be filled in for this project, not done yet*/
+    newProject.Admin;
+    $http.post('/projects', newProject).success(function(response){
+      
+    });
+    
+  };
+  
+  
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });

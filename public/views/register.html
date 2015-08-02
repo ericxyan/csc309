@@ -1,40 +1,36 @@
-<div class="register">
-	<form class="form-auth" ng-submit="register()">
-		<h2>Register</h2>
-		<p class="text-warning">{{error_message}}</p>
-		<input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
-		<input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-		<input type="submit" value="Register" class="btn btn-primary" />
-	</form>
-</div>
-
-<div class="col-sm-8 col-sm-offset-2">
-   
-    <!-- FORM -->
-    <!-- pass in the variable if our form is valid or invalid -->
-    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
-
-        <!-- NAME -->
+<div class="col-xs-offset-4 col-xs-4">
+    <form class="form card" ng-submit="register()">
+    <legend>Sign up</legend>
         <div class="form-group">
-            <label>Name</label>
-            <input type="text" name="name" class="form-control" ng-model="name" required>
+            <label for="UserId">Username</label>
+            <input type="text" class="form-control" id="UserId" name="UserId" ng-model="user.UserId" placeholder="Username"/>
         </div>
-
-        <!-- USERNAME -->
         <div class="form-group">
-            <label>Username</label>
-            <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="8">
+            <label for="NickName">Nick name</label>
+            <input type="text" class="form-control" id="NickName" name="NickName" ng-model="user.NickName" placeholder="Nick name" />
         </div>
-        
-        <!-- EMAIL -->
         <div class="form-group">
-            <label>Email</label>
-            <input type="email" name="email" class="form-control" ng-model="email">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" name="Email" ng-model="user.Email" placeholder="Email">
         </div>
-        
-        <!-- SUBMIT BUTTON -->
-        <button type="submit" class="btn btn-primary">Submit</button>
-        
+        <div class="form-group">
+            <label for="Ceil">Ceil</label>
+            <input type="text" class="form-control" id="Ceil" name="Ceil" ng-model="user.Ceil" placeholder="Ceil phone">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="Pwd" ng-model="user.Pwd"  placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="password2">Repeat Password</label>
+            <input type="password" class="form-control" id="password2" ng-model="Pwd2"  placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="skills">Skills</label>
+            <div class="checkbox" ng-repeat="(skill,check) in skills">
+                <input type="checkbox" name="skills[skill]" value="skill" ng-model="skills[skill]">{{skill}}<br/>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
     </form>
-
-</div><!-- col-sm-8 -->
+</div>

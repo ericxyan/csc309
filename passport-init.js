@@ -24,7 +24,7 @@ module.exports = function(passport){
 						return done(null, false);                 
 					}
 					// User exists but wrong password, log the error 
-					if (password != user.Pwd){ //!isValidPassword(user, password)
+					if (isValidPassword (user, password)){ //!isValidPassword(user, password)
 						console.log('Invalid Password');
 						return done(null, false); // redirect back to login page
 					}
@@ -56,10 +56,14 @@ module.exports = function(passport){
 				} else {
 					// if there is no user, create the user
 					var newUser = new User();
-
+					console.log(req.body);
 					// set the user's local credentials
-					newUser.UserId = username;
-					newUser.Pwd = createHash(password);
+					newUser.UserId = req.body.user.UserId;
+					newUser.Pwd = createHash(req.body.userPwd);
+					newUser.NickName = req.body.user.NickName;
+					newUser.Email = req.body.user.Email;
+					newUser.Ceil = req.body.user.Ceil;
+					newUser.Skills = req.body.user.Skills;
 
 					// save the user
 					newUser.save(function(err) {
@@ -67,7 +71,7 @@ module.exports = function(passport){
 							console.log('Error in Saving user: '+err);  
 							throw err;  
 						}
-						console.log(newUser.username + ' Registration succesful');    
+						console.log(newUser.UserId + ' Registration succesful');    
 						return done(null, newUser);
 					});
 				}
@@ -108,7 +112,7 @@ module.exports = function(passport){
 	});
 
 	var isValidPassword = function(user, password){
-		return bCrypt.compareSync(password, user.password);
+		return bCrypt.compareSync(password, user.Pwd);
 	};
 	// Generates hash using bCrypt
 	var createHash = function(password){
