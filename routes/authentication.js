@@ -36,7 +36,7 @@ module.exports = function(passport){
 		successRedirect: '/auth/success',
 		failureRedirect: '/auth/failure'
 	}));
-
+	
 	//log out
 	router.get('/signout', function(req, res) {
 		req.logout();
