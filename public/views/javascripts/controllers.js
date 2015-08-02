@@ -117,6 +117,18 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 
 /*Create new project page*/
 .controller('projectApply', function ($scope, $http, $routeParams) {
+  $scope.apply=function(){
+    var newProject = $scope.project;
+    newProject.Start_time= Date();
+    /*more details to be filled in for this project, not done yet*/
+    newProject.Admin;
+    $http.post('/projects', newProject).success(function(response){
+      
+    });
+    
+  };
+  
+  
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
@@ -135,7 +147,6 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
         }, 1000);
         return deferred.promise;
     };
-
 })
 /*Validation directives*/
 // validate username
