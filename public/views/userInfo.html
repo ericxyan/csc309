@@ -10,20 +10,10 @@
 					<p>Skills: <span>{{user.Skills}}</span></p><br>
 	      		</div>
       		</div>
-      		<div class="col-xs-12 col-md-4">
-      			<div class="row">
-      				<!--you need to implement changeProfile and applyNewProject in controller，and also change the display of the two buttons, since they are not visible for public-->
-      				<button id="changeProfile" class="btn btn-info" style="display:none" ng-click="changeProfile()">Change my profile</button>
-      				<br>
-      				<br>
-      				<button id="applyNewProject"class="btn btn-info" ng-click="applyNewProject()">Apply for new project</button>
-      		    </div>
-      		</div>
 		</div>
 		<div class="row card">
 			<div>
 				<h1>Projects</h1>
-				<!--you need to set the variable sortedProject in controller-->
 				<table class="table">
 					<thead>
 						<tr>
@@ -34,12 +24,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						<!--Projec和user要join一下，看role，然后update给project.Role-->
 						<tr ng-repeat="project in sortedProjects">
 							<td>{{project.ProjectName}}<span class="badge">{{project.Status}}</span></td>
 							<td>{{project.Start_time}}</td>
 							<td>{{project.Role}}</td>
-							<!--seeProject needs to be implemented in controller-->
 							<td>
 								<button class="btn btn-info" ng-click="seeProject(project._id)">See more</button>
 							</td>
@@ -52,21 +40,30 @@
 			<div>
 				<h1>Rates and Comment</h1>
 				<table class="table">
-					<tbody>
-						<tr>
-							<td><input class="form-control" placeholder="Leave your comment here"ng-model="rating.Comment"></td>
-							<!--打星星的我还没写，等我研究研究-->
-							<td><input class="form-control" placeholder="Leave your rate here"ng-model="rating.Stars"></td>
-							<td><button class="btn btn-primary" ng-click="addRating()">Post</button>
-							</td>
-					    </tr>
-					    <!--you need to update the rates object-->
-					    <tr ng-repeat="rate in rates">
-					    	<td>{{rate.Comment}}</td>
-					    	<td>{{rate.Stars}}</td>
-					    	<td>{{rate.RaterId}}</td>
-					    </tr>
-				    </tbody>
+			<tbody>
+				<tr>
+					<td><input type="text" class="form-control" placeholder="Leave your rate here" ng-model="rating.Comments"></td>
+					<td>
+						<rating ng-model="rating.Stars" max="max" readonly="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" ></rating>
+					    <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" >{{overStar || rating.Stars}}</span></td>
+					<td><button class="btn btn-primary" ng-click="addRating()">Post</button></td>
+					<p>Message: {{message}}</p>
+				</tr>
+				<tr>
+					<p>Rating obj: {{rating}}</p>
+				</tr>
+				<!--you need to update the rates object-->
+				<tr >
+					<td>Comment: {{rate.Comment}}</td>
+					<td>Stars: {{rate.Stars}}</td>
+					<td>Rater: {{rate.RaterId}}</td>
+				</tr>
+				<tr ng-repeat="rate in user.Rating">
+					<td>Comment: {{rate.Comment}}</td>
+					<td>Stars: {{rate.Stars}}</td>
+					<td>Rater: {{rate.RaterId}}</td>
+				</tr>
+			</tbody>
 			    </table>
 			</div>
 		</div>

@@ -193,7 +193,7 @@ router.delete('/projects/:id', function(req, res, next) {
 /*
 Populate out the user's ratings, and return the ratings.
 */
-router.get('/rating/:id', function(req, res, next) {
+router.get('/rating/:id', function (req, res, next) {
     User.findById(mongoose.Types.ObjectId(req.params.id), function(err, doc){
         if(err){
             res.status(500).send("Something broke!");
@@ -211,13 +211,13 @@ router.get('/rating/:id', function(req, res, next) {
 /*
 Add new Rating to the specific user, return the promise of this action
 */
-router.post('/rating/:userId', function(req, res, next) {
+router.post('/rating/:userId', function (req, res, next) {
     new Rating(req.body)
         .save(function(err, docs){
         if(err){
             res.status(500).send("Something broke!");
         }
-        User.update(mongoose.Types.ObjectId(req.params.userId), {$push: {"Rating": docs._id}},function(err){
+        User.findOneAndUpdate({"_id": mongoose.Types.ObjectId(req.params.userId)}, {$push: {"Rating": docs._id}},function(err){
             if(err){
                 res.status(500).send("Something broke!");
             }
@@ -226,6 +226,8 @@ router.post('/rating/:userId', function(req, res, next) {
         });
     });
 });
+
+
 
 /*
 Delete Rating.

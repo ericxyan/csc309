@@ -188,10 +188,39 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 //User info page //
 ///////////////////
 .controller('userInfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
-  // Get user info
-  $http.get('api/users/' + $routeParams.userId).success(function (res) {
-    $scope.user = res;
+  $scope.max = 10;
+  $scope.rating = {
+    'RaterId': '',  // Rater id
+    'Stars': 5, 
+    'Comments': ''
+  };
+  // Check if logged in
+  $http.get('auth/loggedin').success(function (user){
+    if(user === '0'){ //not login
+      $location.path('/login');
+    }
+    else { // logged in
+      $http.get('api/users/' + $routeParams.userId).success(function (res) {
+        // init rating obj.
+        $scope.user = res; // query user
+        $scope.rating.RaterId = user._id; // visitor
+      });
+    };
   });
+  // hover display rate
+  $scope.hoveringOver = function(value) {
+    $scope.overStar = value;
+    $scope.percent = 100 * (value / $scope.max);
+  };
+
+  // post rating obj
+  $scope.addRating = function(){
+    $http.post('/api/rating/' + $scope.user._id, $scope.rating).success(function (data) {
+      $scope.message = data;
+      $scope.rating.Stars = 5;
+      $scope.rating.Comments = '';
+    });
+  };
 })
 
 ////////////////////
@@ -243,6 +272,8 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
     $scope.percent = 100 * (value / $scope.max);
   };
 
+  $scope.addRating = function(){
+  };
 })
 /////////////////////////////////////////////////
 //User admin info page update modal controller //
