@@ -10,12 +10,12 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
     // Login page
     .when('/login', {
       templateUrl: '/views/login.html',
-      controller: 'authController'
+      controller: 'signInCtrl'
     })
     // Register page
     .when('/register', {
       templateUrl: '/views/register.html',
-      controller: 'authController'
+      controller: 'signUpCtrl'
     })
     // User info page
     .when('/users/:userId', {
@@ -49,4 +49,14 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
     .otherwise({
       redirectTo: '/'
     });
+})
+/*Services*/
+.factory('skills', function(){
+  var skills = {
+    'Computer Science': false,
+    'Statistics': false,
+    'Electrical Engineering': false,
+    'Commerce': false
+  };
+  return skills;
 });

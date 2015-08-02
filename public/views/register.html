@@ -1,44 +1,36 @@
-
-<div class="col-md-offset-4 col-md-4 card" ng-controller="MainController">
-
-    <form ng-submit="submitLoginData()"  class="css-form form-signin" name="myLoginForm" >
-        		<h2 class="myform-heading">Register</h2>
+<div class="col-xs-offset-4 col-xs-4">
+    <form class="form card" ng-submit="register()">
+    <legend>Sign up</legend>
         <div class="form-group">
-            <label class="control-label">Username</label>
-            <input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
+            <label for="UserId">Username</label>
+            <input type="text" class="form-control" id="UserId" name="UserId" ng-model="user.UserId" placeholder="Username"/>
         </div>
-        <div class="control-group" ng-class="{error:!myform.username.$valid}">
-            <label for="inputUsername" class="control-label">Username:</label>
-            <div class="controls">
-                <input type="text" id="inputUsername" name="username" ng-model="username" valid-username />
-                <div class="help-inline">
-                    <span ng-show="!!myform.username.$error.isBlank">Username Required.</span>
-    				<span ng-show="!!myform.username.$error.invalidChars">Username must contain letters &amp; spaces only.</span>
-                    <span ng-show="!!myform.username.$error.invalidLen">Username must be 5-20 characters.</span>
-                </div>
+        <div class="form-group">
+            <label for="NickName">Nick name</label>
+            <input type="text" class="form-control" id="NickName" name="NickName" ng-model="user.NickName" placeholder="Nick name" />
+        </div>
+        <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" class="form-control" id="email" name="Email" ng-model="user.Email" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="Ceil">Ceil</label>
+            <input type="text" class="form-control" id="Ceil" name="Ceil" ng-model="user.Ceil" placeholder="Ceil phone">
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="Pwd" ng-model="user.Pwd"  placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="password2">Repeat Password</label>
+            <input type="password" class="form-control" id="password2" ng-model="Pwd2"  placeholder="Password">
+        </div>
+        <div class="form-group">
+            <label for="skills">Skills</label>
+            <div class="checkbox" ng-repeat="(skill,check) in skills">
+                <input type="checkbox" name="skills[skill]" value="skill" ng-model="skills[skill]">{{skill}}<br/>
             </div>
         </div>
-        <div class="form-group" ng-class="{'has-error': myLoginForm.mail.$dirty && myLoginForm.mail.$invalid}">
-            <label class="control-label">E-mail:</label>
-            <input type="email" name="mail" class="form-control" ng-model="mail" placeholder="E-mail address" required ng-filtered="validEmail($value)" />
-            <span class="help-block" ng-show="myLoginForm.mail.$dirty && myLoginForm.mail.$error.required">Email Address is required.</span>
-            <span class="help-block" ng-show="myLoginForm.mail.$dirty && myLoginForm.mail.$error.email">The Email Address you provided is not valid.</span>
-            <span class="help-block" ng-show="myLoginForm.mail.$dirty && !myLoginForm.mail.$error.filtered">The Email Address you provided doesnot exists in the list.(Use "nitin.sarma@gmail.com" , "nitin@gmail.com")</span>
-        </div>
-        <div class="form-group" ng-class="{'has-error': myLoginForm.password.$dirty && myLoginForm.password.$invalid}">
-            <label class="control-label">Password:</label>
-            <input type="password" name="password" class="form-control" ng-model="password" placeholder="Password" required ng-pattern="passwordPattern" />
-            <span class="help-block" ng-show="myLoginForm.password.$dirty && myLoginForm.password.$error.required">Password is required.</span>
-            <span class="help-block" ng-show="myLoginForm.password.$dirty && myLoginForm.password.$error.pattern">Your password should be at least 5 characters long, and contain an uppercase letter and a number.</span>
-        </div>
-        <div class="form-group" ng-class="{'has-error': myLoginForm.rep_password.$dirty && myLoginForm.rep_password.$invalid}">
-            <label class="control-label">Repeat password:</label>
-            <input type="password" name="rep_password" class="form-control" ng-model="rep_password" placeholder="Repeat password" required ng-equals="password" />
-            <span class="help-block" ng-show="myLoginForm.rep_password.$dirty && myLoginForm.rep_password.$error.required">Repeat Password is required.</span>
-            <span class="help-block" ng-show="myLoginForm.rep_password.$dirty && myLoginForm.rep_password.$error.equals">Passwords do not match.</span>
-        </div>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-block btn-lg" ng-disabled="form.$invalid">Submit</button>
-        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
     </form>
 </div>
