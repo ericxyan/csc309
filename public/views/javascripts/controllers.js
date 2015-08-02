@@ -112,7 +112,6 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
     $scope.project = res[0];
   });
-
 })
 
 /*Create new project page*/
