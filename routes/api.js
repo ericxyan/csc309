@@ -105,6 +105,23 @@ router.delete('/users/:id', function(req, res, next) {
         res.send("Success: deleted user " + req.params.id);
     });
 });
+
+/*
+Check whether the given nickname is valid
+*/
+router.get('/users/validNickName/:nickname', function(req, res, next){
+   User.findOne({"NickName": req.params.nickname}).exec(function(err, doc){
+      if(err){
+          res.status(500).send("Something broke!");
+      }
+      if(doc){
+          return "false";
+      }
+      else{
+          return "true";
+      }
+   });
+});
 /* ---------- api for projects ---------- */
 
 
@@ -135,6 +152,9 @@ router.get('/projects/:id', function(req, res, next) {
     });
 });
 
+/*
+Search projects with projectName
+*/
 router.get('/projects/name/:projectName', function(req, res, next) {
     var keyWords = "\.*" + req.params.projectName + "\.";
     Project.find({"ProjectName": new RegExp(keyWords, 'i')})
@@ -169,10 +189,15 @@ router.put('/projects/:id', function(req, res, next) {
         if(err){
             res.status(500).send("Something broke!");
         }
-        res.json(docs);
+        Project.findById(docs._id)
+        .exec(function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+        res.json(doc);
+    });
     });
 });
-
 
 /*
  Delete the project with given _id, return the revised version json.
@@ -186,6 +211,7 @@ router.delete('/projects/:id', function(req, res, next) {
         res.send("success");
     });
 });
+
 
 
 /* ---------- api for Rating ---------- */
