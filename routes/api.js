@@ -21,13 +21,14 @@ var isAuthenticated = function (req, res, next) {
 }
 
 router.use('/projects', isAuthenticated);
-/* ---------- for users ---------- */
 
+/* ---------- search -----------*/
+// TODO: unittest this
 
 /*
 Get user with Skill
 */
-// TODO: unittest this
+
 router.get('search/skill/:skill', function(req, res, next){
     User.find({'Skills': req.params.skill})
     .exec(function(err, docs){
@@ -37,6 +38,37 @@ router.get('search/skill/:skill', function(req, res, next){
        res.json(docs); // return a array of users with certain skill.
     });
 });
+
+/*
+get all admined projects
+*/
+
+router.get('search/admin/:userId', function(req, res, next){
+   Project.find({'Admin': mongoose.Types.ObjectId(req.params.userId)})
+   .exec(function(err, docs){
+      if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); 
+   });
+});
+
+/*
+get  all memnbered projects
+*/
+
+router.get('serach/member/:userId', function(req, res, next){
+    Project.find({'Member': mongoose.Types.ObjectId(req.params.userId)})
+   .exec(function(err, docs){
+      if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); 
+   });
+});
+
+
+/* ---------- for users ---------- */
 
 /*
  Get one user
