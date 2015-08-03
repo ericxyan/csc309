@@ -40,11 +40,11 @@ router.get('search/skill/:skill', function(req, res, next){
 });
 
 /*
-get all admined projects
+Search projects's user
 */
 
-router.get('search/admin/:userId', function(req, res, next){
-   Project.find({'Admin': mongoose.Types.ObjectId(req.params.userId)})
+router.get('search/project/:type/:userId', function(req, res, next){
+   Project.find({req.params.type: mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
       if(err){
            res.status(500).send('Something broke');
@@ -52,21 +52,6 @@ router.get('search/admin/:userId', function(req, res, next){
        res.json(docs); 
    });
 });
-
-/*
-get  all memnbered projects
-*/
-
-router.get('serach/member/:userId', function(req, res, next){
-    Project.find({'Member': mongoose.Types.ObjectId(req.params.userId)})
-   .exec(function(err, docs){
-      if(err){
-           res.status(500).send('Something broke');
-       } 
-       res.json(docs); 
-   });
-});
-
 
 /* ---------- for users ---------- */
 
