@@ -62,10 +62,23 @@
 <div class="row card">
 	<h1>Message Board</h1>
 	<div class="row">
-		<input class="form-control col-xs-12 col-md-8" placeholder="Leave your question here" ng-model="myComment.Content">
-		<button id="postComment" class="btn btn-primary col-xs-4 col-md-4" ng-click="addPost()">Post My comment</button>
+		<input class="form-control col-md-8" placeholder="Leave your question here" ng-model="myComment.Content">
+		<button id="postComment" class="btn btn-primary col-md-4" ng-click="addPost()">Post My comment</button>
 	</div>
-	<div ng-repeat="comment in project.Comments track by $index">
-		<p>{{comment.Content}}</p>
-	</div>
+	<table class="table">
+				<thead>
+					<tr>
+						<th class="col-md-6">Comments</th>
+						<th class="col-md-2">UserId</th>
+						<th class="col-md-2">Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="comment in project.Comments | orderBy: 'Time':true">
+						<td class="col-md-6">{{comment.Content}}</td>
+						<td class="col-md-2">{{comment.UserId}}</td>
+						<td class="col-md-2">{{comment.Time | date:"h:mma 'on' MMM d, y"}}</td>
+					</tr>
+				</tbody>
+	</table>
 </div>

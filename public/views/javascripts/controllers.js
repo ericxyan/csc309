@@ -533,6 +533,7 @@ $scope.search($routeParams.searchKey);
   $scope.deleteProject=function(){
     $http.delete('/api/projects/'+$routeParams.projectID).success(function(res){
       alert("success");
+      $location.path('/');
     });
   };
 
