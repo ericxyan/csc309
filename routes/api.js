@@ -289,7 +289,6 @@ router.delete('/rating/:userid/:ratingId', function(req, res, next) {
 });
 
 
-
 /* ---------- api for Comments ---------- */
 
 
@@ -350,4 +349,5 @@ router.delete('/comment/:projectId/:commentId', function(req, res, next) {
         res.send("success");
     });
 });
+
 module.exports = router;
