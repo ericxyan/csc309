@@ -7,6 +7,10 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
       controller: 'homeProjectCtrl',
       disableCache: true
     })
+    .when('/search/:searchKey', {
+      templateUrl: '/views/search.html',
+      controller: 'searchCtrl',
+    })
     // Login page
     .when('/login', {
       templateUrl: '/views/login.html',
@@ -37,10 +41,7 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
       templateUrl: '/views/projectAdmin.html',
       controller: 'projectAdmin'
     })
-
-
-
-
+    // Create new project
     .when('/projects/apply/:projectID', {
       templateUrl: '/views/projectApply.html',
       controller: 'projectApply'
@@ -53,10 +54,53 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
 /*Services*/
 .factory('skills', function(){
   var skills = {
-    'Computer Science': false,
-    'Statistics': false,
-    'Electrical Engineering': false,
-    'Commerce': false
+    'MongoDB.js': false,
+    'Express.js': false,
+    'Angular.js': false,
+    'MongoDB': false,
+    'Bootstrap': false,
+    'Python': false
   };
   return skills;
-});
+})
+/*Search user result*/
+.factory('searchedUsers', function(){
+  var users = [];
+  return {
+    set: function(){
+      return users;
+    },
+    get: function(result){
+      users = angular.copy(result);
+    },
+    clean: function(){
+      users = [];
+    }
+  };
+})
+/*Search projects result*/
+.factory('searchedProjects', function(){
+  var projects = [];
+  return {
+    set: function(){
+      return projects;
+    },
+    get: function(result){
+      projects = angular.copy(result);
+    },
+    clean: function(){
+      projects = [];
+    }
+  };
+})
+.factory('searchKeys', function(){
+  var keys = '';
+  return {
+    set: function(str){
+      keys = str;
+    },
+    get: function(){
+      return keys;
+    }
+  };
+})

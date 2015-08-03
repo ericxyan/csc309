@@ -1,94 +1,95 @@
-<!-- <div class="row card"><p> {{user}} </p></div> -->
-<div class="row card">
-	<h1>Personal Information</h1>
-	<div class="col-xs-12 col-md-8">
+<div class="col-xs-12 col-md-8 col-md-push-2">
+	<!-- <div class="row card"><p> {{user}} </p></div> -->
+	<div class="row card">
+		<h2>Personal Information</h2>
+		<div class="col-xs-12 col-md-8">
+			<div>
+				<form class="form">
+					<div class="form-group">
+						<label class="control-label">Username</label>
+						<p class="form-control-static">{{user.UserId}}</p>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Nick name</label>
+						<p class="form-control-static">{{user.NickName}}</p>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Email</label>
+						<p class="form-control-static">{{user.Email}}</p>
+					</div>
+					<div class="form-group">
+						<label class="control-label">Ceil</label>
+						<p class="form-control-static">{{user.Ceil}}</p>
+					</div>
+					<div class="form-group">
+						<label for="skills">Skills</label>
+						<ul class="checkbox" >
+							<li ng-repeat="skill in user.Skills">{{skill}}</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="row card">
 		<div>
-			<form class="form">
-				<div class="form-group">
-					<label class="control-label">Username</label>
-					<p class="form-control-static">{{user.UserId}}</p>
-				</div>
-				<div class="form-group">
-					<label class="control-label">Nick name</label>
-					<p class="form-control-static">{{user.NickName}}</p>
-				</div>
-				<div class="form-group">
-					<label class="control-label">Email</label>
-					<p class="form-control-static">{{user.Email}}</p>
-				</div>
-				<div class="form-group">
-					<label class="control-label">Ceil</label>
-					<p class="form-control-static">{{user.Ceil}}</p>
-				</div>
-		        <div class="form-group">
-		            <label for="skills">Skills</label>
-		            <ul class="checkbox" >
-		                <li ng-repeat="skill in user.Skills">{{skill}}</li>
-		            </ul>
-		        </div>
-			</form>
+			<h2>Projects</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th>Start time</th>
+						<th>Role</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="project in sortedProjects">
+						<td>{{project.ProjectName}}<span class="badge">{{project.Status}}</span></td>
+						<td>{{project.Start_time}}</td>
+						<td>{{project.Role}}</td>
+						<td>
+							<button class="btn btn-info" ng-click="seeProject(project._id)">See more</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 	</div>
-</div>
-<div class="row card">
-	<div>
-		<h1>Projects</h1>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>Project</th>
-					<th>Start time</th>
-					<th>Role</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="project in sortedProjects">
-					<td>{{project.ProjectName}}<span class="badge">{{project.Status}}</span></td>
-					<td>{{project.Start_time}}</td>
-					<td>{{project.Role}}</td>
-					<td>
-						<button class="btn btn-info" ng-click="seeProject(project._id)">See more</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-</div>
-<div class="row card">
-	<div>
-		<h1>Rates and Comment</h1>
+	<div class="row card">
 		<div>
-		<div class="col-xs-12 col-md-12">
-			<textarea class="form-control" placeholder="Leave your rate here" ng-model="rating.Comments"></textarea>
+			<h2>Rates and Comment</h2>
+			<div>
+				<div class="col-xs-12 col-md-12">
+					<textarea class="form-control" placeholder="Leave your rate here" ng-model="rating.Comments"></textarea>
+				</div>
+				<div class="col-xs-12 col-md-12">
+					<rating ng-model="rating.Stars" max="max" readonly="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" ></rating>
+					<span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" >{{overStar || rating.Stars}}</span>
+				</div>
+				<div class="col-xs-12 col-md-12">
+					<button class="btn btn-primary" ng-click="addRating()">Post</button>
+				</div>
+				
+			</div>
+			<table class="table">
+				<thead>
+					<tr>
+						<th data-field="id" data-halign="right" data-align="center">Comments</th>
+						<th data-field="name" data-halign="center" data-align="left">Stars</th>
+						<th data-field="price" data-halign="left" data-align="right">Rater</th>
+						<th data-field="price" data-halign="left" data-align="right">Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="rate in user.Rating | orderBy: 'Date':true">
+						<td>{{rate.Comments}}</td>
+						<td>{{rate.Stars}}</td>
+						<td>{{rate.RaterId}}</td>
+						<td>{{rate.Date | date:"h:mma 'on' MMM d, y"}}</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<div class="col-xs-12 col-md-12">
-			<rating ng-model="rating.Stars" max="max" readonly="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" ></rating>
-			<span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" >{{overStar || rating.Stars}}</span>
-		</div>
-		<div class="col-xs-12 col-md-12">
-			<button class="btn btn-primary" ng-click="addRating()">Post</button>
-		</div>
-			
-		</div>
-		<table class="table">
-			<thead>
-				<tr>
-					<th data-field="id" data-halign="right" data-align="center">Comments</th>
-					<th data-field="name" data-halign="center" data-align="left">Stars</th>
-					<th data-field="price" data-halign="left" data-align="right">Rater</th>
-					<th data-field="price" data-halign="left" data-align="right">Date</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="rate in user.Rating | orderBy: 'Date':true">
-					<td>{{rate.Comments}}</td>
-					<td>{{rate.Stars}}</td>
-					<td>{{rate.RaterId}}</td>
-					<td>{{rate.Date | date:"h:mma 'on' MMM d, y"}}</td>
-				</tr>
-			</tbody>
-		</table>
 	</div>
-</div>
 </div>

@@ -37,11 +37,47 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
     project.Status = parseInt(project.Status);
   }
 })
+//////////////////////
+//Search controller //
+//////////////////////
+.controller('searchCtrl', function ($scope, $http, $location, $routeParams){
+
+  $scope.search = function (key) {
+    // empty search words
+    if(key === ""){
+      getProjects(key);
+      $scope.users = [];
+    } else {
+      //search projects
+      $http.get('/api/projects/name/' + key)
+      .success(function (data) {
+        $scope.projects = data;
+      });
+      //search users
+      $http.get('/api/users/name/' + key)
+      .success(function (data) {
+        $scope.users = data;
+      });
+    }
+  }; 
+  // fetch projects data
+  var getProjects = function (key){
+    $http.get('/api/projects' + key).success(function(res){
+      $scope.projects = res;
+    });
+  }
+
+  // parse project.status to int.
+  $scope.parseInt = function(project){
+    project.Status = parseInt(project.Status);
+  }
+$scope.search($routeParams.searchKey);
+})
 
 ////////////////////////
 //Navbar controller/ //
 ////////////////////////
-.controller('nvaCtrl', function ($scope, $modal, skills, $log){
+.controller('navCtrl', function ($scope, $modal, skills, $log, $location, $routeParams){
   // Open Sign up modal
   $scope.openSignUp = function (size) {
     var signUpModal = $modal.open({
@@ -72,6 +108,10 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       $log.info('Modal dismissed at: ' + new Date());   //error   
     });
   };
+  // Search box
+  $scope.searchLink = function () {
+    $location.path('/search/' + $scope.searchKey);
+  }; 
 })
 
 //////////////////////////////
@@ -219,11 +259,13 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
   $scope.slideInterval = 3000;
   var slides = $scope.slides = [    {
       image: '/views/img/1.jpg',
-      text: 'blablabla...'
+      text: 'blablabla...',
+      url: '#/projects/55b26d88483e267619bef085'
     },
     {
       image: '/views/img/2.jpg',
-      text: 'blablabla...'
+      text: 'blablabla...',
+      url: '#/projects/55b26d88483e267619bef085'
     }];
 })
 

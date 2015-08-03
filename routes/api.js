@@ -40,7 +40,7 @@ router.get('/users/:userid', function(req, res, next) {
 Get users by keywords
  */
 router.get('/users/name/:userid', function(req, res, next) {
-    var keyWords = "\.*" + req.params.userid + "\.";
+    var keyWords = "\.*" + req.params.userid + "*\.";
     User.find({"UserId": new RegExp(keyWords, 'i')})
         .exec(function(err, doc){
         if(err){
@@ -156,7 +156,7 @@ router.get('/projects/:id', function(req, res, next) {
 Search projects with projectName
 */
 router.get('/projects/name/:projectName', function(req, res, next) {
-    var keyWords = "\.*" + req.params.projectName + "\.";
+    var keyWords = "\.*" + req.params.projectName + "*\.";
     Project.find({"ProjectName": new RegExp(keyWords, 'i')})
         .exec(function(err, doc){
         if(err){

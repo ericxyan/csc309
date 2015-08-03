@@ -1,5 +1,5 @@
 body {
-	padding-top: 70px;
+	padding-top: 30px;
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -61,3 +61,35 @@ body {
 	  border-top-right-radius: 0;
 	}
 }
+    #customBtn {
+      display: inline-block;
+      background: #4285f4;
+      color: white;
+      width: 150px;
+      border-radius: 5px;
+      white-space: nowrap;
+    }
+    #customBtn:hover {
+      cursor: pointer;
+    }
+    span.label {
+      font-weight: bold;
+    }
+    span.icon {
+      background: url('/views/img/g-sm.png') transparent 5px 50% no-repeat;
+      display: inline-block;
+      vertical-align: middle;
+      width: 34px;
+      height: 34px;
+      border-right: #2265d4 1px solid;
+    }
+    span.buttonText {
+      display: inline-block;
+      vertical-align: middle;
+      padding-left: 10px;
+      padding-right: 10px;
+      font-size: 14px;
+      font-weight: bold;
+      /* Use the Roboto font that is loaded in the <head> */
+      font-family: 'Roboto', sans-serif;
+    }
