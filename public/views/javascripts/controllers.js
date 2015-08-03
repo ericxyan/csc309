@@ -360,9 +360,6 @@ $scope.search($routeParams.searchKey);
     $scope.overStar = value;
     $scope.percent = 100 * (value / $scope.max);
   };
-
-  $scope.addRating = function(){
-  };
 })
 /////////////////////////////////////////////////
 //User admin info page update modal controller //
@@ -571,7 +568,13 @@ $scope.search($routeParams.searchKey);
     console.log(newProject);
     $http.post('/api/projects', newProject).success(function(response){
       alert("success");
+      console.log(response);
+      $scope.user.Projects.push(response._id);
+      console.log($scope.user);
     }); 
+    $http.put('/api/users',{user:$scope.user}).success(function(response){
+        console.log(response);
+      });
     $location.path('/');  
   };
 });
