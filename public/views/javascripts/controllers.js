@@ -294,7 +294,21 @@ $scope.search($routeParams.searchKey);
   var getUserInfo = function(){
     $http.get('api/users/' + $routeParams.userId).success(function (res) {
       $scope.user = res; // query user
+      console.log("here!");
+      $http.get('api/search/project/Admin/'+$scope.user._id).success(function(res){
+      $scope.admin_projects=res;
+      console.log(res);
     });
+    $http.get('api/search/project/Member/'+$scope.user._id).success(function(res){
+      $scope.member_projects=res;
+    });
+    $http.get('api/search/project/Candidate/'+$scope.user._id).success(function(res){
+      $scope.candidate_projects=res;
+    });
+
+
+    });
+
   };
   // hover display rate
   $scope.hoveringOver = function(value) {
@@ -322,9 +336,22 @@ $scope.search($routeParams.searchKey);
     if(user === '0'){ //not login
       $location.path('/login');
     }
+    if(user.UserId !== $routeParams.userId){
+      $location.path('/');
+    }
     else { // logged in
       $http.get('api/users/' + $routeParams.userId).success(function (res) {
         $scope.user = res;
+        $http.get('api/search/project/Admin/'+$scope.user._id).success(function(res){
+      $scope.admin_projects=res;
+      console.log(res);
+    });
+    $http.get('api/search/project/Member/'+$scope.user._id).success(function(res){
+      $scope.member_projects=res;
+    });
+    $http.get('api/search/project/Candidate/'+$scope.user._id).success(function(res){
+      $scope.candidate_projects=res;
+    });
       });
     }
   });
@@ -397,18 +424,27 @@ $scope.search($routeParams.searchKey);
     'Time':'',
     'Content':''
   };
+  $scope.max = 10;
+  $scope.ratedId='';
+  $scope.defaultval="select a member";
+  $scope.rating = {
+    'RaterId': '',  // Rater id
+    'Stars': 5, 
+    'Comments': ''
+  };
   /*check login status*/
   $http.get('auth/loggedin').success(function (user){
     if(user =='0'){
       document.getElementById("applyMember").disabled=true;
       document.getElementById("applyMember").innerHTML="Log in to apply";
-      document.getElementById("postComment").disabled=true;
-      document.getElementById("postComment").innerHTML="Log in to comment";
+      document.getElementById("ratefield").style.display="none";
+      //document.getElementById("postComment").innerHTML="Log in to comment";
       document.getElementById("Administrate").style.display="none";
     }
     else{
       $scope.user=user;
       $scope.myComment.UserId=user._id;
+      $scope.rating.RaterId = user._id;
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
           if(user._id !== res[0].Admin._id){
             document.getElementById("Administrate").style.display="none";          
@@ -420,9 +456,25 @@ $scope.search($routeParams.searchKey);
     }
   });
 
+  $scope.hoveringOver = function(value) {
+    $scope.overStar = value;
+    $scope.percent = 100 * (value / $scope.max);
+  };
+
+  // post rating obj
+  $scope.addRating = function(){
+    console.log($scope.rating);
+    $http.post('/api/rating/' + $scope.ratedId, $scope.rating).success(function (data) {
+      $scope.rating.Stars = 5;
+      $scope.rating.Comments = '';
+    });
+  };
+
+
   var refresh = function(){
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
       $scope.project = res[0];
+      $scope.memberList=[$scope.project.Admin];
       });
 
   };
@@ -548,12 +600,22 @@ $scope.search($routeParams.searchKey);
     }
     else{
       $scope.user=user;
+      $scope.project={ProjectName:'',
+      Description:'',
+      Subjects:[],
+      Start_time:'',
+      Finish_time:'',
+      Status:0,
+      Admin:$scope.user._id,
+      Member:[],
+      Candidate:[],
+      Comments:[]
+    };
     }
   });
   $scope.apply=function(){
     var newProject = $scope.project;
     newProject.Start_time= Date();
-    newProject.Status=0;
     var subjectList=[];
     var form=document.getElementById("subject");
     for(var i=0; i<form.elements.length; i++){
@@ -562,20 +624,15 @@ $scope.search($routeParams.searchKey);
       }
     }
     newProject.Subjects=subjectList;
-    newProject.Admin=$scope.user;
-    newProject.Member=[];
-    newProject.Comments=[];
-    newProject.Candidate=[];
     console.log(newProject);
+    if($scope.project.ProjectName===''){
+      alert("You must fill in the project name!");
+    }
+    else{
     $http.post('/api/projects', newProject).success(function(response){
-      alert("success");
-      console.log(response);
-      $scope.user.Projects.push(response._id);
-      console.log($scope.user);
+      alert("Create new project successfully!");
     }); 
-    $http.put('/api/users',{user:$scope.user}).success(function(response){
-        console.log(response);
-      });
     $location.path('/');  
+    }
   };
 });

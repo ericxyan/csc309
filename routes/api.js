@@ -29,7 +29,7 @@ router.use('/projects', isAuthenticated);
 Get user with Skill
 */
 
-router.get('search/skill/:skill', function(req, res, next){
+router.get('/search/skill/:skill', function(req, res, next){
     User.find({'Skills': req.params.skill})
     .exec(function(err, docs){
        if(err){
@@ -43,9 +43,10 @@ router.get('search/skill/:skill', function(req, res, next){
 Search projects's user
 */
 
-router.get('search/project/:type/:userId', function(req, res, next){
-   Project.find({req.params.type: mongoose.Types.ObjectId(req.params.userId)})
+router.get('/search/project/Admin/:userId', function(req, res, next){
+   Project.find({'Admin': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
+        console.log(docs);
       if(err){
            res.status(500).send('Something broke');
        } 
@@ -53,6 +54,26 @@ router.get('search/project/:type/:userId', function(req, res, next){
    });
 });
 
+router.get('/search/project/Member/:userId', function(req, res, next){
+   Project.find({'Member': mongoose.Types.ObjectId(req.params.userId)})
+   .exec(function(err, docs){
+        console.log(docs);
+      if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); 
+   });
+});
+router.get('/search/project/Candidate/:userId', function(req, res, next){
+   Project.find({'Candidate': mongoose.Types.ObjectId(req.params.userId)})
+   .exec(function(err, docs){
+        console.log(docs);
+      if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); 
+   });
+});
 /* ---------- for users ---------- */
 
 /*
@@ -321,7 +342,6 @@ router.delete('/rating/:userid/:ratingId', function(req, res, next) {
     });
 });
 
-
 /* ---------- api for Comments ---------- */
 
 
@@ -382,5 +402,4 @@ router.delete('/comment/:projectId/:commentId', function(req, res, next) {
         res.send("success");
     });
 });
-
 module.exports = router;

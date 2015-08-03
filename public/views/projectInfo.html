@@ -59,13 +59,48 @@
 	<button id="applyMember"class="btn btn-info" ng-click="apply()">Apply to be a member</button>
 </div>
 <br>
-<div class="row card">
-	<h1>Message Board</h1>
+<div id="ratefield" style="display:none" class="row card">
+		<div>
+			<h2>Rate your group member</h2>
+			<div>
+				<div class="dropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+				    {{defaultval}}
+				    <span class="caret"></span>
+				  	</button>
+				  	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+					    <li><a ng-click="ratedId=project.Admin._id;defaultval=project.Admin.UserId">{{project.Admin.UserId}}</a></li>
+					    <li ng-repeat="member in project.Member"><a ng-click="ratedId=member._id; defaultval=member.UserId">{{member.UserId}}</a></li>
+					    <li ng-repeat="candidate in project.Candidate"><a ng-click="ratedId=candidate._id; defaultval=candidate.UserId">{{candidate.UserId}}</a></li>
+					</ul>
+				</div>
+				<br>
+				<br>
+				<div class="col-xs-12 col-md-12">
+					<textarea class="form-control" placeholder="Leave your comment here" ng-model="rating.Comments"></textarea>
+				</div>
+				<br>
+				<div class="col-xs-12 col-md-12">
+					<rating ng-model="rating.Stars" max="max" readonly="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" ></rating>
+					<span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" >{{overStar || rating.Stars}}</span>
+				</div>
+				<br>
+				<br>
+				<div class="col-xs-12 col-md-12">
+					<button class="btn btn-primary" ng-click="addRating()">Post</button>
+				</div>
+				
+		    </div>
+		 </div>
+
+
+
+<!-- 	<h1>Message Board</h1>
 	<div class="row">
 		<input class="form-control col-md-8" placeholder="Leave your question here" ng-model="myComment.Content">
 		<button id="postComment" class="btn btn-primary col-md-4" ng-click="addPost()">Post My comment</button>
-	</div>
-	<table class="table">
+	</div> -->
+<!-- 	<table class="table">
 				<thead>
 					<tr>
 						<th class="col-md-6">Comments</th>
@@ -80,5 +115,5 @@
 						<td class="col-md-2">{{comment.Time | date:"h:mma 'on' MMM d, y"}}</td>
 					</tr>
 				</tbody>
-	</table>
+	</table> -->
 </div>
