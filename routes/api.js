@@ -28,6 +28,7 @@ router.use('/projects', isAuthenticated);
 router.get('/users/:userid', function(req, res, next) {
     User.findOne({"UserId":req.params.userid})
         .populate('Rating')
+        .populate('Projects')
         .exec(function(err, docs){
             if(err){
                 res.status(500).send("Something broke!");
