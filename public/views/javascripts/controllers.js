@@ -564,18 +564,13 @@ $scope.search($routeParams.searchKey);
       }
     }
     newProject.Subjects=subjectList;
-    newProject.Admin=$scope.user._id;
+    newProject.Admin=$scope.user;
     newProject.Member=[];
     newProject.Comments=[];
     newProject.Candidate=[];
+    console.log(newProject);
     $http.post('/api/projects', newProject).success(function(response){
-      $scope.user.Projects.push(response);
-      console.log($scope.user.Projects);
-      /*not working!!!!*/
-      $http.put('/api/users',$scope.user).success(function(res){
-        console.log("success");
-        console.log(res);
-      });
+      alert("success");
     }); 
     $location.path('/');  
   };
