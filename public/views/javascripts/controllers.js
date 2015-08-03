@@ -423,18 +423,27 @@ $scope.search($routeParams.searchKey);
     'Time':'',
     'Content':''
   };
+  $scope.max = 10;
+  $scope.ratedId='';
+  $scope.defaultval="select a member";
+  $scope.rating = {
+    'RaterId': '',  // Rater id
+    'Stars': 5, 
+    'Comments': ''
+  };
   /*check login status*/
   $http.get('auth/loggedin').success(function (user){
     if(user =='0'){
       document.getElementById("applyMember").disabled=true;
       document.getElementById("applyMember").innerHTML="Log in to apply";
-      document.getElementById("postComment").disabled=true;
-      document.getElementById("postComment").innerHTML="Log in to comment";
+      document.getElementById("ratefield").style.display="none";
+      //document.getElementById("postComment").innerHTML="Log in to comment";
       document.getElementById("Administrate").style.display="none";
     }
     else{
       $scope.user=user;
       $scope.myComment.UserId=user._id;
+      $scope.rating.RaterId = user._id;
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
           if(user._id !== res[0].Admin._id){
             document.getElementById("Administrate").style.display="none";          
@@ -446,9 +455,25 @@ $scope.search($routeParams.searchKey);
     }
   });
 
+  $scope.hoveringOver = function(value) {
+    $scope.overStar = value;
+    $scope.percent = 100 * (value / $scope.max);
+  };
+
+  // post rating obj
+  $scope.addRating = function(){
+    console.log($scope.rating);
+    $http.post('/api/rating/' + $scope.ratedId, $scope.rating).success(function (data) {
+      $scope.rating.Stars = 5;
+      $scope.rating.Comments = '';
+    });
+  };
+
+
   var refresh = function(){
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
       $scope.project = res[0];
+      $scope.memberList=[$scope.project.Admin];
       });
 
   };

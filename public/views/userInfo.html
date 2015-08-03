@@ -65,19 +65,6 @@
 	<div class="row card">
 		<div>
 			<h2>Rates and Comment</h2>
-			<div>
-				<div class="col-xs-12 col-md-12">
-					<textarea class="form-control" placeholder="Leave your rate here" ng-model="rating.Comments"></textarea>
-				</div>
-				<div class="col-xs-12 col-md-12">
-					<rating ng-model="rating.Stars" max="max" readonly="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" ></rating>
-					<span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" >{{overStar || rating.Stars}}</span>
-				</div>
-				<div class="col-xs-12 col-md-12">
-					<button class="btn btn-primary" ng-click="addRating()">Post</button>
-				</div>
-				
-			</div>
 			<table class="table">
 				<thead>
 					<tr>
