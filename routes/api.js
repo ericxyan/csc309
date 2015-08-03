@@ -28,6 +28,7 @@ router.use('/projects', isAuthenticated);
 router.get('/users/:userid', function(req, res, next) {
     User.findOne({"UserId":req.params.userid})
         .populate('Rating')
+        .populate('Projects')
         .exec(function(err, docs){
             if(err){
                 res.status(500).send("Something broke!");
@@ -69,7 +70,7 @@ router.get('/users/:id/:pwd', function(req, res, next) {
  Update user's information with given id.
 */
 router.put('/users', function(req, res, next) {
-    User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.body.user._id)}, req.body.user)
+    User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.body.id)}, req.body.user)
         .exec(function(err, docs){
         if(err){
             res.status(500).send("Something broke!");
