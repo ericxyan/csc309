@@ -1,5 +1,5 @@
-angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
-.config(function($routeProvider, $locationProvider, $httpProvider){
+angular.module('goodteam.config',['ui.bootstrap', 'ngRoute', 'valdr'])
+.config(function($routeProvider, $locationProvider, $httpProvider, valdrProvider){
   $routeProvider
     // Home page
     .when('/', {
@@ -50,6 +50,103 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
     .otherwise({
       redirectTo: '/'
     });
+
+/* valdr validation*/
+  valdrProvider.addConstraints({
+    "signIn": {
+      "UserId": {
+        "required": {
+          "message": "Username is required."
+        },
+        "size": {
+          "min": 3,
+          "max": 10,
+          "message": "Username must be between 4 and 10 characters."
+        }
+      },
+      "Pwd": {
+        "required": {
+          "message": "Password is required."
+        },
+        "size": {
+          "min": 8,
+          "max": 20,
+          "message": "Password must be between 6 and 12 characters."
+        },
+        "pattern": {
+          "value": /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/,
+          "message": "Password between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace."
+        }
+      }
+    },
+    // Sign up validation
+    "signUp": {
+      "UserId": {
+        "required": {
+          "message": "Username is required."
+        },
+        "size": {
+          "min": 3,
+          "max": 10,
+          "message": "Username must be between 3 and 10 characters."
+        },
+        "pattern": {
+          "value": /^\S*$/, // no space allowed.
+          "message": "No space allowed."
+        }
+      },
+      "NickName": {
+        "required": {
+          "message": "Nickname is required."
+        },
+        "size": {
+          "min": 3,
+          "max": 10,
+          "message": "Username must be between 3 and 10 characters."
+        },
+        "pattern": {
+          "value": /^\S*$/, //no space
+          "message": "No space allowed."
+        }
+      },
+      "Email": {
+        "email": {
+          "message": "Invalide email address."
+        }
+      },
+      "Ceil": {
+        "pattern": {
+          "value": /^[0-9]*$/, //only numbers
+          "message": "only numbers allowed."
+        } 
+      },
+      "Pwd": {
+        "required": {
+          "message": "Password is required."
+        },
+        "size": {
+          "min": 8,
+          "max": 20,
+          "message": "Password must be between 6 and 12 characters."
+        },
+        "pattern": {
+          "value": /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/,
+          "message": "Password between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace."
+        }
+      },
+      "newPwd": {
+        "size": {
+          "min": 8,
+          "max": 20,
+          "message": "Password must be between 6 and 12 characters."
+        },
+        "pattern": {
+          "value": /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/,
+          "message": "Password between 8 and 20 characters; must contain at least one lowercase letter, one uppercase letter, one numeric digit, and one special character, but cannot contain whitespace."
+        }
+      }
+    }
+  });
 })
 /*Services*/
 .factory('skills', function(){

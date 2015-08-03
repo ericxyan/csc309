@@ -1,4 +1,4 @@
-var app = angular.module('goodteam', ['goodteam.config', 'goodteam.controllers' ,'ui.bootstrap', 'ngRoute', 'ngCookies', 'valdr']);
+var app = angular.module('goodteam', ['goodteam.config', 'goodteam.controllers' ,'ui.bootstrap', 'ngRoute', 'ngCookies']);
 
 app.run(function($rootScope, $http, $route) {
   $http.get('auth/loggedin').success(function (user){

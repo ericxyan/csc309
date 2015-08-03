@@ -117,7 +117,7 @@ $scope.search($routeParams.searchKey);
 //////////////////////////////
 // Sign in modal controller //
 //////////////////////////////
-.controller('signInModalCtrl', function ($scope, $http, $location, $modalInstance, $rootScope){
+.controller('signInModalCtrl', function ($scope, $http, $location, $modalInstance, $rootScope, valdr){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
 
@@ -147,6 +147,7 @@ $scope.search($routeParams.searchKey);
 .controller('registerModal', function ($scope, $http, $location, $rootScope, $modalInstance, skills) {
   $scope.skills = skills;
   $scope.error_message = '';
+  $scope.Pwd2='';
   $scope.user = {
     UserId: '',
     Pwd: '', 
