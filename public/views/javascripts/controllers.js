@@ -407,6 +407,15 @@ $scope.search($routeParams.searchKey);
     }
     else{
       $scope.user=user;
+      $http.get('/api/search/Admin/'+$scope.user._id).success(function(res){
+        $scope.admin_projects=res;
+      });
+      $http.get('/api/search/Member/'+$scope.user._id).success(function(res){
+        $scope.member_projects=res;
+      });
+      $http.get('/api/search/Candidate/'+$scope.user._id).success(function(res){
+        $scope.candidate_projects=res;
+      });
       $scope.myComment.UserId=user._id;
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
           if(user._id !== res[0].Admin._id){
@@ -561,13 +570,12 @@ $scope.search($routeParams.searchKey);
       }
     }
     newProject.Subjects=subjectList;
-    newProject.Admin=$scope.user;
+    newProject.Admin=$scope.user._id;
     newProject.Member=[];
     newProject.Comments=[];
     newProject.Candidate=[];
     console.log(newProject);
     $http.post('/api/projects', newProject).success(function(response){
-      alert("success");
       console.log(response);
       $scope.user.Projects.push(response._id);
       console.log($scope.user);

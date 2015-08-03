@@ -6,6 +6,7 @@ var Project = require('../db/projects');
 var Rating  = require('../db/rating');
 var Comment = require('../db/comments');
 
+
 var isAuthenticated = function (req, res, next) {
     // allows GET without authentication
     if(req.method === 'GET'){
@@ -20,6 +21,38 @@ var isAuthenticated = function (req, res, next) {
 }
 
 router.use('/projects', isAuthenticated);
+
+/* ---------- search -----------*/
+// TODO: unittest this
+
+/*
+Get user with Skill
+*/
+
+router.get('search/skill/:skill', function(req, res, next){
+    User.find({'Skills': req.params.skill})
+    .exec(function(err, docs){
+       if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); // return a array of users with certain skill.
+    });
+});
+
+/*
+Search projects's user
+*/
+
+router.get('search/project/:type/:userId', function(req, res, next){
+   Project.find({req.params.type: mongoose.Types.ObjectId(req.params.userId)})
+   .exec(function(err, docs){
+      if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); 
+   });
+});
+
 /* ---------- for users ---------- */
 
 /*
@@ -76,7 +109,12 @@ router.put('/users', function(req, res, next) {
             res.status(500).send("Something broke!");
         }
         console.log('Update user: ' + docs);
-        res.json(docs);
+        User.findById(docs._id).exec(function(err, docs){
+            if(err){
+                res.status(500).send("Something broke!");
+            }
+            res.json(docs);
+        });
     });
 });
 
@@ -100,7 +138,7 @@ router.post('/users', function(req, res, next) {
 router.delete('/users/:id', function(req, res, next) {
     User.findByIdAndRemove(mongoose.Types.ObjectId(req.params.id))
         .exec(function(err){
-        if(err){
+        if(err){ 
             res.status(500).send("Something broke!");
         }
         res.send("Success: deleted user " + req.params.id);
@@ -110,16 +148,18 @@ router.delete('/users/:id', function(req, res, next) {
 /*
 Check whether the given nickname is valid
 */
-router.get('/users/validNickName/:nickname', function(req, res, next){
+
+router.get('/users/valid/nickname/:nickname', function(req, res, next){
    User.findOne({"NickName": req.params.nickname}).exec(function(err, doc){
+       console.log("2");
       if(err){
           res.status(500).send("Something broke!");
       }
-      if(doc){
-          return "false";
+      else if(doc){
+          res.send("false");
       }
       else{
-          return "true";
+          res.send("true");
       }
    });
 });
@@ -241,21 +281,22 @@ router.get('/rating/:id', function (req, res, next) {
 
 
 /*
-Add new Rating to the specific user, return the promise of this action
+Add new Rating to the specific user
 */
 router.post('/rating/:userId', function (req, res, next) {
-    new Rating(req.body)
-        .save(function(err, docs){
+    new Rating(req.body).save(function(err, docs){
         if(err){
             res.status(500).send("Something broke!");
         }
-        User.findOneAndUpdate({"_id": mongoose.Types.ObjectId(req.params.userId)}, {$push: {"Rating": docs._id}},function(err){
-            if(err){
-                res.status(500).send("Something broke!");
-            }
-            res.send("success");
-            
-        });
+        else{
+            User.findOneAndUpdate({"_id": mongoose.Types.ObjectId(req.params.userId)}, 
+                                {$push: {"Rating": docs._id}},function(err){
+                if(err){
+                    res.status(500).send("Something broke!");
+                }
+                res.send("success");
+            });
+        }
     });
 });
 
@@ -282,4 +323,67 @@ router.delete('/rating/:userid/:ratingId', function(req, res, next) {
 
 
 
+<<<<<<< HEAD
+=======
+/* ---------- api for Comments ---------- */
+
+
+/*
+Populate out the project's comments, and return the comments.
+*/
+router.get('/comment/:id', function(req, res, next) {
+    Project.findById(mongoose.Types.ObjectId(req.params.id), function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+        else{
+            Project.populate(doc, {path: "Comment"}, function(err, doc){
+                if(err){
+                    res.status(500).send("Something broke!");
+                }
+                res.send(doc.Comments);
+            });
+        }
+    });
+});
+
+
+/*
+Add new Comment to the specific project
+*/
+router.post('/comment/:projectId', function(req, res, next) {
+    new Comment(req.body)
+        .save(function(err, docs){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+        else{
+        Project.findOneAndUpdate(mongoose.Types.ObjectId(req.params.projectId), {$push: {"Comments": docs._id}},function(err){
+            if(err){
+                res.status(500).send("Something broke!");
+            }
+            res.send("success");
+            });
+        }
+    });
+});
+
+/*
+Delete Comment.
+*/
+
+router.delete('/comment/:projectId/:commentId', function(req, res, next) {
+    Project.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.params.projectId)},{$pull : {"Comments" : mongoose.Types.ObjectId(req.params.commentId)}}, function(err){
+            if(err){
+                res.status(500).send("Something broke!");}
+    });
+    Comment.findByIdAndRemove(mongoose.Types.ObjectId(req.params.commentId))
+        .exec(function(err){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+        res.send("success");
+    });
+});
+>>>>>>> 42fe07f046fab74e2a2056ae38fb6163400f0586
 module.exports = router;

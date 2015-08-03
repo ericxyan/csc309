@@ -51,19 +51,23 @@
 						<th>Project</th>
 						<th>Start time</th>
 						<th>Role</th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>
-					<!--Projec和user要join一下，看role，然后update给project.Role-->
-					<tr ng-repeat="project in sortedProjects">
-						<td>{{project.ProjectName}}<span class="badge">{{project.Status}}</span></td>
+					<tr ng-repeat="project in admin_projects">
+						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
 						<td>{{project.Start_time}}</td>
-						<td>{{project.Role}}</td>
-						<!--seeProject needs to be implemented in controller-->
-						<td>
-							<button class="btn btn-info" ng-click="seeProject(project._id)">See more</button>
-						</td>
+						<td>Admin</td>
+					</tr>
+					<tr ng-repeat="project in member_projects">
+						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
+						<td>{{project.Start_time}}</td>
+						<td>Member</td>
+					</tr>
+					<tr ng-repeat="project in candidate_projects">
+						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
+						<td>{{project.Start_time}}</td>
+						<td>Candidate</td>
 					</tr>
 				</tbody>
 			</table>
