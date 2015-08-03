@@ -7,7 +7,6 @@ var usersSchema = new Schema({
 	"NickName": {type: String},  // add NickName
 	"Email": {type: String}, 
 	"Ceil": {type: String},
-	"Projects": [{type: Schema.ObjectId, ref: 'Project'}],
 	"Skills": [{type: String}],
 	"Rating": [{type: Schema.ObjectId, ref:'Rating'}]
 });

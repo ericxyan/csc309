@@ -6,6 +6,7 @@ var Project = require('../db/projects');
 var Rating  = require('../db/rating');
 var Comment = require('../db/comments');
 
+
 var isAuthenticated = function (req, res, next) {
     // allows GET without authentication
     if(req.method === 'GET'){
@@ -20,6 +21,38 @@ var isAuthenticated = function (req, res, next) {
 }
 
 router.use('/projects', isAuthenticated);
+
+/* ---------- search -----------*/
+// TODO: unittest this
+
+/*
+Get user with Skill
+*/
+
+router.get('search/skill/:skill', function(req, res, next){
+    User.find({'Skills': req.params.skill})
+    .exec(function(err, docs){
+       if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); // return a array of users with certain skill.
+    });
+});
+
+/*
+Search projects's user
+*/
+
+router.get('search/project/:type/:userId', function(req, res, next){
+   Project.find({req.params.type: mongoose.Types.ObjectId(req.params.userId)})
+   .exec(function(err, docs){
+      if(err){
+           res.status(500).send('Something broke');
+       } 
+       res.json(docs); 
+   });
+});
+
 /* ---------- for users ---------- */
 
 /*
