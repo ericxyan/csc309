@@ -1,0 +1,15 @@
+<div class="modal-header">
+	<div class="modal-title">Login</div>
+</div>
+<div class="modal-body">
+	<form class="myform" ng-submit="login()">
+		<h2 class="myform-heading">Please login</h2>
+		<p class="text-warning">{{error_message}}</p>
+		<input type="username" ng-model="user.username" placeholder="Username" class="form-control" required autofocus=""/ ><br>
+		<input type="password" ng-model="user.password" placeholder="Password" class="form-control" required><br>
+	</form>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="ok()">OK</button>
+	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

@@ -42,22 +42,65 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 //Navbar controller/ //
 ////////////////////////
 .controller('nvaCtrl', function ($scope, $modal, skills, $log){
-  // Open register modal
-  $scope.open = function (size) {
-    var modalInstance = $modal.open({
+  // Open Sign up modal
+  $scope.openSignUp = function (size) {
+    var signUpModal = $modal.open({
       animation: true,
       templateUrl: '/views/registerModal.html',
       controller: 'registerModal',
       size: size,
     });
 
-    modalInstance.result.then(function (newUser) {
+    signUpModal.result.then(function (newUser) {
       $scope.newUser = newUser;
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());      
     });
   };
+  // Open Sign in modal
+  $scope.openSignIn = function (size) {
+    var signInModal = $modal.open({
+      animation: true,
+      templateUrl: '/views/signInModal.html',
+      controller: 'signInModalCtrl',
+      size: size,
+    });
+
+    signInModal.result.then(function (user) {
+      $scope.user = user;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());   //error   
+    });
+  };
 })
+
+//////////////////////////////
+// Sign in modal controller //
+//////////////////////////////
+.controller('signInModalCtrl', function ($scope, $http, $location, $modalInstance, $rootScope){
+  $scope.user = {username: '', password: ''};
+  $scope.error_message = '';
+
+  $scope.ok = function(){
+    $http.post('/auth/login', $scope.user).success(function(data){
+      if(data.state == 'success'){
+        $rootScope.authenticated = true;
+        $rootScope.current_user = data.user.UserId;
+        $modalInstance.close(data);
+        $location.path('/');
+      }
+      else{
+        $scope.error_message = data.message;
+      }      
+    });
+  };
+
+  $scope.cancel = function(){
+    $modalInstance.dismiss('cancel');
+  }
+})
+
+
 //////////////////////////////
 //Register modal controller //
 //////////////////////////////
@@ -200,14 +243,16 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       $location.path('/login');
     }
     else { // logged in
-      $http.get('api/users/' + $routeParams.userId).success(function (res) {
-        // init rating obj.
-        $scope.user = res; // query user
+        getUserInfo();
         $scope.rating.RaterId = user._id; // visitor
-      });
     };
   });
 
+  var getUserInfo = function(){
+    $http.get('api/users/' + $routeParams.userId).success(function (res) {
+      $scope.user = res; // query user
+    });
+  };
   // hover display rate
   $scope.hoveringOver = function(value) {
     $scope.overStar = value;
@@ -220,6 +265,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       $scope.message = data;
       $scope.rating.Stars = 5;
       $scope.rating.Comments = '';
+      getUserInfo();
     });
   };
 })
