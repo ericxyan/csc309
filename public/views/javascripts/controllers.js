@@ -433,12 +433,12 @@ $scope.search($routeParams.searchKey);
   };
   /*check login status*/
   $http.get('auth/loggedin').success(function (user){
-    if(user =='0'){
-      document.getElementById("applyMember").disabled=true;
-      document.getElementById("applyMember").innerHTML="Log in to apply";
-      document.getElementById("ratefield").style.display="none";
+    if(user ==='0'){
+      document.getElementById("applyMember").remove();
+      //document.getElementById("applyMember").innerHTML="Log in to apply";
+      document.getElementById("ratefield").remove();
       //document.getElementById("postComment").innerHTML="Log in to comment";
-      document.getElementById("Administrate").style.display="none";
+      document.getElementById("Administrate").remove();
     }
     else{
       $scope.user=user;
@@ -446,11 +446,25 @@ $scope.search($routeParams.searchKey);
       $scope.rating.RaterId = user._id;
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
           if(user._id !== res[0].Admin._id){
-            document.getElementById("Administrate").style.display="none";          
+            document.getElementById("Administrate").remove();         
           }
           else{
-            document.getElementById("applyMember").disabled=true;
+            document.getElementById("applyMember").remove();
           }
+          for(var i=0; i< res[0].Member.length;i++){
+          if(user._id === res[0].Member[i]._id){
+            var isMember=true;
+            alert("You are member of this group");
+            }
+          }
+          if(user._id===res[0].Admin._id || isMember===true){
+            console.log("you can rate now");
+          }
+          else{
+            console.log("no you can't");
+            document.getElementById("ratefield").remove();
+          }
+
       });
     }
   });
@@ -521,6 +535,11 @@ $scope.search($routeParams.searchKey);
           if(user._id !== res[0].Admin._id){
             $location.path('/');
           }
+          if($scope.project.Status ===100){
+            document.getElementById("updateprog").remove();
+            /*empty candidate list*/
+
+          }
         });
       }
     });
@@ -576,6 +595,7 @@ $scope.search($routeParams.searchKey);
       $scope.project.Status = $scope.prog;
       $http.put('/api/projects/'+ $routeParams.projectID, $scope.project).success(function(res){
         alert("success");
+        refresh();
       });
     }
   };
