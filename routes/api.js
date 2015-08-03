@@ -311,7 +311,7 @@ router.post('/comment/:projectId', function(req, res, next) {
         if(err){
             res.status(500).send("Something broke!");
         }
-        Project.findOneAndUpdate({"_id": mongoose.Types.ObjectId(req.params.projectId)}, {$push: {"Comments": docs._id}},function(err){
+        Project.update(mongoose.Types.ObjectId(req.params.projectId), {$push: {"Comments": docs._id}},function(err){
             if(err){
                 res.status(500).send("Something broke!");
             }

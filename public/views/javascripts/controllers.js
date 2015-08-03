@@ -447,7 +447,6 @@ $scope.search($routeParams.searchKey);
   };
   $scope.addPost=function(){
     $scope.myComment.Time=Date();
-    console.log($scope.myComment);
     $http.post('/api/comment/'+$routeParams.projectID, $scope.myComment).success(function(res){
       console.log("success");
     });
