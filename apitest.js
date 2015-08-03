@@ -108,6 +108,18 @@ describe('apis', function(){
           done();
       });
    });
+   
+   
+   it('Getting all ratings of a single user, should return array', function(done){
+      server
+      .get('/api/comment/' + testProject._id)
+      .expect(200)
+      .end(function(err, res){
+          res.status.should.equal(200);
+          res.body.should.be.an.Array();
+          done();
+      });
+   });
 
    it('Check put project without logged in', function(done){
        server

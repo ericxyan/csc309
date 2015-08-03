@@ -29,9 +29,9 @@
 					</a>
 					<!-- Login or Register -->
 					<p class="navbar-right navbar-text" ng-if="!authenticated">
-						<a href="#/login">Login</a>
+						<a href ng-click="openSignIn()">Login</a>
 						or 
-						<button class="btn btn-primary" ng-click="open()">Register</button> 
+						<a href ng-click="openSignUp()">Register</a> 
 						or 
 						<a href="/auth/google">Sign in with Google</a>
 					</p>
