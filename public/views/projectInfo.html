@@ -4,54 +4,68 @@
 		<div>
 			<h3>Information</h3>
 			<p>Name: <span>{{project.ProjectName}}</span></p><br>
-			<p>Start Time: <span>{{project.Start_time}}</span></p><br>
-			<!--Finish time is not displayed if it's ongoing-->
-			<p id="FinishTime" style="display:none">Finish Time: <span>{{project.Finish_time}}</span></p><br>
-			<p>Admin: <span>{{project.Admin}}</span></p><br>
+			<p>Start from: {{project.Start_time | date:"h:mma 'on' MMM d, y"}} {{(project.Finish_time)? (' to ' + project.Finish_time | date:"h:mma 'on' MMM d, y"):''}}</p>
+			<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
+			<br>
+			<p>Admin: <span><a href="#/users/{{project.Admin.UserId}}">{{project.Admin.UserId}}</a></span></p><br>
 		</div>
 	</div>
 	<div class="col-xs-12 col-md-4">
 		<h3>Description</h3>
 		<p><span>{{project.Description}}</span></p>
+		<br>
+		<h3>Subjects</h3>
+		<ul class="checkbox" >
+		    <li ng-repeat="subject in project.Subjects">{{subject}}</li>
+		</ul>
 	</div>
 	<div class="col-xs-12 col-md-4">
 		<div class="row">
 			<!--This is only visible by the administrator-->
-			<button id="Administrate" class="btn btn-info" style="display:yes" ng-click="administrate(project._id)">Administrate my project</button>
+			<div id="Administrate" style="display:yes">
+				<a href="#/admin/project/{{project._id}}">Administrate my project</a>
+			</div>
 		</div>
 	</div>
 </div>
 <br>
 <div class="row card">
-	<h1>Members</h1>
+	<h1>People</h1>
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Role</th>
-				<th>Skills</th>
 				<th>Person</th>
+				<th>Skills</th>
+				<th>Status</th>
 			</tr>
 		</thead>
 		<tbody>
 			<!--You need to update the members object and set the "apply" button visible if the posision is not full-->
-			<tr ng-repeat="member in members">
-				<td>{{member.Role}}</td>
-				<td>{{member.Skill}}</td>
-				<td style="display:none">{{member.Name}}</td>
+			<tr ng-repeat="member in project.Member track by $index">
 				<td>
-					<button class="btn btn-info" style="display:yes" ng-click="apply()">Apply</button>
-				</td>
+					<a href="#/users/{{member.UserId}}">{{member.UserId}}</a></td>
+				<td>{{member.Skills}}</td>
+				<td>Member</td>
+			</tr>			
+			<tr ng-repeat="candidate in project.Candidate track by $index">
+				<td>
+					<a href="#/users/{{candidate.UserId}}">{{candidate.UserId}}</a></td>
+				<td>{{candidate.Skills}}</td>
+				<td>Candidate</td>
 			</tr>
 		</tbody>
 	</table>
+	<br>
+	<button id="applyMember"class="btn btn-info" ng-click="apply()">Apply to be a member</button>
 </div>
 <br>
 <div class="row card">
 	<h1>Message Board</h1>
-	<div class="column">
-		<input class="form-control" placeholder="Leave your question here" ng-model="comment.Comment">
-		<br>
-		<button class="btn btn-primary" ng-click="addQuestion()">Post My question</button>
+	<div class="row">
+		<input class="form-control col-xs-12 col-md-8" placeholder="Leave your question here" ng-model="myComment.Content">
+		<button id="postComment" class="btn btn-primary col-xs-4 col-md-4" ng-click="addPost()">Post My comment</button>
 	</div>
-	<!--comment display还没写，你的database要改一下，需要讨论-->
+	<div ng-repeat="comment in project.Comments track by $index">
+		<p>{{comment.Content}}</p>
+	</div>
 </div>

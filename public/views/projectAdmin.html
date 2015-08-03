@@ -1,30 +1,30 @@
 <div class="row card">
 	<table class="table">
 		<h1>Members application</h1>
-		<thead>
-			<tr>
-				<td>Position</td>
-				<td>Skills</td>
-				<td>Person</td>
-			</tr>
-		</thead>
 		<tbody>
 			<!--you need to update the members object-->
-			<tr ng-repeat="member in members">
-				<td>{{member.Role}}</td>
-				<td>{{member.Skills}}</td>
+			<tr ng-repeat="candidate in project.Candidate track by $index">
 				<!--点进去可以看这个用户的资料-->
-				<td>{{member.Username}}</td>
-				<td><button class="btn btn-primary" ng-click="accept(member._id)">Accept</button>
+				<td><a href="#/users/{{candidate.UserId}}">{{candidate.UserId}}</a></td>
+				<td><button class="btn btn-primary" ng-click="accept(candidate._id)">Accept</button>
 				</td>
-				<td><button class="btn btn-primary" ng-click="reject(member._id)">Reject</button>
+				<td><button class="btn btn-danger" ng-click="reject(candidate._id)">Reject</button>
+				</td>
+			</tr>
+			<tr ng-repeat="member in project.Member track by $index">
+				<td><a href="#/users/{{member.UserId}}">{{member.UserId}}</a></td>
+				<td><button class="btn btn-danger" ng-click="deleteMember(member._id)">Delete member</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-<div class="row">
+<div class="row card">
 	<div class="col-xs-12 col-md-4">
-		<td><button class="btn btn-primary" ng-click="finish()">Project Finished!</button>
-		</div>
+		<input type="number" ng-model="prog" placeholder="__%">
+		<button class="btn btn-primary" ng-click="updateProg()">update progress</button>
 	</div>
+</div>
+<div class="row">
+	<button class="btn btn-danger" ng-click="deleteProject()">Delete project</button>
+</div>

@@ -42,7 +42,7 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
       controller: 'projectAdmin'
     })
     // Create new project
-    .when('/projects/apply/:projectID', {
+    .when('/apply', {
       templateUrl: '/views/projectApply.html',
       controller: 'projectApply'
     })

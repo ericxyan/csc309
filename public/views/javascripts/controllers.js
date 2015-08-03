@@ -390,41 +390,187 @@ $scope.search($routeParams.searchKey);
     $modalInstance.dismiss('cancel');
   };
 })
-//////////////////////
-//Project info page //
-//////////////////////
+///////////////////////////
+//////Project info page////
+///////////////////////////
 .controller('projectInfoCtrl', function ($scope, $http, $routeParams){
-  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
-    $scope.project = res[0];
+  $scope.myComment={
+    'UserId':'',
+    'Time':'',
+    'Content':''
+  };
+  /*check login status*/
+  $http.get('auth/loggedin').success(function (user){
+    if(user =='0'){
+      document.getElementById("applyMember").disabled=true;
+      document.getElementById("applyMember").innerHTML="Log in to apply";
+      document.getElementById("postComment").disabled=true;
+      document.getElementById("postComment").innerHTML="Log in to comment";
+      document.getElementById("Administrate").style.display="none";
+    }
+    else{
+      $scope.user=user;
+      $scope.myComment.UserId=user._id;
+      $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
+          if(user._id !== res[0].Admin._id){
+            document.getElementById("Administrate").style.display="none";          
+          }
+          else{
+            document.getElementById("applyMember").disabled=true;
+          }
+      });
+    }
   });
+
+  var refresh = function(){
+      $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
+      $scope.project = res[0];
+      });
+
+  };
+  refresh();
+  $scope.apply=function(){
+    for(var i=0; i< $scope.project.Candidate.length;i++){
+      if($scope.user._id === $scope.project.Candidate[i]._id){
+        var Dup=true;
+        alert("You can't apply twice!");
+      }
+    }
+    if(!Dup){
+      $scope.project.Candidate.push($scope.user._id);
+      console.log($scope.user._id);
+      $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
+        console.log("success");
+      });
+      refresh();
+    }
+  };
+  $scope.addPost=function(){
+    $scope.myComment.Time=Date();
+    $http.post('/api/comment/'+$routeParams.projectID, $scope.myComment).success(function(res){
+      console.log("success");
+    });
+    refresh();
+  };
 })
 
+
+
 ///////////////////////
-//Project admin page //
+//Project admin page///
 ///////////////////////
-.controller('projectAdmin', function ($scope, $http, $routeParams) {
-  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
-    $scope.project = res[0];
-  });
+.controller('projectAdmin', function ($scope, $http, $routeParams,$location) {
+
+  var refresh = function(){
+  $http.get('auth/loggedin').success(function (user){
+    if(user==='0'){
+      $location.path('/login');
+    }
+    else{
+        $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
+          $scope.project = res[0];
+          if(user._id !== res[0].Admin._id){
+            $location.path('/');
+          }
+        });
+      }
+    });
+  };
+  refresh();
+
+  $scope.deleteMember=function(id){
+    var i=0;
+    console.log($scope.project.Member);
+    for(var i = $scope.project.Member.length; i--;) {
+          if($scope.project.Member[i]._id === id) {
+              $scope.project.Member.splice(i, 1);
+              console.log("delete!");
+          }
+    }
+    $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
+      console.log("success");
+    });
+  };
+
+
+  var deleteCandidate=function(id){
+    var i=0;
+    console.log(id);
+    console.log($scope.project.Candidate);
+    for(var i = $scope.project.Candidate.length; i--;) {
+          if($scope.project.Candidate[i]._id === id) {
+              $scope.project.Candidate.splice(i, 1);
+              console.log("delete!");
+          }
+    }
+    $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
+      console.log("success");
+    });
+  };
+  $scope.accept=function(id){
+    $scope.project.Member.push(id);
+    $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
+      console.log("success");
+    });
+    deleteCandidate(id);
+    refresh();
+  };
+  $scope.reject=function(id){
+    deleteCandidate(id);
+    refresh();
+  };
+  $scope.updateProg=function(){
+    if($scope.prog>100 || $scope.prog <0){
+        alert("not in proper range");
+    }
+    else{
+      $scope.project.Status = $scope.prog;
+      $http.put('/api/projects/'+ $routeParams.projectID, $scope.project).success(function(res){
+        alert("success");
+      });
+    }
+  };
+  $scope.deleteProject=function(){
+    $http.delete('/api/projects/'+$routeParams.projectID).success(function(res){
+      alert("success");
+    });
+  };
+
 })
 
-////////////////////////////
-//Create new project page //
-////////////////////////////
-.controller('projectApply', function ($scope, $http, $routeParams) {
+
+///////////////////////////////////
+///////Create new project page/////
+///////////////////////////////////
+.controller('projectApply', function ($scope, $http, $routeParams,$location) {
+  $http.get('auth/loggedin').success(function (user){
+    if(user=='0'){
+      $location.path('/login');
+    }
+    else{
+      $scope.user=user;
+    }
+  });
   $scope.apply=function(){
     var newProject = $scope.project;
     newProject.Start_time= Date();
-    /*more details to be filled in for this project, not done yet*/
-    newProject.Admin;
-    $http.post('/projects', newProject).success(function(response){
-      
-    });
-    
+    newProject.Status=0;
+    var subjectList=[];
+    var form=document.getElementById("subject");
+    for(var i=0; i<form.elements.length; i++){
+      if(form.elements[i].checked){
+        subjectList.push(form.elements[i].value);
+      }
+    }
+    newProject.Subjects=subjectList;
+    newProject.Admin=$scope.user;
+    newProject.Member=[];
+    newProject.Comments=[];
+    newProject.Candidate=[];
+    console.log(newProject);
+    $http.post('/api/projects', newProject).success(function(response){
+      alert("success");
+    }); 
+    $location.path('/');  
   };
-  
-  
-  $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
-    $scope.project = res[0];
-  });
 });

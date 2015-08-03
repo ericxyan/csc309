@@ -144,6 +144,10 @@ router.get('/projects/', function(req, res, next) {
 */
 router.get('/projects/:id', function(req, res, next) {
     Project.find({"_id": mongoose.Types.ObjectId(req.params.id)})
+        .populate('Candidate')
+        .populate('Comments')
+        .populate('Member')
+        .populate('Admin')
         .exec(function(err, doc){
         if(err){
             res.status(500).send("Something broke!");
