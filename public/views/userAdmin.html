@@ -74,24 +74,8 @@
 			<h2>Rates and Comment</h2>
 			<table class="table">
 				<tbody>
-					<tr>
-						
-						<td><input type="text" class="form-control" placeholder="Leave your rate here"ng-model="rating.Stars"></td>
-						<td><rating ng-model="rate" max="max" readonly="false" on-hover="hoveringOver(value)" on-leave="overStar = null" titles="['one','two','three']" ></rating>
-							<span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" >{{overStar || rate}}</span></td>
-							<td><button class="btn btn-primary" ng-click="addRating()">Post</button>
-							</td>
-							<td>
-							</td>
-						</tr>
-						<!--you need to update the rates object-->
-						<tr >
-							<td>Comment: {{rate.Comment}}</td>
-							<td>Stars: {{rate.Stars}}</td>
-							<td>Rater: {{rate.RaterId}}</td>
-						</tr>
 						<tr ng-repeat="rate in user.Rating">
-							<td>Comment: {{rate.Comment}}</td>
+							<td>Comment: {{rate.Comments}}</td>
 							<td>Stars: {{rate.Stars}}</td>
 							<td>Rater: {{rate.RaterId}}</td>
 						</tr>
