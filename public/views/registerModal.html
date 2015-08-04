@@ -18,14 +18,21 @@
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="Ceil">Ceil</label>
             <input type="text" class="form-control" id="Ceil" name="Ceil" ng-model="user.Ceil" placeholder="Ceil phone">
+            <p>{{user.Ceil}}</p>
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="Pwd" ng-model="user.Pwd"  placeholder="Password">
+            <label for="Pwd">Password</label>
+            <input type="password" class="form-control" id="Pwd" ng-model="user.Pwd" name="Pwd"  placeholder="Password">
+            <p class="text-danger">pwd1: {{user.Pwd}}</p>
+            <p class="text-danger" ng-hide="match">Not match</p>
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="password2">Repeat Password</label>
-            <input type="password" class="form-control" id="password2" ng-model="Pwd2" name="Pwd2"  placeholder="Password">
+            <input type="password" class="form-control" id="password2" ng-model="Pwd2" ng-change="checkMatch()" name="Pwd2"  placeholder="Password">
+            <p class="text-danger">pwd2: {{Pwd2}}</p>
+            <p class="text-danger">pwd1: {{user.Pwd}}</p>
+            <p>match: {{match}}</p>
+            <p class="text-danger" ng-hide="match">Not match</p>
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="skills">Skills</label>
