@@ -82,6 +82,7 @@
 			<table class="table">
 				<tbody>
 						<tr ng-repeat="rate in user.Rating | orderBy: 'Date':true">
+							
 							<td>Comment: {{rate.Comments}}</td>
 							<td>Stars: {{rate.Stars}}</td>
 							<td>Rater: {{rate.RaterId}}</td>
