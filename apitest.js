@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 var User = require('./db/user');
 var Project = require('./db/projects');
 var Rating  = require('./db/rating');
-var Comment = require('./db/comments');
 
 var testProject, testUser;
 var pwd = bCrypt.hashSync("AliceAliceMock", bCrypt.genSaltSync(10), null)
@@ -16,26 +15,31 @@ var pwd = bCrypt.hashSync("AliceAliceMock", bCrypt.genSaltSync(10), null)
 
 describe('apis', function(){
     
+    // setUp before all tests
     before(function(done){
-        new Project({
-	        "ProjectName": "Mock project",
-	        "Description": "abcdefg",
-	        "Subjects": ["EE", "CS"],
-	        "Status": 20,
-        }).save(function(err, doc){
-            testProject = doc;
-        });
-    
         new User({
             "UserId": "MockAliceAlice",
             "Pwd": pwd,
-            "NickName": "AliceXianYu"
+            "NickName": "AliceXianYu",
+            "Skills": ["EE"]
         }).save(function(err, doc){
             testUser = doc;
+            new Project({
+	            "ProjectName": "Mock project",
+	            "Description": "abcdefg",
+	            "Subjects": ["EE", "CS"],
+	            "Status": 20,
+	            "Admin": testUser._id,
+	            "Member": [testUser._id],
+	            "Candidate": [testUser._id]
+                }).save(function(err, doc){
+            testProject = doc;
+            });
         });
         done();
     });
 
+    // tearDown After all tests
     after(function(done){
         Project.find({"ProjectName": "Mock project"}).remove().exec();
         User.find({"UserId": "MockAliceAlice"}).remove().exec();
@@ -53,7 +57,57 @@ describe('apis', function(){
           done();
       });
     });
-   
+    
+    it('Search all Admin user is MockAliceAlice', function(done){
+        server
+        .get('/api/search/project/Admin/' + testUser._id)
+        .expect(200)
+        .end(function(err, res){
+           res.status.should.equal(200);
+           res.body.should.be.an.Array();
+           res.text.should.containEql('Mock project');
+           done(); 
+        });
+    });
+    
+    it('Search all member user contains MockAliceAlice', function(done){
+        server
+        .get('/api/search/project/Admin/' + testUser._id)
+        .expect(200)
+        .end(function(err, res){
+           res.status.should.equal(200);
+           res.body.should.be.an.Array();
+           res.text.should.containEql('Mock project');
+           done(); 
+        });
+    });
+    
+    it('Search all candidate user contains MockAliceAlice', function(done){
+        server
+        .get('/api/search/project/Admin/' + testUser._id)
+        .expect(200)
+        .end(function(err, res){
+           res.status.should.equal(200);
+           res.body.should.be.an.Array();
+           res.text.should.containEql('Mock project');
+           done(); 
+        });
+    });
+    
+    
+    it('Search all users with skill EE, should return an Array contains MockAliceAlice', function(done){
+        server
+        .get('/api/search/skill/EE')
+        .expect(200)
+        .end(function(err, res){
+           res.status.should.equal(200);
+           res.body.should.be.an.Array();
+           res.text.should.containEql('MockAliceAlice');
+           done(); 
+        });
+    });
+    
+    
     it('Check username and password should return null', function(done){
       server
       .get('/api/users/abcd/abcc')
@@ -109,17 +163,6 @@ describe('apis', function(){
       });
    });
    
-   
-   it('Getting all ratings of a single user, should return array', function(done){
-      server
-      .get('/api/comment/' + testProject._id)
-      .expect(200)
-      .end(function(err, res){
-          res.status.should.equal(200);
-          res.body.should.be.an.Array();
-          done();
-      });
-   });
 
    it('Check put project without logged in', function(done){
        server
@@ -227,29 +270,12 @@ describe('apis', function(){
    });
    
    
-   it('Check create new comment', function(done){
-        var mockComment = {
-            "UserId": testUser._id,
-            "Content": "This is mock comment"
-        };
-       server
-       .post('/api/comment/' + testProject._id)
-       .send(mockComment)
-       .expect(200)
-       .end(function(err, res){
-          res.status.should.equal(200);
-          res.text.should.equal('success');
-          Comment.find({"Content": "This is mock comment"}).remove().exec();
-          done();
-       });
-   });
-   
    it('check logged in session', function(done){
        server
        .get('/auth/loggedin')
        .expect(200)
        .end(function(err, res){
-           res.text.should.containEql('haha');
+           res.text.should.containEql("MockAliceAlice");
            done();
        });
    });
@@ -270,7 +296,7 @@ function userLogin(done){
         server
        .post('/auth/login')
        .type('form')
-       .send({username: 'haha', password: '123'})
+       .send({username: "MockAliceAlice", password: pwd})
        .expect(302)
        .end(function(err, res){
            res.status.should.equal(302);

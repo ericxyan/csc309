@@ -2,14 +2,19 @@
 	<h2 class="myform-heading">Please login</h2>
 </div>
 <div class="modal-body">
-	<form class="myform2" ng-submit="login()">
+	<form class="myform2" name="signInForm" ng-submit="login()">
+		<div class="form-group ng-invalid" valdr-form-group="">
+			<label for="UserId">Username</label>
+			<input type="text" name="UserId" id="UserId" ng-model="user.username" placeholder="Username" class="form-control" required autofocus=""/ >
+		</div>
+		<div class="form-group ng-invalid" valdr-form-group="">
+			<label for="Pwd">Password</label>
+			<input type="password" name="Pwd" id="Pwd" ng-model="user.password" placeholder="Password" class="form-control" required><br>
+		</div>
 		
-		<p class="text-warning">{{error_message}}</p>
-		<input type="username" ng-model="user.username" placeholder="Username" class="form-control" required autofocus=""/ ><br>
-		<input type="password" ng-model="user.password" placeholder="Password" class="form-control" required><br>
 	</form>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" ng-click="ok()">OK</button>
+	<button class="btn btn-primary"ng-click="ok()">OK</button>
 	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>

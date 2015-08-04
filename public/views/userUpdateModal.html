@@ -2,37 +2,30 @@
     <h3 class="modal-title">Update</h3>
 </div>
 <div class="modal-body">
-    <form class="form" ng-submit="register()">
-        <div class="form-group">
-            <label for="UserId">Username</label>
-            <input type="text" class="form-control" id="UserId" name="UserId" ng-model="newInfo.UserId" placeholder="Username"/>
-            <p>{{newInfo.UserId}}</p>
-        </div>
-        <div class="form-group">
+    <form class="form" ng-submit="register()" valdr-type="signUp">
+        <div class="form-group ng-invalid" valdr-form-group="">
             <label for="NickName">Nick name</label>
             <input type="text" class="form-control" id="NickName" name="NickName" ng-model="newInfo.NickName" placeholder="Nick name" />
+            <p class="text-danger">{{error_message}}</p>
         </div>
-        <div class="form-group">
+        <div class="form-group ng-invalid" valdr-form-group="">
             <label for="email">Email address</label>
             <input type="email" class="form-control" id="email" name="Email" ng-model="newInfo.Email" placeholder="Email">
         </div>
-        <div class="form-group">
+        <div class="form-group ng-invalid" valdr-form-group="">
             <label for="Ceil">Ceil</label>
             <input type="text" class="form-control" id="Ceil" name="Ceil" ng-model="newInfo.Ceil" placeholder="Ceil phone">
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="Pwd" placeholder="Current Password">
-        </div>
-        <div class="form-group">
+        <div class="form-group ng-invalid" valdr-form-group="">
             <label for="newPassword">New Password</label>
-            <input type="password" class="form-control" id="newPassword" ng-model="Pwd"  placeholder="New Password">
+            <input type="password" class="form-control" id="newPassword" name="newPwd" ng-model="newInfo.Pwd"  placeholder="New Password">
         </div>
-        <div class="form-group">
-            <label for="newPassword2">Repeat New Password</label>
-            <input type="password" class="form-control" id="newPassword2" placeholder="Repeat New Password">
+        <div class="form-group ng-invalid" valdr-form-group="">
+            <label for="newPwd2">Repeat New Password</label>
+            <input type="password" class="form-control" id="newPassword2" name="newPwd2" ng-model="repPwd" ng-change="checkMatch()" placeholder="Repeat New Password">
+            <p class="text-danger" ng-hide="match">Not match, please check.</p>
         </div>
-        <div class="form-group">
+        <div class="form-group ng-invalid" valdr-form-group="">
             <label for="skills">Skills</label>
             <div class="checkbox" ng-repeat="(skill,check) in skills">
                 <input type="checkbox" name="skills[skill]" value="skill" ng-model="skills[skill]" checked="newInfo.Skills.indexOf(skill)">{{skill}}<br/>
@@ -41,7 +34,7 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="signUpForm.$invalid || !match">OK</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>
         

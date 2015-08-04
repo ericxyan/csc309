@@ -34,9 +34,10 @@
 		<div class="col-xs-12 filterBox">
 			<h3>Tags</h3>
 			<hr />
-			<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Computer Science</button>
-			<button type="button" class="btn btn-sm btn-info" ng-click="cs()">Art</button>
-			<button type="button" class="btn btn-sm btn-info" ng-click="cs()">EE</button>
+			<ul class="list-group">
+				<li class="list-group-item" ng-repeat="(skill,enable) in skills"><button type="button" class="btn btn-sm btn-info"  ng-click="searchSkill(skill)">{{skill}}</button></li>
+			</ul>
+			
 		</div>
 	</div>
 </div>
@@ -65,12 +66,33 @@
 		</div>
 		<!-- user list -->
 		<div class="users" ng-if="users.length">
-			<h2>User:</h2>
-			<ul class="list-group">
-				<li class="list-group-item" ng-repeat="user in users">
-						<h2><a href="#/users/{{user.UserId}}">{{user.UserId}}</a></h2>
-				</li>
-			</ul>
+					<table class="table">
+				<thead>
+					<tr>
+						<th>Username</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in users">
+						<td><a href="#/users/{{user.UserId}}">{{user.UserId}}</a></td>
+					</tr>
+
+				</tbody>
+			</table>
+<ul>
+    <li dir-paginate="user in users | itemsPerPage: 2"></li>
+</ul>
+
+// then somewhere else on the page ....
+
+<dir-pagination-controls></dir-pagination-controls
+<!-- 			<h2>User:</h2>
+<ul class="list-group">
+	<li class="list-group-item" ng-repeat="user in users">
+			<h2><a href="#/users/{{user.UserId}}">{{user.UserId}}</a></h2>
+	</li>
+</ul> -->
 		</div>
 	</div>
 </div>
+

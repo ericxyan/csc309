@@ -28,8 +28,9 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 //////////////
 //Home page //
 //////////////
-
-.controller('homeProjectCtrl', function ($scope, $http) {
+.controller('homeProjectCtrl', function ($scope, $http, skills) {
+  $scope.skills = skills;
+  $scope.searchedSkill = '';
   // Search function
   $scope.search = function (key) {
     // empty search words
@@ -49,6 +50,16 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       });
     }
   }; 
+
+  // Search skills
+  $scope.searchSkill = function (skill){
+    $scope.projects = [];
+    $scope.searchedSkill = skill;
+    $http.get('/api/search/skill/' + skill)
+    .success(function (data) {
+      $scope.users = data;
+    });
+  };
 
   // fetch projects data
   var getProjects = function (){
@@ -144,7 +155,7 @@ $scope.search($routeParams.searchKey);
 //////////////////////////////
 // Sign in modal controller //
 //////////////////////////////
-.controller('signInModalCtrl', function ($scope, $http, $location, $modalInstance, $rootScope){
+.controller('signInModalCtrl', function ($scope, $http, $location, $modalInstance, $rootScope, valdr){
   $scope.user = {username: '', password: ''};
   $scope.error_message = '';
 
@@ -174,6 +185,9 @@ $scope.search($routeParams.searchKey);
 .controller('registerModal', function ($scope, $http, $location, $rootScope, $modalInstance, skills) {
   $scope.skills = skills;
   $scope.error_message = '';
+  $scope.checkMessage = '';
+  $scope.match = true;
+  $scope.Pwd2='';
   $scope.user = {
     UserId: '',
     Pwd: '', 
@@ -181,6 +195,15 @@ $scope.search($routeParams.searchKey);
     Email: '',
     Ceil: '',
     Skills: []
+  };
+  // Check pwd match
+  $scope.checkMatch = function(){
+    if($scope.user.Pwd == $scope.Pwd2){
+      $scope.match = true;
+    }
+    else {
+      $scope.match = false;
+    }
   };
 
   var check = function(){
@@ -393,6 +416,20 @@ $scope.search($routeParams.searchKey);
 .controller('userUpdateModal', function ($scope, $http, $modalInstance, oriInfo, skills) {
   $scope.skills = skills;
   $scope.newInfo = angular.copy(oriInfo);
+  $scope.error_message = '';
+  $scope.newInfo.Pwd = '';
+  $scope.repPwd = '';
+  $scope.match = true;
+  // Check pwd match
+  $scope.checkMatch = function(){
+    if($scope.newInfo.Pwd == $scope.repPwd){
+      $scope.match = true;
+    }
+    else {
+      $scope.match = false;
+    }
+  };
+
   var check = function(){
       $scope.newInfo.Skills = [];
       Object.keys($scope.skills).forEach(function(key){
@@ -404,10 +441,26 @@ $scope.search($routeParams.searchKey);
   $scope.ok = function () {
     //update user info
     check();
-    $http.put('/api/users', {user: $scope.newInfo}).success(function(docs){
-      $modalInstance.close($scope.newInfo);
-    });
+    if($scope.newInfo.Pwd == ''){
+      delete $scope.newInfo.Pwd;
+      $http.get('/api/users/valid/nickname/' + $scope.newInfo.NickName).success(function(data){
+        if(data == "false"){
+          $scope.error_message = "Invalid Nickname!";
+        }
+        else {
+          $http.put('/api/users',{user: $scope.newInfo}).success(function(data){
+            $modalInstance.close($scope.newInfo);
+          });
+        }
+      });
+    }
+    else {
+      $http.put('/api/users', {user: $scope.newInfo}).success(function(docs){
+        $modalInstance.close($scope.newInfo);
+      });
+    }
   };
+
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
@@ -488,7 +541,6 @@ $scope.search($routeParams.searchKey);
       alert("rating done!");
     });
   };
-
 
   var refresh = function(){
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){

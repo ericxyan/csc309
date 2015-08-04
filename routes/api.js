@@ -4,8 +4,15 @@ var mongoose = require('mongoose');
 var User = require('../db/user');
 var Project = require('../db/projects');
 var Rating  = require('../db/rating');
-var Comment = require('../db/comments');
+var bCrypt = require('bcrypt-nodejs');
 
+var isValidPassword = function(user, password){
+    return bCrypt.compareSync(password, user.Pwd);
+};
+// Generates hash using bCrypt
+var createHash = function(password){
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+};
 
 var isAuthenticated = function (req, res, next) {
     // allows GET without authentication
@@ -26,7 +33,7 @@ router.use('/projects', isAuthenticated);
 // TODO: unittest this
 
 /*
-Get user with Skill
+Search all users with Skill
 */
 
 router.get('/search/skill/:skill', function(req, res, next){
@@ -40,9 +47,8 @@ router.get('/search/skill/:skill', function(req, res, next){
 });
 
 /*
-Search projects's user
+Search projects's Admin with given user
 */
-
 router.get('/search/project/Admin/:userId', function(req, res, next){
    Project.find({'Admin': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
@@ -54,6 +60,9 @@ router.get('/search/project/Admin/:userId', function(req, res, next){
    });
 });
 
+/*
+Search projects's Admin with given user
+*/
 router.get('/search/project/Member/:userId', function(req, res, next){
    Project.find({'Member': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
@@ -64,6 +73,10 @@ router.get('/search/project/Member/:userId', function(req, res, next){
        res.json(docs); 
    });
 });
+
+/*
+Search projects's Admin with given user
+*/
 router.get('/search/project/Candidate/:userId', function(req, res, next){
    Project.find({'Candidate': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
@@ -124,10 +137,11 @@ router.get('/users/:id/:pwd', function(req, res, next) {
  Update user's information with given id.
 */
 router.put('/users', function(req, res, next) {
+    req.body.user.Pwd = createHash(req.body.user.Pwd);
     User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.body.user._id)}, req.body.user)
         .exec(function(err, docs){
         if(err){
-            res.status(500).send("Something broke!");
+            res.status(500).send("Invalide Nickname!");
         }
         console.log('Update user: ' + docs);
         User.findById(docs._id).exec(function(err, docs){
@@ -172,7 +186,6 @@ Check whether the given nickname is valid
 
 router.get('/users/valid/nickname/:nickname', function(req, res, next){
    User.findOne({"NickName": req.params.nickname}).exec(function(err, doc){
-       console.log("2");
       if(err){
           res.status(500).send("Something broke!");
       }
@@ -341,8 +354,6 @@ router.delete('/rating/:userid/:ratingId', function(req, res, next) {
         res.send("success");
     });
 });
-
-
 
 /* ---------- api for Comments ---------- */
 
