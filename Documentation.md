@@ -31,7 +31,7 @@ Xiaoyu Yan
 - **User Interactions**: A user can post a project and becomes a project initiator. Users can read the description and requirement of projects and submit applications to initiators. Initiators can accept any number of applications to form a group. Only project's authorized user can modify the project.
 - **Implicit Social Networking**: Users in a same project are automatically considered as friends. They can check each other's information that only friends have the privilege. 
 - **Reputation System**: Users can comment a posted project. Also they could rate each other. In this case, both project and users has reputations that can be viewed by others.
-- **Search and Recommendation System:** Projects could be searched based on their name and tags, the result would be displayed correspondingly. Also we can recommend users having different skills by their ratings.
+- **Search and Recommendation System:** Projects could be searched based on their name and tags, the result would be displayed correspondingly. Also we can recommend users having different skills.
 - **User Administrative View**: The project administrative view allows initiators to check the applicant list of a project and add or remove group members.
 - **Administrative view**: The admin user has access to Admin pages that has full authorization to all datas in the website.
 
@@ -58,8 +58,8 @@ The followings are our database schemas:
 ### Authentation module.  (implemented)
 We use passport-local and passport-google-Oauth2 strategies as our login strategies. We serialize and store the encrypted login session using passport-session. We build isAuthenticated middleware in express to control the access. This would be detailed discussed later.
 
-### Main page search module (pending)
-The Main page search module is responsible for the display on main page. At first, by default, it would display the top 10 recently added project to view, and the numbers of projects and users in our websites. Also, it uses database module to get different pre-defined results that corresponding to pre-defined search buttons on the main page, and display the result on main page. 
+### Main page search module (implemented)
+The Main page search module is responsible for the display on main page. At first, it would display the current 10 projects, and you can use the tags at left to show users with given skills. Also if you want to do other searches, you can use the up-side panel.
 
 ### Panel module (implemented)
 The panel module provides functionality of upper side panel for all pages. This module takes the session information from authenation module, provide and display the corresponding functionalities that the user now can choose on the panel.  Also, there is a search bar that can search the name of user and projects, it would redirect user to the result page that contains user and projects with keywords.
@@ -78,6 +78,9 @@ The project page will use this module. If the request comes from a publisher, th
 
 ### SignUp Module (implemented)
 SignUp module provide the functionality that new users can signup via it. Validator is used here to control the input of user's infomation.
+
+### Administrative Page (implemented)
+There is an administrative page that logged in admin user can access using '\alladmin'. He has premission to delete any projects here. Other users would be redirect to main page if they are trying to request this page.
 
 ## REST API Design
 ### Search
@@ -138,6 +141,11 @@ In this case, we prevent injecting scripts in to database queries.
 We use mocha, supertest and should modules to do the unittest of our apis and authentication. There are 19 unittest total, and they are all passed. The unittest file is ``apitest.js``. In order to run the unittest, run ``npm test``.
 
 ### performance
+Performance test for main page:
+
+#### How did we improve
+- Our site is single page application so that there are several controllers that can be shared across different contents, and they don't need to be load several time.
+- We use service global variable provided by angularJS to store those data that we are going to re-use. In this case, we avoid those unnecessary database queries to enhance the speed of our website.
 
 ### Security
 Testing the XSS with Create a new project with description "<script>alert(‘you are hacked!’);</script>", and try to view the content of this project. The result is the XSS javascript is not working. The reason of this is our website didn't have any API requests that returns javascript, everything there are just plain text. The javascript cannot be executed for sure.
