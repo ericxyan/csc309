@@ -25,6 +25,8 @@ Xiaoyu Yan
 ## Features
  Our project is to built a web application to implement the GoodTeam platform. The following is a list of the features:
 
+- **Single Page Application**: We design our website as a single page application that we use ``ajax`` to change the content of page based on user's requests.
+>>>>>>> cb8faf3b5a7fff267b075519e780226c0aac9183
 - **User Authentication**: Verifying user's account using passport module. We will justify this in the authenation section below.
 - **Login credential encrption**: We encrypted both password and the cookie session to make sure login infomation is secured: 1) express-session is used to encrypt the session so that user cannot modify it. Also, the passwords are all encrypted by bcrypt-nodejs module.
 - **User Profile**: Each user has a profile including privacy informations, emails, majors, skills, experiences, current projects and rating history. 
@@ -53,19 +55,32 @@ The followings are our database schemas:
 - `User`:  { UserID, PassWord, NickName, Email, Ceil, Skills(list of skills), Rating(list of ratingID))}
 - `Project`: { ProjectName, Description, Subjects(list of string), Start_time , Status, Admin, Member(list of ObjectID ref to User), Member(list of ObjectID ref to User), Comments(list of commentID) }
 - `Rating`: { RatingID, RaterID, Stars, Comments}
+<<<<<<< HEAD
 - `Comment`: {CommentID, ProjectId, UserId, Time, Content}
 
 ## Module Design
 ### Authentation module.  (finished )
+=======
+
+## Module Design
+### Authentation module.  (implemented)
+>>>>>>> cb8faf3b5a7fff267b075519e780226c0aac9183
 We use passport-local and passport-google-Oauth2 strategies as our login strategies. We serialize and store the encrypted login session using passport-session. We build isAuthenticated middleware in express to control the access. This would be detailed discussed later.
 
 ### Main page search module (pending)
 The Main page search module is responsible for the display on main page. At first, by default, it would display the top 10 recently added project to view, and the numbers of projects and users in our websites. Also, it uses database module to get different pre-defined results that corresponding to pre-defined search buttons on the main page, and display the result on main page. 
 
+<<<<<<< HEAD
 ### Panel module (finished)
 The panel module provides functionality of upper side panel for all pages. This module takes the session information from authenation module, provide and display the corresponding functionalities that the user now can choose on the panel.  Also, there is a search bar that can search the name of user and projects, it would redirect user to the result page that contains user and projects with keywords.
 
 ### Profile Module (finished)
+=======
+### Panel module (implemented)
+The panel module provides functionality of upper side panel for all pages. This module takes the session information from authenation module, provide and display the corresponding functionalities that the user now can choose on the panel.  Also, there is a search bar that can search the name of user and projects, it would redirect user to the result page that contains user and projects with keywords.
+
+### Profile Module (implemented)
+>>>>>>> cb8faf3b5a7fff267b075519e780226c0aac9183
 The profile module is aimed to display the user's infomation. It would show the user's basic infomation, user's projects, and the ratings for this user. Based on user's access authorization, the displayed content would be different. Only the owner of this profile has access to private content and can modify the content of his infomation.
 
 ### Project Module (pending)
@@ -74,7 +89,11 @@ This module is responsible for managing project informations. The content would 
 ### Rating Module (pending)
 This module is used to rate and comment a user or project. Project members can use this module to rate each other when the project is finished.
 
+<<<<<<< HEAD
 ### Recruitment Module (finished)
+=======
+### Recruitment Module (implemented)
+>>>>>>> cb8faf3b5a7fff267b075519e780226c0aac9183
 The project page will use this module. If the request comes from a publisher, this module displays all the applications so that the publisher can accept or refuse an application. Publishers can also delete a member before the project finished. If the request comes from a normal user and the project's state is still in recruiting, this module will display apply options, users can apply for the relevant positions as the publisher's requirments.
 
 ### SignUp Module (pending)
@@ -109,6 +128,7 @@ SignUp module provide the functionality that new users can signup via it. Valida
 - ``POST /api/rating/:userId``: Add a new rating to the user with userId, the rating json is passed by request's body.
 - ``DELETE /api/rating/:userid/:ratingId``: Delete the specific rating by given userId, ratingId.
 
+<<<<<<< HEAD
 ## Security Issue
 
 ### Authentation
@@ -117,6 +137,28 @@ The local strategy provide use the basic authentication middleware that can chec
 #### google Strategy
 The google-Oauth2 Stragety is our third-party login strategy. We obtain the api and tokens from google, and whenever users are trying to login with this strategy, they are going to be redirected to google at first. After they loggin as google+ user, the callback function would redirect the user back, and send the profile json of the user back to us. We grab the infomation that we need and update them into database. For these users, their google OpenID is the UserId in our databse that is used to identify them.
 #### validators
+=======
+### Authentication
+- ``GET /auth/success``: Send the json of the success state and the user json.
+- ``GET /auth/failure``: Send the json of failure state and the message.
+- ``POST /auth/login``: Post the login infomation, redirect user to different pages based on the authentication middleware.
+- ``GET /auth/google``: Get the google authentication middleware.
+- ``GET /auth/google/callback``: The callback api used by google after authenticated.
+- ``POST /auth/signup``: Useing singup middleware, and redirect user based on user's request content.
+- ``GET /auth/loggedin``: Check if the user is logged in, send the user json if logged in. Otherwise send '0'
+- ``GET /auth/signout``: Sign out and destory the session.
 
 
+## Secure Security vulnerabilities
+### Local Strategy and Passport-session
+The local strategy provide use the basic authentication middleware that can check user's login infomation. By different conditions, it can redirect users to different pages. Also it build up user's authentication cookie using passport-session if successed. The cookie session is encypted by the given key in our backend so that it is hard for user to mock a fake session to access to unauthorized content. Also, the middleware is used before the api requests so that whenever the user has a request, they are checked by authentication middleware at first.
+### Google Strategy (third-party)
+The google-Oauth2 Stragety is our third-party login strategy. We obtain the api and tokens from google, and whenever users are trying to login with this strategy, they are going to be redirected to google at first. After they loggin as google+ user, the callback function would redirect the user back, and send the profile json of the user back to us. We grab the infomation that we need and update them into database. For these users, their google OpenID is the UserId in our databse that is used to identify them.
+### Encyping user credentials
+The cookie is encrypted by passport-session so that the cookie session is secured. Also, even the attacker decrypt the cookie session or they get user's login information in some ways. The passport of users are also encrypted by bcrypt-nodejs as the second protection here. As a result, the credentials are scured
+### Authorization
+We have the authorization fields for all projects and user infomation. We check whether users could have permission in controllers so that some actions are not provided (like modification) if the user is not premitted.
+### NoSql Injection
+Since we are using mongoDB, there are no SQL statement in it. Also, we avoid to use any syntax that accept any javascript expression.
+In this case, we prevent injecting scripts in to database queries.
 
