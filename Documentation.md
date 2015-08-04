@@ -132,6 +132,16 @@ We have the authorization fields for all projects and user infomation. We check 
 Since we are using mongoDB, there are no SQL statement in it. Also, we avoid to use any syntax that accept any javascript expression.
 In this case, we prevent injecting scripts in to database queries.
 
+## Other Tests
+
+### Unittests
+We use mocha, supertest and should modules to do the unittest of our apis and authentication. There are 19 unittest total, and they are all passed. The unittest file is ``apitest.js``. In order to run the unittest, run ``npm test``.
+
+### performance
+
+### Security
+Testing the XSS with Create a new project with description "<script>alert(‘you are hacked!’);</script>", and try to view the content of this project. The result is the XSS javascript is not working. The reason of this is our website didn't have any API requests that returns javascript, everything there are just plain text. The javascript cannot be executed for sure.
+
 
 
 
