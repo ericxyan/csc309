@@ -592,15 +592,6 @@ $scope.search($routeParams.searchKey);
       refresh();
     }
   };
-
-  /*add post*/
-  $scope.addPost=function(){
-    $scope.myComment.Time=Date();
-    $http.post('/api/comment/'+$routeParams.projectID, $scope.myComment).success(function(res){
-      console.log("success");
-    });
-    refresh();
-  };
 })
 
 
