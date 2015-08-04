@@ -5,6 +5,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 .controller('homeProjectCtrl', function ($scope, $http, skills) {
   $scope.skills = skills;
   $scope.searchedSkill = '';
+
   // Search function
   $scope.search = function (key) {
     // empty search words
@@ -418,6 +419,7 @@ $scope.search($routeParams.searchKey);
 .controller('userUpdateModal', function ($scope, $http, $modalInstance, oriInfo, skills) {
   $scope.skills = skills;
   $scope.newInfo = angular.copy(oriInfo);
+  $scope.error_message = '';
   $scope.newInfo.Pwd = '';
   $scope.repPwd = '';
   $scope.match = true;
@@ -444,8 +446,15 @@ $scope.search($routeParams.searchKey);
     check();
     if($scope.newInfo.Pwd == ''){
       delete $scope.newInfo.Pwd;
-      $http.put('/api/users',{user: $scope.newInfo}).success(function(data){
-        $modalInstance.close($scope.newInfo);
+      $http.get('/api/users/valid/nickname/' + $scope.newInfo.NickName).success(function(data){
+        if(data == "false"){
+          $scope.error_message = "Invalid Nickname!";
+        }
+        else {
+          $http.put('/api/users',{user: $scope.newInfo}).success(function(data){
+            $modalInstance.close($scope.newInfo);
+          });
+        }
       });
     }
     else {

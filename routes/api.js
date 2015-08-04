@@ -141,7 +141,7 @@ router.put('/users', function(req, res, next) {
     User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.body.user._id)}, req.body.user)
         .exec(function(err, docs){
         if(err){
-            res.status(500).send("Something broke!");
+            res.status(500).send("Invalide Nickname!");
         }
         console.log('Update user: ' + docs);
         User.findById(docs._id).exec(function(err, docs){
@@ -186,7 +186,6 @@ Check whether the given nickname is valid
 
 router.get('/users/valid/nickname/:nickname', function(req, res, next){
    User.findOne({"NickName": req.params.nickname}).exec(function(err, doc){
-       console.log("2");
       if(err){
           res.status(500).send("Something broke!");
       }
