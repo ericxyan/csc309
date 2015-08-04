@@ -89,6 +89,26 @@ router.get('/search/project/Candidate/:userId', function(req, res, next){
 });
 /* ---------- for users ---------- */
 
+
+
+
+
+/*
+Get all users in a list of json.
+*/
+router.get('/users/', function(req, res, next) {
+    User.find()
+        .exec(function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+            res.send(doc);
+        });
+});
+
+
+
+
 /*
  Get one user
 */

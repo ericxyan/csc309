@@ -10,7 +10,27 @@
 				<tbody>
 					<tr ng-repeat="project in projects">
 						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
-						<td><button class="btn btn-danger" ng-click="deleteProject(project._id)">Delete</button></td>
+						<td class="align-right"><button class="btn btn-danger" ng-click="deleteProject(project._id)">Delete</button></td>
+					</tr>
+					<tr>
+						<td class="align-right"><p>Projects In Total:{{projectTotal}}</p></td>
+					</tr>
+				</tbody>
+	</table>
+	<table class="table">
+				<thead>
+					<tr>
+						<th>User</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in users">
+						<td><a href="#/users/{{user.UserId}}">{{user.UserId}}<a></td>
+						<td class="align-right"><button class="btn btn-danger" ng-click="deleteUser(user._id)">Delete</button></td>
+					</tr>
+					<tr>
+						<td class="align-right"><p>Users In Total:{{userTotal}}</p></td>
 					</tr>
 				</tbody>
 	</table>
