@@ -50,7 +50,6 @@
 				<div class="card">
 					<h2><a href="#/projects/{{project._id}}"> {{project.ProjectName}} </a></h2>
 					<div class="row">
-						<small class="col-xs-4 text-muted">Admin: {{project.Admin}}</small>
 						<small class="col-xs-4 text-muted text-center">Start from: {{project.Start_time | date:"h:mma 'on' MMM d, y"}} {{(project.Finish_time)? (' to ' + project.Finish_time | date:"h:mma 'on' MMM d, y"):''}}</small>
 						<small class="col-xs-4">
 					<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
