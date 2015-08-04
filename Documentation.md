@@ -24,7 +24,7 @@ Xiaoyu Yan
 
 ## Features
  Our project is to built a web application to implement the GoodTeam platform. The following is a list of the features:
-
+- **Single Page Application**: We design our website as a single page application that we use ``ajax`` to change the content of page based on user's requests.
 - **User Authentication**: Verifying user's account using passport module. We will justify this in the authenation section below.
 - **Login credential encrption**: We encrypted both password and the cookie session to make sure login infomation is secured: 1) express-session is used to encrypt the session so that user cannot modify it. Also, the passwords are all encrypted by bcrypt-nodejs module.
 - **User Profile**: Each user has a profile including privacy informations, emails, majors, skills, experiences, current projects and rating history. 
