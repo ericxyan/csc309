@@ -47,7 +47,7 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute', 'valdr'])
       controller: 'projectApply'
     })
     //Administrator with the highest previlege
-    .when('/alladmin',{
+    .when('/admin',{
       templateUrl: '/views/alladmin.html',
       controller: 'alladmin'
     })

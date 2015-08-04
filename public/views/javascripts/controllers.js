@@ -10,16 +10,32 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
     }
     });
 
-  $http.get('/api/projects').success(function(res){
+  var refresh= function(){
+      $http.get('/api/projects').success(function(res){
       $scope.projects = res;
-  });
+      $scope.projectTotal = $scope.projects.length;
+      });
+      $http.get('/api/users').success(function(res){
+          $scope.users = res;
+          $scope.userTotal = $scope.users.length;
+      });
+  };  
+
+  refresh();
+
   $scope.deleteProject=function(id){
     $http.delete('/api/projects/'+id).success(function(res){
       alert("delete success");
-      $http.get('/api/projects').success(function(res){
-      $scope.projects = res;
+      
   });
+    refresh();
+  };
+
+  $scope.deleteUser=function(id){
+    $http.delete('/api/users/'+id).success(function(res){
+      alert("delete success");  
   });
+    refresh();
   };
 
 })
