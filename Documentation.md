@@ -67,16 +67,16 @@ The panel module provides functionality of upper side panel for all pages. This 
 ### Profile Module (implemented)
 The profile module is aimed to display the user's infomation. It would show the user's basic infomation, user's projects, and the ratings for this user. Based on user's access authorization, the displayed content would be different. Only the owner of this profile has access to private content and can modify the content of his infomation.
 
-### Project Module (pending)
+### Project Module (implemented)
 This module is responsible for managing project informations. The content would be varied depended on user's access. Only admin and initiators can modify the content of the project, other user can view and apply for the projects. After the project is finished, all members can rate each other in this project using rating module.
 
-### Rating Module (pending)
+### Rating Module (implemented)
 This module is used to rate and comment a user or project. Project members can use this module to rate each other when the project is finished.
 
 ### Recruitment Module (implemented)
 The project page will use this module. If the request comes from a publisher, this module displays all the applications so that the publisher can accept or refuse an application. Publishers can also delete a member before the project finished. If the request comes from a normal user and the project's state is still in recruiting, this module will display apply options, users can apply for the relevant positions as the publisher's requirments.
 
-### SignUp Module (pending)
+### SignUp Module (implemented)
 SignUp module provide the functionality that new users can signup via it. Validator is used here to control the input of user's infomation.
 
 ## REST API Design
