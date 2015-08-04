@@ -1,11 +1,36 @@
 angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
+
+//////////////////////////////////////////////
+////////Admin with the highest previlege//////
+//////////////////////////////////////////////
+.controller('alladmin', function ($scope, $http, $location) {
+  $http.get('auth/loggedin').success(function (user){
+    if(user.admin !=='admin'){
+      $location.path('/');
+    }
+    });
+
+  $http.get('/api/projects').success(function(res){
+      $scope.projects = res;
+  });
+  $scope.deleteProject=function(id){
+    $http.delete('/api/projects/'+id).success(function(res){
+      alert("delete success");
+      $http.get('/api/projects').success(function(res){
+      $scope.projects = res;
+  });
+  });
+  };
+
+})
+
+
 //////////////
 //Home page //
 //////////////
 .controller('homeProjectCtrl', function ($scope, $http, skills) {
   $scope.skills = skills;
   $scope.searchedSkill = '';
-
   // Search function
   $scope.search = function (key) {
     // empty search words
@@ -298,12 +323,6 @@ $scope.search($routeParams.searchKey);
 //User info page //
 ///////////////////
 .controller('userInfoCtrl', function ($scope, $http, $routeParams, $route, $location) {
-  $scope.max = 10;
-  $scope.rating = {
-    'RaterId': '',  // Rater id
-    'Stars': 5, 
-    'Comments': ''
-  };
   // Check if logged in
   $http.get('auth/loggedin').success(function (user){
     if(user === '0'){ //not login
@@ -311,43 +330,27 @@ $scope.search($routeParams.searchKey);
     }
     else { // logged in
         getUserInfo();
-        $scope.rating.RaterId = user._id; // visitor
     };
   });
 
   var getUserInfo = function(){
     $http.get('api/users/' + $routeParams.userId).success(function (res) {
       $scope.user = res; // query user
-      console.log("here!");
+      /*get all the project that the user participate in*/
       $http.get('api/search/project/Admin/'+$scope.user._id).success(function(res){
       $scope.admin_projects=res;
       console.log(res);
-    });
+      });
     $http.get('api/search/project/Member/'+$scope.user._id).success(function(res){
       $scope.member_projects=res;
-    });
+      });
     $http.get('api/search/project/Candidate/'+$scope.user._id).success(function(res){
       $scope.candidate_projects=res;
-    });
+      });
 
 
     });
 
-  };
-  // hover display rate
-  $scope.hoveringOver = function(value) {
-    $scope.overStar = value;
-    $scope.percent = 100 * (value / $scope.max);
-  };
-
-  // post rating obj
-  $scope.addRating = function(){
-    $http.post('/api/rating/' + $scope.user._id, $scope.rating).success(function (data) {
-      $scope.message = data;
-      $scope.rating.Stars = 5;
-      $scope.rating.Comments = '';
-      getUserInfo();
-    });
   };
 })
 
@@ -366,16 +369,17 @@ $scope.search($routeParams.searchKey);
     else { // logged in
       $http.get('api/users/' + $routeParams.userId).success(function (res) {
         $scope.user = res;
+        /*get all the projects the the user participate in*/
         $http.get('api/search/project/Admin/'+$scope.user._id).success(function(res){
-      $scope.admin_projects=res;
-      console.log(res);
-    });
-    $http.get('api/search/project/Member/'+$scope.user._id).success(function(res){
-      $scope.member_projects=res;
-    });
-    $http.get('api/search/project/Candidate/'+$scope.user._id).success(function(res){
-      $scope.candidate_projects=res;
-    });
+        $scope.admin_projects=res;
+        console.log(res);
+        });
+        $http.get('api/search/project/Member/'+$scope.user._id).success(function(res){
+          $scope.member_projects=res;
+        });
+        $http.get('api/search/project/Candidate/'+$scope.user._id).success(function(res){
+          $scope.candidate_projects=res;
+        });
       });
     }
   });
@@ -402,17 +406,10 @@ $scope.search($routeParams.searchKey);
       $log.info('Modal dismissed at: ' + new Date());
     });
   };
-
-// Rating
-  $scope.rate = 5;
-  $scope.max = 10;
-  $scope.isReadonly = false;
-
-  $scope.hoveringOver = function(value) {
-    $scope.overStar = value;
-    $scope.percent = 100 * (value / $scope.max);
-  };
 })
+
+
+
 /////////////////////////////////////////////////
 //User admin info page update modal controller //
 /////////////////////////////////////////////////
@@ -469,18 +466,13 @@ $scope.search($routeParams.searchKey);
     $modalInstance.dismiss('cancel');
   };
 })
+
+
 ///////////////////////////
 //////Project info page////
 ///////////////////////////
 .controller('projectInfoCtrl', function ($scope, $http, $routeParams){
-  $scope.myComment={
-    'UserId':'',
-    'Time':'',
-    'Content':''
-  };
   $scope.max = 10;
-  $scope.ratedId='';
-  $scope.defaultval="select a member";
   $scope.rating = {
     'RaterId': '',  // Rater id
     'Stars': 5, 
@@ -488,28 +480,49 @@ $scope.search($routeParams.searchKey);
   };
   /*check login status*/
   $http.get('auth/loggedin').success(function (user){
-    if(user =='0'){
-      document.getElementById("applyMember").disabled=true;
-      document.getElementById("applyMember").innerHTML="Log in to apply";
-      document.getElementById("ratefield").style.display="none";
-      //document.getElementById("postComment").innerHTML="Log in to comment";
-      document.getElementById("Administrate").style.display="none";
+    if(user ==='0'){
+      /*not logged in*/
+      document.getElementById("applyMember").remove();
+      document.getElementById("ratefield").remove();
+      document.getElementById("Administrate").remove();
     }
     else{
+      /*get current user in this session*/
       $scope.user=user;
-      $scope.myComment.UserId=user._id;
       $scope.rating.RaterId = user._id;
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
           if(user._id !== res[0].Admin._id){
-            document.getElementById("Administrate").style.display="none";          
+            /*the user is not the administrator of this project*/
+            document.getElementById("Administrate").remove();         
           }
           else{
-            document.getElementById("applyMember").disabled=true;
+            /*the admin can't apply for his own project*/
+            document.getElementById("applyMember").remove();
+          }
+          /*check whether the user can rate other members, provided that the project is already finished 
+          and the the user is a member of the project*/
+          var canRate=false;
+          for(var i=0; i< res[0].Member.length;i++){
+          if(user._id === res[0].Member[i]._id){
+            var isMember=true;
+            }
+          }
+          if(user._id===res[0].Admin._id || isMember===true){
+            if(res[0].Status===100){
+                canRate=true;
+            }
+          }
+          if(canRate==true){
+            console.log("you can rate now");
+          }
+          else{
+            document.getElementById("ratefield").remove();
           }
       });
     }
   });
-
+  
+  /*for star rating */
   $scope.hoveringOver = function(value) {
     $scope.overStar = value;
     $scope.percent = 100 * (value / $scope.max);
@@ -518,9 +531,14 @@ $scope.search($routeParams.searchKey);
   // post rating obj
   $scope.addRating = function(){
     console.log($scope.rating);
-    $http.post('/api/rating/' + $scope.ratedId, $scope.rating).success(function (data) {
+    var sel= document.getElementById('sel1');
+    var ratedId = sel.options[sel.selectedIndex].value;
+    $http.post('/api/rating/' + ratedId, $scope.rating).success(function (data) {
+      console.log($scope.rating);
+      console.log(ratedId);
       $scope.rating.Stars = 5;
       $scope.rating.Comments = '';
+      alert("rating done!");
     });
   };
 
@@ -531,15 +549,25 @@ $scope.search($routeParams.searchKey);
       });
 
   };
+
   refresh();
+
   $scope.apply=function(){
+    var Dup=false;
+    var Done=false;
+    /*You can only apply for a position if you are not a member or candidate of this project
+    and the project is still in progress*/
     for(var i=0; i< $scope.project.Candidate.length;i++){
       if($scope.user._id === $scope.project.Candidate[i]._id){
-        var Dup=true;
+        Dup=true;
         alert("You can't apply twice!");
       }
     }
-    if(!Dup){
+    if($scope.project.Status===100){
+      Done=true;
+      alert("The project has already finished");
+    }
+    if(!Dup && !Done){
       $scope.project.Candidate.push($scope.user._id);
       console.log($scope.user._id);
       $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
@@ -548,6 +576,8 @@ $scope.search($routeParams.searchKey);
       refresh();
     }
   };
+
+  /*add post*/
   $scope.addPost=function(){
     $scope.myComment.Time=Date();
     $http.post('/api/comment/'+$routeParams.projectID, $scope.myComment).success(function(res){
@@ -564,7 +594,9 @@ $scope.search($routeParams.searchKey);
 ///////////////////////
 .controller('projectAdmin', function ($scope, $http, $routeParams,$location) {
 
+  /*refresh*/
   var refresh = function(){
+    /*check login status*/
   $http.get('auth/loggedin').success(function (user){
     if(user==='0'){
       $location.path('/login');
@@ -573,12 +605,23 @@ $scope.search($routeParams.searchKey);
         $http.get('/api/projects/' + $routeParams.projectID).success(function (res){
           $scope.project = res[0];
           if(user._id !== res[0].Admin._id){
+            /*the user is not the admin*/
             $location.path('/');
+          }
+          if($scope.project.Status ===100){
+            /*if the project is finished, admin can only delete it without any modification*/
+            document.getElementById("updateprog").remove();
+            $scope.project.Candidate=[];
+            $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
+              console.log("success");
+            });
+
           }
         });
       }
     });
   };
+
   refresh();
 
   $scope.deleteMember=function(id){
@@ -610,6 +653,8 @@ $scope.search($routeParams.searchKey);
       console.log("success");
     });
   };
+
+  /*accept the application of this candidate*/
   $scope.accept=function(id){
     $scope.project.Member.push(id);
     $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
@@ -618,10 +663,14 @@ $scope.search($routeParams.searchKey);
     deleteCandidate(id);
     refresh();
   };
+
+  /*reject the application of this candidate*/
   $scope.reject=function(id){
     deleteCandidate(id);
     refresh();
   };
+
+  /*the admin can update the status of the project*/
   $scope.updateProg=function(){
     if($scope.prog>100 || $scope.prog <0){
         alert("not in proper range");
@@ -630,9 +679,12 @@ $scope.search($routeParams.searchKey);
       $scope.project.Status = $scope.prog;
       $http.put('/api/projects/'+ $routeParams.projectID, $scope.project).success(function(res){
         alert("success");
+        refresh();
       });
     }
   };
+
+  /*delete this project*/
   $scope.deleteProject=function(){
     $http.delete('/api/projects/'+$routeParams.projectID).success(function(res){
       alert("success");
@@ -648,11 +700,13 @@ $scope.search($routeParams.searchKey);
 ///////////////////////////////////
 .controller('projectApply', function ($scope, $http, $routeParams,$location) {
   $http.get('auth/loggedin').success(function (user){
+    /*check login status*/
     if(user=='0'){
       $location.path('/login');
     }
     else{
       $scope.user=user;
+      /*create empty project object*/
       $scope.project={ProjectName:'',
       Description:'',
       Subjects:[],
@@ -666,6 +720,8 @@ $scope.search($routeParams.searchKey);
     };
     }
   });
+
+  /*create a new project with the information provided*/
   $scope.apply=function(){
     var newProject = $scope.project;
     newProject.Start_time= Date();
@@ -677,7 +733,6 @@ $scope.search($routeParams.searchKey);
       }
     }
     newProject.Subjects=subjectList;
-    console.log(newProject);
     if($scope.project.ProjectName===''){
       alert("You must fill in the project name!");
     }

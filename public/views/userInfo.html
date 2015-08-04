@@ -1,5 +1,4 @@
 <div class="col-xs-12 col-md-8 col-md-push-2">
-	<!-- <div class="row card"><p> {{user}} </p></div> -->
 	<div class="row card">
 		<h2>Personal Information</h2>
 		<div class="col-xs-12 col-md-8">
@@ -43,17 +42,17 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="project in admin_projects">
+					<tr ng-repeat="project in admin_projects | orderBy: 'Start_time':true">
 						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
 						<td>{{project.Start_time| date:"h:mma 'on' MMM d, y"}}</td>
 						<td>Admin</td>
 					</tr>
-					<tr ng-repeat="project in member_projects">
+					<tr ng-repeat="project in member_projects | orderBy: 'Time':true">
 						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
 						<td>{{project.Start_time| date:"h:mma 'on' MMM d, y"}}</td>
 						<td>Member</td>
 					</tr>
-					<tr ng-repeat="project in candidate_projects">
+					<tr ng-repeat="project in candidate_projects  | orderBy: 'Time':true">
 						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
 						<td>{{project.Start_time| date:"h:mma 'on' MMM d, y"}}</td>
 						<td>Candidate</td>

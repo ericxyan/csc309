@@ -59,20 +59,16 @@
 	<button id="applyMember"class="btn btn-info" ng-click="apply()">Apply to be a member</button>
 </div>
 <br>
-<div id="ratefield" style="display:none" class="row card">
+<div id="ratefield" class="row card">
 		<div>
 			<h2>Rate your group member</h2>
 			<div>
-				<div class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				    {{defaultval}}
-				    <span class="caret"></span>
-				  	</button>
-				  	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-					    <li><a ng-click="ratedId=project.Admin._id;defaultval=project.Admin.UserId">{{project.Admin.UserId}}</a></li>
-					    <li ng-repeat="member in project.Member"><a ng-click="ratedId=member._id; defaultval=member.UserId">{{member.UserId}}</a></li>
-					    <li ng-repeat="candidate in project.Candidate"><a ng-click="ratedId=candidate._id; defaultval=candidate.UserId">{{candidate.UserId}}</a></li>
-					</ul>
+				<div class="form-group">
+				  <label for="sel1">Select list:</label>
+				  <select class="form-control" id="sel1">
+				  	<option value="{{project.Admin._id}}">{{project.Admin.UserId}}</option>
+				    <option ng-repeat="member in project.Member" value="{{member._id}}">{{member.UserId}}</option>
+				  </select>
 				</div>
 				<br>
 				<br>
@@ -92,28 +88,4 @@
 				
 		    </div>
 		 </div>
-
-
-
-<!-- 	<h1>Message Board</h1>
-	<div class="row">
-		<input class="form-control col-md-8" placeholder="Leave your question here" ng-model="myComment.Content">
-		<button id="postComment" class="btn btn-primary col-md-4" ng-click="addPost()">Post My comment</button>
-	</div> -->
-<!-- 	<table class="table">
-				<thead>
-					<tr>
-						<th class="col-md-6">Comments</th>
-						<th class="col-md-2">UserId</th>
-						<th class="col-md-2">Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="comment in project.Comments | orderBy: 'Time':true">
-						<td class="col-md-6">{{comment.Content}}</td>
-						<td class="col-md-2">{{comment.UserId}}</td>
-						<td class="col-md-2">{{comment.Time | date:"h:mma 'on' MMM d, y"}}</td>
-					</tr>
-				</tbody>
-	</table> -->
 </div>
