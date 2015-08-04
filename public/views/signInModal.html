@@ -2,7 +2,7 @@
 	<h2 class="myform-heading">Please login</h2>
 </div>
 <div class="modal-body">
-	<form class="myform2" name="signInForm" ng-submit="login()" valdr-type="signIn">
+	<form class="myform2" name="signInForm" ng-submit="login()">
 		<div class="form-group ng-invalid" valdr-form-group="">
 			<label for="UserId">Username</label>
 			<input type="text" name="UserId" id="UserId" ng-model="user.username" placeholder="Username" class="form-control" required autofocus=""/ >
@@ -15,6 +15,6 @@
 	</form>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" ng-disabled="signInForm.$invalid"  ng-click="ok()">OK</button>
+	<button class="btn btn-primary"ng-click="ok()">OK</button>
 	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>

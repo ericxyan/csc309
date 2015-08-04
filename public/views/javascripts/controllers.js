@@ -2,7 +2,9 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
 //////////////
 //Home page //
 //////////////
-.controller('homeProjectCtrl', function ($scope, $http) {
+.controller('homeProjectCtrl', function ($scope, $http, skills) {
+  $scope.skills = skills;
+  $scope.searchedSkill = '';
   // Search function
   $scope.search = function (key) {
     // empty search words
@@ -22,6 +24,16 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       });
     }
   }; 
+
+  // Search skills
+  $scope.searchSkill = function (skill){
+    $scope.projects = [];
+    $scope.searchedSkill = skill;
+    $http.get('/api/search/skill/' + skill)
+    .success(function (data) {
+      $scope.users = data;
+    });
+  };
 
   // fetch projects data
   var getProjects = function (){
@@ -158,9 +170,8 @@ $scope.search($routeParams.searchKey);
     Ceil: '',
     Skills: []
   };
-$scope.counter = 1;
+  // Check pwd match
   $scope.checkMatch = function(){
-    $scope.counter++;
     if($scope.user.Pwd == $scope.Pwd2){
       $scope.match = true;
     }
@@ -407,6 +418,19 @@ $scope.counter = 1;
 .controller('userUpdateModal', function ($scope, $http, $modalInstance, oriInfo, skills) {
   $scope.skills = skills;
   $scope.newInfo = angular.copy(oriInfo);
+  $scope.newInfo.Pwd = '';
+  $scope.repPwd = '';
+  $scope.match = true;
+  // Check pwd match
+  $scope.checkMatch = function(){
+    if($scope.newInfo.Pwd == $scope.repPwd){
+      $scope.match = true;
+    }
+    else {
+      $scope.match = false;
+    }
+  };
+
   var check = function(){
       $scope.newInfo.Skills = [];
       Object.keys($scope.skills).forEach(function(key){
@@ -418,10 +442,19 @@ $scope.counter = 1;
   $scope.ok = function () {
     //update user info
     check();
-    $http.put('/api/users', {user: $scope.newInfo}).success(function(docs){
-      $modalInstance.close($scope.newInfo);
-    });
+    if($scope.newInfo.Pwd == ''){
+      delete $scope.newInfo.Pwd;
+      $http.put('/api/users',{user: $scope.newInfo}).success(function(data){
+        $modalInstance.close($scope.newInfo);
+      });
+    }
+    else {
+      $http.put('/api/users', {user: $scope.newInfo}).success(function(docs){
+        $modalInstance.close($scope.newInfo);
+      });
+    }
   };
+
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
@@ -481,7 +514,6 @@ $scope.counter = 1;
       $scope.rating.Comments = '';
     });
   };
-
 
   var refresh = function(){
       $http.get('/api/projects/' + $routeParams.projectID).success(function (res){

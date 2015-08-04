@@ -4,7 +4,15 @@ var mongoose = require('mongoose');
 var User = require('../db/user');
 var Project = require('../db/projects');
 var Rating  = require('../db/rating');
+var bCrypt = require('bcrypt-nodejs');
 
+var isValidPassword = function(user, password){
+    return bCrypt.compareSync(password, user.Pwd);
+};
+// Generates hash using bCrypt
+var createHash = function(password){
+    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+};
 
 var isAuthenticated = function (req, res, next) {
     // allows GET without authentication
@@ -123,6 +131,7 @@ router.get('/users/:id/:pwd', function(req, res, next) {
  Update user's information with given id.
 */
 router.put('/users', function(req, res, next) {
+    req.body.user.Pwd = createHash(req.body.user.Pwd);
     User.findOneAndUpdate({"_id":mongoose.Types.ObjectId(req.body.user._id)}, req.body.user)
         .exec(function(err, docs){
         if(err){

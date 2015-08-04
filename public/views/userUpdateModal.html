@@ -6,7 +6,6 @@
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="UserId">Username</label>
             <input type="text" class="form-control" id="UserId" name="UserId" ng-model="newInfo.UserId" placeholder="Username"/>
-            <p>{{newInfo.UserId}}</p>
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="NickName">Nick name</label>
@@ -21,17 +20,13 @@
             <input type="text" class="form-control" id="Ceil" name="Ceil" ng-model="newInfo.Ceil" placeholder="Ceil phone">
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
-            <label for="oldPassword">Password</label>
-            <input type="password" class="form-control" id="password" name="oldPassword" ng-model="oldPwd" placeholder="Current Password">
-            <p class="text-warning" ng-show="wrongPwd">Wrong password!</p>
-        </div>
-        <div class="form-group ng-invalid" valdr-form-group="">
             <label for="newPassword">New Password</label>
-            <input type="password" class="form-control" id="newPassword" name="newPwd" ng-model="Pwd"  placeholder="New Password">
+            <input type="password" class="form-control" id="newPassword" name="newPwd" ng-model="newInfo.Pwd"  placeholder="New Password">
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="newPwd2">Repeat New Password</label>
-            <input type="password" class="form-control" id="newPassword2" name="newPwd2" placeholder="Repeat New Password">
+            <input type="password" class="form-control" id="newPassword2" name="newPwd2" ng-model="repPwd" ng-change="checkMatch()" placeholder="Repeat New Password">
+            <p class="text-danger" ng-hide="match">Not match, please check.</p>
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="skills">Skills</label>
@@ -42,7 +37,7 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="ok()">OK</button>
+    <button class="btn btn-primary" ng-click="ok()" ng-disabled="signUpForm.$invalid || !match">OK</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>
         
