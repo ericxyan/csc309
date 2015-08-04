@@ -30,7 +30,6 @@ var isAuthenticated = function (req, res, next) {
 router.use('/projects', isAuthenticated);
 
 /* ---------- search -----------*/
-// TODO: unittest this
 
 /*
 Search all users with Skill
@@ -52,7 +51,6 @@ Search projects's Admin with given user
 router.get('/search/project/Admin/:userId', function(req, res, next){
    Project.find({'Admin': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
-        console.log(docs);
       if(err){
            res.status(500).send('Something broke');
        } 
@@ -66,7 +64,6 @@ Search projects's Admin with given user
 router.get('/search/project/Member/:userId', function(req, res, next){
    Project.find({'Member': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
-        console.log(docs);
       if(err){
            res.status(500).send('Something broke');
        } 
@@ -80,7 +77,6 @@ Search projects's Admin with given user
 router.get('/search/project/Candidate/:userId', function(req, res, next){
    Project.find({'Candidate': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
-        console.log(docs);
       if(err){
            res.status(500).send('Something broke');
        } 
@@ -88,6 +84,26 @@ router.get('/search/project/Candidate/:userId', function(req, res, next){
    });
 });
 /* ---------- for users ---------- */
+
+
+
+
+
+/*
+Get all users in a list of json.
+*/
+router.get('/users/', function(req, res, next) {
+    User.find()
+        .exec(function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+            res.send(doc);
+        });
+});
+
+
+
 
 /*
  Get one user
@@ -143,7 +159,6 @@ router.put('/users', function(req, res, next) {
         if(err){
             res.status(500).send("Invalide Nickname!");
         }
-        console.log('Update user: ' + docs);
         User.findById(docs._id).exec(function(err, docs){
             if(err){
                 res.status(500).send("Something broke!");
@@ -345,21 +360,28 @@ var cptAvg = function(userId, res){
             if(err){
             res.status(500).send("Something broke!");
             }
-            lst = doc.Rating;
+            else{
+            User.findOneAndUpdate({"_id": mongoose.Types.ObjectId(userId)}, 
+                                        {$set: {"AvgRating": helper(doc.Rating)}},function(err){
+                if(err){
+                    console.log(err);
+                    res.status(500).send("Something broke!");
+                }
+            });
+            }
         });
     });
-    var sum = 0;
-    for(var rt in lst){ 
-        sum += rt.Starts;
-    }
-    var result = lst.length===0? 0 : sum / lst.length;
-    User.findOneAndUpdate({"_id": mongoose.Types.ObjectId(userId)}, 
-                                {$set: {"AvgRating": result}},function(err){
-        if(err){
-            res.status(500).send("Something broke!");
-        }
-    });
+    
 };
+
+var helper = function(lst){
+    var sum = 0;
+    for(var i = 0; i < lst.length; i++){
+        sum += lst[i].Stars;
+    }
+    return lst.length===0? 0 : sum / lst.length;
+}
+
 
 
 /*

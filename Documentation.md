@@ -86,7 +86,7 @@ The project page will use this module. If the request comes from a publisher, th
 SignUp module provide the functionality that new users can signup via it. Validator is used here to control the input of user's infomation.
 
 ### Administrative Page (implemented)
-There is an administrative page that logged in admin user can access using '\admin'. He has premission to delete any projects or users here. Other users would be redirect to main page if they are trying to request this page.
+There is an administrative page that logged in admin user can access using ``'/admin'``. He has premission to delete any projects or users here, and he can view the total number of projects and users. Other users would be redirect to main page if they are trying to request this page.
 
 ## REST API Design
 ### Search
@@ -147,6 +147,7 @@ In this case, we prevent injecting scripts in to database queries.
 We use mocha, supertest and should modules to do the unittest of our apis and authentication. There are 19 unittest total, and they are all passed. The unittest file is ``apitest.js``. In order to run the unittest, run ``npm test``.
 
 ### performance
+The performance of apis could be checked in mocha unittest result. You can get the mocha test result by ``npm test``. Below is the result we have.
 Performance test for main page:
 ![info.png](./Documents/performance.png "Infomation Page")
 
