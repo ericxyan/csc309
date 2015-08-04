@@ -148,6 +148,7 @@ We use mocha, supertest and should modules to do the unittest of our apis and au
 
 ### performance
 The performance of apis could be checked in mocha unittest result. You can get the mocha test result by ``npm test``. Below is the result we have.
+![info.png](./Documents/apitest.png "Infomation Page")
 Performance test for main page:
 ![info.png](./Documents/performance.png "Infomation Page")
 
