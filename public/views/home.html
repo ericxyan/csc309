@@ -75,7 +75,7 @@
       </tr>
     </thead>
     <tbody>
-		<tr ng-repeat="user in users | filter: user.AvgRating">
+		<tr ng-repeat="user in users | orderBy: user.AvgRating:true">
 			<td>{{$index+1}}</td>
 			<td><a href="#/users/{{user.UserId}}">{{user.NickName}}</a></td>
 			<td>{{user.AvgRating}}</td>
@@ -83,18 +83,18 @@
 		</tr>
     </tbody>
   </table>
-		<h2>User:</h2>
-		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="user in users">
-				<h3>
-					<a href="#/users/{{user.UserId}}">{{user.UserId}}</a>
-				</h3>
-				<p>
-					{{user.AvgRating}}
-				</p>
-			</li>
+<!-- 		<h2>User:</h2>
+<ul class="list-group">
+	<li class="list-group-item" ng-repeat="user in users">
+		<h3>
+			<a href="#/users/{{user.UserId}}">{{user.UserId}}</a>
+		</h3>
+		<p>
+			{{user.AvgRating}}
+		</p>
+	</li>
 
-		</ul>
+</ul> -->
 	</div>
 </div>
 </div>
