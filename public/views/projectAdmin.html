@@ -3,9 +3,7 @@
 	<table class="table">
 		<h1>Members and Application</h1>
 		<tbody>
-			<!--you need to update the members object-->
 			<tr ng-repeat="candidate in project.Candidate track by $index">
-				<!--点进去可以看这个用户的资料-->
 				<td><a href="#/users/{{candidate.UserId}}">{{candidate.UserId}}</a></td>
 				<td><button class="btn btn-primary" ng-click="accept(candidate._id)">Accept</button>
 				</td>
