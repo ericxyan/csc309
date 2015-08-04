@@ -25,7 +25,7 @@ router.use('/projects', isAuthenticated);
 // TODO: unittest this
 
 /*
-Get user with Skill
+Search all users with Skill
 */
 
 router.get('/search/skill/:skill', function(req, res, next){
@@ -39,9 +39,8 @@ router.get('/search/skill/:skill', function(req, res, next){
 });
 
 /*
-Search projects's user
+Search projects's Admin with given user
 */
-
 router.get('/search/project/Admin/:userId', function(req, res, next){
    Project.find({'Admin': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
@@ -53,6 +52,9 @@ router.get('/search/project/Admin/:userId', function(req, res, next){
    });
 });
 
+/*
+Search projects's Admin with given user
+*/
 router.get('/search/project/Member/:userId', function(req, res, next){
    Project.find({'Member': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){
@@ -63,6 +65,10 @@ router.get('/search/project/Member/:userId', function(req, res, next){
        res.json(docs); 
    });
 });
+
+/*
+Search projects's Admin with given user
+*/
 router.get('/search/project/Candidate/:userId', function(req, res, next){
    Project.find({'Candidate': mongoose.Types.ObjectId(req.params.userId)})
    .exec(function(err, docs){

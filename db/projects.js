@@ -10,8 +10,7 @@ var projectsSchema = new Schema({
 	"Status": {type: Number},
 	"Admin": {type: Schema.ObjectId, ref: 'User'},
 	"Member": [{type: Schema.ObjectId, ref: 'User'}],
-	"Candidate": [{type: Schema.ObjectId, ref: 'User'}],
-	"Comments": [{type: Schema.ObjectId, ref: 'Comment'}]
+	"Candidate": [{type: Schema.ObjectId, ref: 'User'}]
 });
 
 var Project = mongoose.model('Project', projectsSchema, "Project");
