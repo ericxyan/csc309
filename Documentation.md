@@ -138,6 +138,11 @@ In this case, we prevent injecting scripts in to database queries.
 We use mocha, supertest and should modules to do the unittest of our apis and authentication. There are 19 unittest total, and they are all passed. The unittest file is ``apitest.js``. In order to run the unittest, run ``npm test``.
 
 ### performance
+Performance test for main page:
+
+#### How did we improve
+- Our site is single page application so that there are several controllers that can be shared across different contents, and they don't need to be load several time.
+- We use service global variable provided by angularJS to store those data that we are going to re-use. In this case, we avoid those unnecessary database queries to enhance the speed of our website.
 
 ### Security
 Testing the XSS with Create a new project with description "<script>alert(‘you are hacked!’);</script>", and try to view the content of this project. The result is the XSS javascript is not working. The reason of this is our website didn't have any API requests that returns javascript, everything there are just plain text. The javascript cannot be executed for sure.
