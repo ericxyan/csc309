@@ -76,7 +76,7 @@ angular.module('goodteam.controllers', ['ui.bootstrap', 'ngRoute'])
       $scope.users = data;
     });
   };
-
+  
   // fetch projects data
   var getProjects = function (){
     $http.get('/api/projects').success(function(res){

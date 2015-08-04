@@ -1,33 +1,33 @@
 <!-- Carousel -->
 <div class="row">
-<!-- 	<div class="col-xs-12" ng-controller="carousel">
-	<carousel interval="slideInterval">
-	<slide ng-repeat="slide in slides" active="slide.active">
-	<a href="{{slide.url}}">
-		<img ng-src="{{slide.image}}" style="margin:auto;" />
-	</a>
-	<div class="carousel-caption">
-		<h4>Slide {{$index}}</h4>
-		<p>{{slide.text}}</p>
-	</div>
-	</slide>
-	</carousel>
-</div> -->
+	<!-- 	<div class="col-xs-12" ng-controller="carousel">
+		<carousel interval="slideInterval">
+		<slide ng-repeat="slide in slides" active="slide.active">
+		<a href="{{slide.url}}">
+				<img ng-src="{{slide.image}}" style="margin:auto;" />
+		</a>
+		<div class="carousel-caption">
+				<h4>Slide {{$index}}</h4>
+				<p>{{slide.text}}</p>
+		</div>
+		</slide>
+		</carousel>
+	</div> -->
 </div>
 <!-- Left zone -->
 <div class="col-xs-12 col-md-3 content-left">
 	<div class="row" id="search">
 		<!-- Search box -->
-<!-- 		<div class="col-xs-12">
-	<div class=" input-group searchBox">
-		<input type="text" ng-model="searchKey" ng-change="search(searchKey)" class="search-query form-control" placeholder="Search project or user" />
-		<span class="input-group-btn">
-			<button class="btn btn-primary" type="button" ng-click="search(searchKey)">
-			<span class=" glyphicon glyphicon-search"></span>
-			</button>
-		</span>
-	</div>
-</div> -->
+		<!-- 		<div class="col-xs-12">
+			<div class=" input-group searchBox">
+				<input type="text" ng-model="searchKey" ng-change="search(searchKey)" class="search-query form-control" placeholder="Search project or user" />
+				<span class="input-group-btn">
+						<button class="btn btn-primary" type="button" ng-click="search(searchKey)">
+						<span class=" glyphicon glyphicon-search"></span>
+						</button>
+				</span>
+			</div>
+		</div> -->
 	</div>
 	<div class="row">
 		<!-- Filters box -->
@@ -53,46 +53,49 @@
 						<small class="col-xs-4 text-muted">Admin: {{project.Admin}}</small>
 						<small class="col-xs-4 text-muted text-center">Start from: {{project.Start_time | date:"h:mma 'on' MMM d, y"}} {{(project.Finish_time)? (' to ' + project.Finish_time | date:"h:mma 'on' MMM d, y"):''}}</small>
 						<small class="col-xs-4">
-							<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
-						</small>
-					</div>
-					<div class="row">
-						<div class="col-xs-12">
-							<p>{{project.Description}}</p>
-						</div>
+					<progressbar class="progress-striped active" max="100" value="project.Status" type="primary"><i style="color:black; white-space:nowrap;">{{project.Status}}%</i></progressbar>
+					</small>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<p>{{project.Description}}</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!-- user list -->
-		<div class="users" ng-if="users.length">
-					<table class="table">
-				<thead>
-					<tr>
-						<th>Username</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="user in users">
-						<td><a href="#/users/{{user.UserId}}">{{user.UserId}}</a></td>
-					</tr>
+	</div>
+	<!-- user list -->
+	<div class="users" ng-if="users.length">
+		<table class="table table-bordered">
+    <thead>
+      <tr>
+      	<th>Rank#</th>
+        <th>Nickname</th>
+        <th>AvgRating</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+		<tr ng-repeat="user in users | filter: user.AvgRating">
+			<td>{{$index+1}}</td>
+			<td><a href="#/users/{{user.UserId}}">{{user.NickName}}</a></td>
+			<td>{{user.AvgRating}}</td>
+			<td>{{user.Email}}</td>
+		</tr>
+    </tbody>
+  </table>
+		<h2>User:</h2>
+		<ul class="list-group">
+			<li class="list-group-item" ng-repeat="user in users">
+				<h3>
+					<a href="#/users/{{user.UserId}}">{{user.UserId}}</a>
+				</h3>
+				<p>
+					{{user.AvgRating}}
+				</p>
+			</li>
 
-				</tbody>
-			</table>
-<ul>
-    <li dir-paginate="user in users | itemsPerPage: 2"></li>
-</ul>
-
-// then somewhere else on the page ....
-
-<dir-pagination-controls></dir-pagination-controls
-<!-- 			<h2>User:</h2>
-<ul class="list-group">
-	<li class="list-group-item" ng-repeat="user in users">
-			<h2><a href="#/users/{{user.UserId}}">{{user.UserId}}</a></h2>
-	</li>
-</ul> -->
-		</div>
+		</ul>
 	</div>
 </div>
-
+</div>

@@ -348,12 +348,38 @@ router.post('/rating/:userId', function (req, res, next) {
                 if(err){
                     res.status(500).send("Something broke!");
                 }
+                cptAvg(mongoose.Types.ObjectId(req.params.userId),res);
                 res.send("success");
             });
         }
     });
 });
 
+var cptAvg = function(userId, res){
+    var lst = [];
+    User.findById(mongoose.Types.ObjectId(userId), function(err, doc){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+        User.populate(doc, {path: "Rating"}, function(err, doc){
+            if(err){
+            res.status(500).send("Something broke!");
+            }
+            lst = doc.Rating;
+        });
+    });
+    var sum = 0;
+    for(var rt in lst){ 
+        sum += rt.Starts;
+    }
+    var result = lst.length===0? 0 : sum / lst.length;
+    User.findOneAndUpdate({"_id": mongoose.Types.ObjectId(userId)}, 
+                                {$set: {"AvgRating": result}},function(err){
+        if(err){
+            res.status(500).send("Something broke!");
+        }
+    });
+};
 
 
 /*
