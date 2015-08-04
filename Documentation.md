@@ -13,6 +13,12 @@ Zhiyu Kang
 Xiaoyu Yan
 `c4yanxia`
 
+## Git Url
+https://github.com/ericxyan/csc309
+
+## Demo video Url
+
+
 ## Description
  GoodTeam is a platform to gather students specializing in different fields to work together on some cool ideas. University students always come up with some fantastic ideas in their study, but in many cases they do not have enough knowledge, skills or time to achieve them. Even though some of the knowledges are elementary levels, it's not necessary for a student to spend too much time to study all of the required skills, because  someone in the relevant majors may have learned it and they also want to do something to practice. If we can gather these students together, it would be wonderful, because everyone can just focus on their major-related knowledge to make a project. In this way, we can not only bring many ideas to real but every member in the group can practice what they have learned, gain real professional work experiences, and develop their teamwork abilities. When they are applying for a real job, companies can take their records on GoodTeam as a good reference.
 
@@ -80,7 +86,7 @@ The project page will use this module. If the request comes from a publisher, th
 SignUp module provide the functionality that new users can signup via it. Validator is used here to control the input of user's infomation.
 
 ### Administrative Page (implemented)
-There is an administrative page that logged in admin user can access using '\alladmin'. He has premission to delete any projects here. Other users would be redirect to main page if they are trying to request this page.
+There is an administrative page that logged in admin user can access using '\admin'. He has premission to delete any projects here. Other users would be redirect to main page if they are trying to request this page.
 
 ## REST API Design
 ### Search
@@ -142,6 +148,7 @@ We use mocha, supertest and should modules to do the unittest of our apis and au
 
 ### performance
 Performance test for main page:
+![info.png](./Documents/performance.png "Infomation Page")
 
 #### How did we improve
 - Our site is single page application so that there are several controllers that can be shared across different contents, and they don't need to be load several time.

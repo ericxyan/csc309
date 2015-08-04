@@ -8,7 +8,8 @@ var usersSchema = new Schema({
 	"Email": {type: String}, 
 	"Ceil": {type: String},
 	"Skills": [{type: String}],
-	"Rating": [{type: Schema.ObjectId, ref:'Rating'}]
+	"Rating": [{type: Schema.ObjectId, ref:'Rating'}],
+	"AvgRating": {type: Number, default: 0}
 });
 
 var User = mongoose.model('User', usersSchema, 'User');
