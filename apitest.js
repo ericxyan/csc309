@@ -46,7 +46,6 @@ describe('apis', function(){
         done();
     });
     
-    
     it('Check getting user with userId', function(done){
       server
       .get('/api/users/MockAliceAlice')
@@ -94,7 +93,6 @@ describe('apis', function(){
         });
     });
     
-    
     it('Search all users with skill EE, should return an Array contains MockAliceAlice', function(done){
         server
         .get('/api/search/skill/EE')
@@ -105,6 +103,18 @@ describe('apis', function(){
            res.text.should.containEql('MockAliceAlice');
            done(); 
         });
+    });
+    
+    it('Search all users, should return an array of users contains MockAliceAlice', function(done){
+       server
+       .get('/api/users/')
+       .expect(200)
+       .end(function(err, res) {
+           res.status.should.equal(200);
+           res.body.should.be.an.Array();
+           res.text.should.containEql('MockAliceAlice');
+           done();
+       });
     });
     
     
