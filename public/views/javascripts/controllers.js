@@ -451,17 +451,22 @@ $scope.search($routeParams.searchKey);
           else{
             document.getElementById("applyMember").remove();
           }
+          var canRate=false;
           for(var i=0; i< res[0].Member.length;i++){
           if(user._id === res[0].Member[i]._id){
             var isMember=true;
-            alert("You are member of this group");
+            console.log("You are member of this group");
             }
           }
           if(user._id===res[0].Admin._id || isMember===true){
+            if(res[0].Status===100){
+                canRate=true;
+            }
+          }
+          if(canRate==true){
             console.log("you can rate now");
           }
           else{
-            console.log("no you can't");
             document.getElementById("ratefield").remove();
           }
 
@@ -480,6 +485,7 @@ $scope.search($routeParams.searchKey);
     $http.post('/api/rating/' + $scope.ratedId, $scope.rating).success(function (data) {
       $scope.rating.Stars = 5;
       $scope.rating.Comments = '';
+      alert("rating done!");
     });
   };
 

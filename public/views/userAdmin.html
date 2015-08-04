@@ -78,10 +78,11 @@
 			<h2>Rates and Comment</h2>
 			<table class="table">
 				<tbody>
-						<tr ng-repeat="rate in user.Rating">
+						<tr ng-repeat="rate in user.Rating | orderBy: 'Date':true">
 							<td>Comment: {{rate.Comments}}</td>
 							<td>Stars: {{rate.Stars}}</td>
 							<td>Rater: {{rate.RaterId}}</td>
+							<td>{{rate.Date | date:"h:mma 'on' MMM d, y"}}</td>
 						</tr>
 					</tbody>
 				</table>
