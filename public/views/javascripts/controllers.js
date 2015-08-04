@@ -147,6 +147,8 @@ $scope.search($routeParams.searchKey);
 .controller('registerModal', function ($scope, $http, $location, $rootScope, $modalInstance, skills) {
   $scope.skills = skills;
   $scope.error_message = '';
+  $scope.checkMessage = '';
+  $scope.match = true;
   $scope.Pwd2='';
   $scope.user = {
     UserId: '',
@@ -156,6 +158,15 @@ $scope.search($routeParams.searchKey);
     Ceil: '',
     Skills: []
   };
+
+  var checkMatch = function(){
+    if($scope.user.Pwd === $scope.Pwd2){
+      $scope.match = false;
+    }
+    else {
+      $scope.match = true;
+    }
+  }
 
   var check = function(){
         Object.keys($scope.skills).forEach(function(key){
