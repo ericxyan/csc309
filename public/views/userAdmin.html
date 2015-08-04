@@ -51,6 +51,7 @@
 						<th>Project</th>
 						<th>Start time</th>
 						<th>Role</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -58,16 +59,19 @@
 						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
 						<td>{{project.Start_time| date:"h:mma 'on' MMM d, y"}}</td>
 						<td>Admin</td>
+						<td><span ng-show="project.Status===100" class="label label-success">Rate now!</span></td>
 					</tr>
 					<tr ng-repeat="project in member_projects">
 						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
 						<td>{{project.Start_time| date:"h:mma 'on' MMM d, y"}}</td>
 						<td>Member</td>
+						<td><span ng-show="project.Status===100" class="label label-success">Rate now!</span></td>
 					</tr>
 					<tr ng-repeat="project in candidate_projects">
 						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
 						<td>{{project.Start_time| date:"h:mma 'on' MMM d, y"}}</td>
 						<td>Candidate</td>
+						<td></td>
 					</tr>
 				</tbody>
 			</table>
