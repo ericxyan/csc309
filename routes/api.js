@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var User = require('../db/user');
 var Project = require('../db/projects');
 var Rating  = require('../db/rating');
-var Comment = require('../db/comments');
 
 
 var isAuthenticated = function (req, res, next) {
