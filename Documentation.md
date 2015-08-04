@@ -53,7 +53,6 @@ The followings are our database schemas:
 - `User`:  { UserID, PassWord, NickName, Email, Ceil, Skills(list of skills), Rating(list of ratingID))}
 - `Project`: { ProjectName, Description, Subjects(list of string), Start_time , Status, Admin, Member(list of ObjectID ref to User), Member(list of ObjectID ref to User), Comments(list of commentID) }
 - `Rating`: { RatingID, RaterID, Stars, Comments}
-- `Comment`: {CommentID, ProjectId, UserId, Time, Content}
 
 ## Module Design
 ### Authentation module.  (implemented)
