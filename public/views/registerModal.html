@@ -23,20 +23,14 @@
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="Pwd">Password</label>
             <input type="password" class="form-control" id="Pwd" ng-model="user.Pwd" name="Pwd"  placeholder="Password">
-            <p class="text-danger">pwd1: {{user.Pwd}}</p>
-            <p class="text-danger" ng-hide="match">Not match</p>
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="password2">Repeat Password</label>
             <input type="password" class="form-control" id="password2" ng-model="Pwd2" ng-change="checkMatch()" name="Pwd2"  placeholder="Password">
-            <p class="text-danger">pwd2: {{Pwd2}}</p>
-            <p class="text-danger">pwd1: {{user.Pwd}}</p>
-            <p>match: {{match}}</p>
-            <p class="text-danger" ng-hide="match">Not match</p>
+            <p class="text-danger" ng-hide="match">Not match, please check.</p>
         </div>
         <div class="form-group ng-invalid" valdr-form-group="">
             <label for="skills">Skills</label>
-            <p>skillBox: {{skillBox}}</p>
             <div class="checkbox" ng-repeat="(skill,check) in skills">
                 <input type="checkbox" name="skills[skill]" value="skill" ng-model="skills[skill]">{{skill}}<br/>
             </div>
@@ -44,7 +38,7 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-disabled="signUpForm.$invalid" ng-click="ok()">OK</button>
+    <button class="btn btn-primary" ng-disabled="signUpForm.$invalid || !match" ng-click="ok()">OK</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>
         

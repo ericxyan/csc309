@@ -158,16 +158,16 @@ $scope.search($routeParams.searchKey);
     Ceil: '',
     Skills: []
   };
-$scope.counter = 0;
-  var checkMatch = function(){
+$scope.counter = 1;
+  $scope.checkMatch = function(){
     $scope.counter++;
-    if($scope.user.Pwd === $scope.Pwd2){
-      $scope.match = false;
-    }
-    else {
+    if($scope.user.Pwd == $scope.Pwd2){
       $scope.match = true;
     }
-  }
+    else {
+      $scope.match = false;
+    }
+  };
 
   var check = function(){
         Object.keys($scope.skills).forEach(function(key){
