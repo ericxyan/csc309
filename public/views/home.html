@@ -75,7 +75,7 @@
       </tr>
     </thead>
     <tbody>
-		<tr ng-repeat="user in users | orderBy: user.AvgRating:true">
+		<tr ng-repeat="user in users | orderBy: '-AvgRating'">
 			<td>{{$index+1}}</td>
 			<td><a href="#/users/{{user.UserId}}">{{user.NickName}}</a></td>
 			<td>{{user.AvgRating}}</td>
