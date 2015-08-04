@@ -63,16 +63,12 @@
 		<div>
 			<h2>Rate your group member</h2>
 			<div>
-				<div class="dropdown">
-					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				    {{defaultval}}
-				    <span class="caret"></span>
-				  	</button>
-				  	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-					    <li><a ng-click="ratedId=project.Admin._id;defaultval=project.Admin.UserId">{{project.Admin.UserId}}</a></li>
-					    <li ng-repeat="member in project.Member"><a ng-click="ratedId=member._id; defaultval=member.UserId">{{member.UserId}}</a></li>
-					    <li ng-repeat="candidate in project.Candidate"><a ng-click="ratedId=candidate._id; defaultval=candidate.UserId">{{candidate.UserId}}</a></li>
-					</ul>
+				<div class="form-group">
+				  <label for="sel1">Select list:</label>
+				  <select class="form-control" id="sel1">
+				  	<option value="{{project.Admin._id}}">{{project.Admin.UserId}}</option>
+				    <option ng-repeat="member in project.Member" value="{{member._id}}">{{member.UserId}}</option>
+				  </select>
 				</div>
 				<br>
 				<br>

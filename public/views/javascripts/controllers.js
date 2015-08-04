@@ -424,8 +424,6 @@ $scope.search($routeParams.searchKey);
     'Content':''
   };
   $scope.max = 10;
-  $scope.ratedId='';
-  $scope.defaultval="select a member";
   $scope.rating = {
     'RaterId': '',  // Rater id
     'Stars': 5, 
@@ -482,7 +480,11 @@ $scope.search($routeParams.searchKey);
   // post rating obj
   $scope.addRating = function(){
     console.log($scope.rating);
-    $http.post('/api/rating/' + $scope.ratedId, $scope.rating).success(function (data) {
+    var sel= document.getElementById('sel1');
+    var ratedId = sel.options[sel.selectedIndex].value;
+    $http.post('/api/rating/' + ratedId, $scope.rating).success(function (data) {
+      console.log($scope.rating);
+      console.log(ratedId);
       $scope.rating.Stars = 5;
       $scope.rating.Comments = '';
       alert("rating done!");
@@ -499,13 +501,19 @@ $scope.search($routeParams.searchKey);
   };
   refresh();
   $scope.apply=function(){
+    var Dup=false;
+    var Done=false;
     for(var i=0; i< $scope.project.Candidate.length;i++){
       if($scope.user._id === $scope.project.Candidate[i]._id){
-        var Dup=true;
+        Dup=true;
         alert("You can't apply twice!");
       }
     }
-    if(!Dup){
+    if($scope.project.Status===100){
+      Done=true;
+      alert("The project has already finished");
+    }
+    if(!Dup && !Done){
       $scope.project.Candidate.push($scope.user._id);
       console.log($scope.user._id);
       $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
@@ -543,7 +551,10 @@ $scope.search($routeParams.searchKey);
           }
           if($scope.project.Status ===100){
             document.getElementById("updateprog").remove();
-            /*empty candidate list*/
+            $scope.project.Candidate=[];
+            $http.put('/api/projects/'+$routeParams.projectID, $scope.project).success(function(res){
+              console.log("success");
+            });
 
           }
         });
