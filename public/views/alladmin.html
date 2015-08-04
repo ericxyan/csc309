@@ -1,0 +1,32 @@
+<div>
+<div class="row card">
+	<table class="table">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="project in projects">
+						<td><a href="#/projects/{{project._id}}">{{project.ProjectName}}<a></td>
+						<td><button class="btn btn-danger" ng-click="deleteProject(project._id)">Delete</button></td>
+					</tr>
+				</tbody>
+	</table>
+<!-- 	<table class="table">
+				<thead>
+					<tr>
+						<th>User</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in users">
+						<td><a href="#/users/{{user.UserId}}">{{user.UserId}}<a></td>
+						<button class="btn btn-danger" ng-click="deleteUser(user._id)">Delete</button>
+					</tr>
+				</tbody>
+	</table>
+ --></div>
+</div>

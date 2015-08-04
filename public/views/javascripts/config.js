@@ -46,6 +46,11 @@ angular.module('goodteam.config',['ui.bootstrap', 'ngRoute'])
       templateUrl: '/views/projectApply.html',
       controller: 'projectApply'
     })
+    //Administrator with the highest previlege
+    .when('/alladmin',{
+      templateUrl: '/views/alladmin.html',
+      controller: 'alladmin'
+    })
 
     .otherwise({
       redirectTo: '/'
