@@ -44,13 +44,22 @@
 			<tr ng-repeat="member in project.Member track by $index">
 				<td>
 					<a href="#/users/{{member.UserId}}">{{member.UserId}}</a></td>
-				<td>{{member.Skills}}</td>
+				<td><div class="form-group">
+						<ul class="checkbox" >
+							<li class="text-muted" ng-repeat="skill in member.Skills">{{skill}}</li>
+						</ul>
+					</div></td>
 				<td>Member</td>
 			</tr>			
 			<tr ng-repeat="candidate in project.Candidate track by $index">
 				<td>
 					<a href="#/users/{{candidate.UserId}}">{{candidate.UserId}}</a></td>
-				<td>{{candidate.Skills}}</td>
+				<td><div class="form-group">
+						<label for="skills">Skills</label>
+						<ul class="checkbox" >
+							<li class="text-muted" ng-repeat="skill in candidate.Skills">{{skill}}</li>
+						</ul>
+					</div></td>
 				<td>Candidate</td>
 			</tr>
 		</tbody>
