@@ -17,7 +17,7 @@ Xiaoyu Yan
 https://github.com/ericxyan/csc309
 
 ## Demo video Url
-
+http://youtu.be/mISL8h5mf4c
 
 ## Description
  GoodTeam is a platform to gather students specializing in different fields to work together on some cool ideas. University students always come up with some fantastic ideas in their study, but in many cases they do not have enough knowledge, skills or time to achieve them. Even though some of the knowledges are elementary levels, it's not necessary for a student to spend too much time to study all of the required skills, because  someone in the relevant majors may have learned it and they also want to do something to practice. If we can gather these students together, it would be wonderful, because everyone can just focus on their major-related knowledge to make a project. In this way, we can not only bring many ideas to real but every member in the group can practice what they have learned, gain real professional work experiences, and develop their teamwork abilities. When they are applying for a real job, companies can take their records on GoodTeam as a good reference.
